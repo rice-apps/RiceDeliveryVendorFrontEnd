@@ -3,6 +3,7 @@ package com.testigniteproject;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativepayments.ReactNativePaymentsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativePaymentsPackage(),
             new SplashScreenReactPackage(),
             new KeychainPackage(),
             new RNI18nPackage()

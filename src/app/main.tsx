@@ -5,7 +5,6 @@
 import { AppRegistry } from "react-native"
 import { RootComponent } from "./root-component"
 import { StorybookUIRoot } from "../../storybook"
-
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.
  */
