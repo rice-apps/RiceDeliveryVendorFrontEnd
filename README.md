@@ -1,3 +1,30 @@
+# Installation instructions
+
+- Install Homebrew, a package manager:
+
+  `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+
+- Install react-native: https://facebook.github.io/react-native/docs/getting-started
+
+  `brew install node` 
+
+  `brew install watchman`
+
+  `npm install -g react-native-cli`
+
+
+
+- Install Ignite: https://github.com/infinitered/ignite
+
+  `npm install -g ignite-cli`
+
+- Make sure you have Xcode 9.4.1:   https://medium.com/@hacknicity/working-with-multiple-versions-of-xcode-e331c01aa6bc
+- start boilerplate by running: 
+
+  `yarn install` - this installs all the dependencies needed for the project. 
+
+  `react-native run-ios` - this runs the ios simulator. 
+
 #  testIgniteProject
 
 [![Build Status](https://semaphoreci.com/api/v1/ir/ignite-ir-boilerplate-bowser/branches/master/badge.svg)](https://semaphoreci.com/ir/ignite-ir-boilerplate-bowser)
