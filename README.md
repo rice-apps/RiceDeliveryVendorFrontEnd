@@ -1,8 +1,13 @@
-# Helpful links to learn what the fuckkk is happenning:
+# General coding tools
+
+- - Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+
+
+# Helpful links for general front-end development learning 
+## Keywords: react, react-native, react redux, mobx state tree
 
 - What is react-native? http://www.reactnativeexpress.com/environment
-- Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
-
+- What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
 
 # Installation instructions
 
