@@ -1,3 +1,7 @@
+# Helpful links to learn what the fuckkk is happenning:
+
+- What is react-native? http://www.reactnativeexpress.com/environment
+
 # Installation instructions
 
 - Install Homebrew, a package manager:
@@ -6,19 +10,27 @@
 
 - Install react-native: https://facebook.github.io/react-native/docs/getting-started
 
-  `brew install node` 
+  `brew install node`
+
+  `brew install yarn`
 
   `brew install watchman`
 
   `npm install -g react-native-cli`
 
-
-
 - Install Ignite: https://github.com/infinitered/ignite
 
   `npm install -g ignite-cli`
 
-- Make sure you have Xcode 9.4.1:   https://medium.com/@hacknicity/working-with-multiple-versions-of-xcode-e331c01aa6bc
+- Make sure you have Xcode 9.4.1: https://developer.apple.com/download/more/. Once you have it installed it and unzipped the file, rename it to Xcode9.4.1 and drag it into your application folder. Then run: 
+
+  `sudo xcode-select -s /Applications/Xcode9.4.1.app/Contents/Developer`
+
+  `xcode-select -p` - this selects 9.4.1 as your command line tool, which is compatible with the version of xcode we are running.
+
+  you should see this pop up in your terminal:
+  `/Applications/Xcode9b1.app/Contents/Developer`
+
 - start boilerplate by running: 
 
   `yarn install` - this installs all the dependencies needed for the project. 
