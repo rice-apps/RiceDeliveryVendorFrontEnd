@@ -1,6 +1,8 @@
 # Helpful links to learn what the fuckkk is happenning:
 
 - What is react-native? http://www.reactnativeexpress.com/environment
+- Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+
 
 # Installation instructions
 
@@ -33,7 +35,8 @@
 
 - start boilerplate by running: 
 
-  `yarn install` - this installs all the dependencies needed for the project. 
+  `yarn install` - this installs all the dependencies needed for the project.
+  - If you don't have yarn installed: run `brew install yarn` 
 
   `react-native run-ios` - this runs the ios simulator. 
 
