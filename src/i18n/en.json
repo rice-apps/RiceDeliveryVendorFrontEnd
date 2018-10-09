@@ -21,5 +21,11 @@
   "storybook": {
     "placeholder": "Placeholder",
     "field": "Field"
+  },
+  "thirdExampleScreen": {
+    "title": "APISauce Demo",
+    "header": "Johnny's Demo",
+    "nextBtn": "GO TO THIRD SCREEN",
+    "submitBtn": "Submit"
   }
 }
