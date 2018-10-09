@@ -81,7 +81,7 @@ const FOOTER_CONTENT: ViewStyle = {
 export interface FirstExampleScreenProps extends NavigationScreenProps<{}> {}
 
 export class FirstExampleScreen extends React.Component<FirstExampleScreenProps, {}> {
-  nextScreen = () => this.props.navigation.navigate("secondExample")
+  nextScreen = () => this.props.navigation.navigate("thirdExample")
 
   render() {
     return (
