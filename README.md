@@ -9,6 +9,43 @@
 - What is react-native? http://www.reactnativeexpress.com/environment
 - What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
 
+# Developer workflow:
+
+
+1. Pull the master branch 
+
+    `git pull origin master`
+
+2. Create bug / feature branch: 
+
+    `git checkout -b <branch name>`
+
+3. Make changes and make as many commits as need be. Make sure to name commits starting with branch name! e.g. if branch name is FEATURE 1, make the commit message: 'FEATURE 1: blah blah blah'
+
+4. squash to 1 commit: 
+
+    `git rebase -i HEAD~<Number of commits>`
+
+5. checkout the master branch: 
+
+   `git checkout master`
+
+6. pull the master branch: 
+
+   `git pull origin master`
+
+7. checkout feature branch: 
+
+   `git checkout <branch name>`
+
+8. rebase from master: 
+
+   `git rebase master`
+
+9. push feature branch up: 
+
+    `git push origin <branchname> --force`
+
 # Installation instructions
 
 - Install Homebrew, a package manager:
