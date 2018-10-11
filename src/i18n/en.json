@@ -16,7 +16,12 @@
     "howTo": "HOW TO",
     "title": "What’s In This Stack?",
     "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
-    "reactotron": "Demo Reactotron"
+    "reactotron": "Demo Reactotron",
+    "login": "GO TO LOGIN SCREEN"
+  },
+  "loginTestScreen": {
+    "loginTest": "LOGIN TEST",
+    "login": "Login"
   },
   "storybook": {
     "placeholder": "Placeholder",

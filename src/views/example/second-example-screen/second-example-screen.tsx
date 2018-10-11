@@ -17,6 +17,10 @@ const CONTAINER: ViewStyle = {
   backgroundColor: color.transparent,
   paddingHorizontal: spacing[4],
 }
+const TEXT: TextStyle = { 
+  color: color.palette.white,
+  fontFamily: "Montserrat",
+}
 const DEMO: ViewStyle = {
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
@@ -74,10 +78,27 @@ const HEART: ImageStyle = {
   resizeMode: "contain",
 }
 
+const CONTINUE: ViewStyle = { 
+  paddingVertical: spacing[4], 
+  paddingHorizontal: spacing[4],
+  backgroundColor: "#5D2555",
+}
+const CONTINUE_TEXT: TextStyle = {
+  ...TEXT,
+  ...BOLD,
+  fontSize: 13,
+  letterSpacing: 2,
+}
+
 export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {}
 
 export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
   goBack = () => this.props.navigation.goBack(null)
+  nextScreen = () => this.props.navigation.navigate("loginTest")
+
+  static navigationOptions = ({ navigation }) => ({
+    drawerLabel: 'secondExample',
+  })
 
   demoReactotron = async () => {
     console.tron.log("Your Friendly tron log message")
@@ -134,10 +155,10 @@ export class SecondExampleScreen extends React.Component<SecondExampleScreenProp
 
             <View>
               <Button
-                style={DEMO}
-                textStyle={DEMO_TEXT}
-                tx="secondExampleScreen.reactotron"
-                onPress={this.demoReactotron}
+                style={CONTINUE}
+                textStyle={CONTINUE_TEXT}
+                tx="secondExampleScreen.login"
+                onPress={this.nextScreen}
               />
             </View>
             <Image source={logoIgnite} style={IGNITE} />
@@ -148,6 +169,7 @@ export class SecondExampleScreen extends React.Component<SecondExampleScreenProp
             </View>
           </Screen>
         </SafeAreaView>
+        
       </View>
     )
   }

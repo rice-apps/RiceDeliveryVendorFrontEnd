@@ -32,6 +32,6 @@ export class StatefulNavigator extends React.Component<StatefulNavigatorProps, {
       this.getCurrentNavigation,
     )
 
-    return <RootNavigator navigation={this.currentNavProp} />
+    return <RootNavigator />
   }
 }

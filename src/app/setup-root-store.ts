@@ -3,8 +3,9 @@ import { RootStoreModel, RootStore } from "./root-store"
 import { Environment } from "./environment"
 import * as storage from "../lib/storage"
 import { Reactotron } from "../services/reactotron"
-import { Api } from "../services/api"
+import { Api, GRAPHQL_API} from "../services/api"
 
+import {vendorQuery } from '../graphql/queries'
 /**
  * The key we'll be saving our state as within async storage.
  */
@@ -21,7 +22,14 @@ export async function setupRootStore() {
   const env = await createEnvironment()
   try {
     // load data from storage
-    data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
+    // data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || { vendors: []}
+    const query: any = () => GRAPHQL_API.post(
+      '',
+      vendorQuery
+    )
+    
+    const vendors = (await query()).data.data.vendor
+    data = {vendors: vendors }
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {
     // if there's any problems loading, then let's at least fallback to an empty state

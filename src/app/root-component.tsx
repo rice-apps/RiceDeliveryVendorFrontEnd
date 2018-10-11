@@ -1,14 +1,18 @@
 import "../i18n"
 import * as React from "react"
+import { Header } from "./header-component"
 import { setupRootStore } from "./setup-root-store"
-import { StatefulNavigator } from "../navigation"
+import { RootNavigator } from "../navigation/root-navigator"
 import { RootStore } from "./root-store"
 import { Provider } from "mobx-react"
 import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
-
+import { YellowBox, View, StatusBar, Platform } from 'react-native'
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
+YellowBox.ignoreWarnings(['Module RCTImageLoader requires',]);
+YellowBox.ignoreWarnings(['Class RCTCxxModule']);
 interface RootComponentState {
   rootStore?: RootStore
 }
@@ -58,11 +62,14 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     // --- am: begin list of stores ---
     const otherStores = {}
     // --- am: end list of stores ---
-
     return (
       <Provider rootStore={rootStore} navigationStore={rootStore.navigationStore} {...otherStores}>
         <BackButtonHandler canExit={this.canExit}>
-          <StatefulNavigator />
+          <View style={{ height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
+            <StatusBar />
+          </View>
+          <Header />
+          <RootNavigator />        
         </BackButtonHandler>
       </Provider>
     )
