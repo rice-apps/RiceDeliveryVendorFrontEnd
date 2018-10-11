@@ -113,7 +113,7 @@ export class Reactotron {
       })
 
       // ignore some chatty `mobx-state-tree` actions
-      const RX = /postProcessSnapshot|@APPLY_SNAPSHOT/
+     const RX = /postProcessSnapshot|@APPLY_SNAPSHOT/
 
       // hookup mobx-state-tree middleware
       Tron.use(

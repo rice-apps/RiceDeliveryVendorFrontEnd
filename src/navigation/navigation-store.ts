@@ -17,13 +17,14 @@ function findCurrentRoute(navState) {
   }
   return route
 }
-
 /**
  * Tracks the navigation state for `react-navigation` as well as providers
  * the actions for changing that state.
  */
 export const NavigationStoreModel = NavigationEvents.named("NavigationStore")
   .props({
+/**
+ * Tracks the navi
     /**
      * the navigation state tree (Frozen here means it is immutable.)
      */

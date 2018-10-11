@@ -14,12 +14,21 @@
   },
   "secondExampleScreen": {
     "howTo": "HOW TO",
-    "title": "What’s In This Stack?",
+    "title": "Are all the data connected?",
     "tagLine": "Congratulations, you’ve got a very advanced React Native app template here.  Take advantage of this boilerplate!",
     "reactotron": "Demo Reactotron"
   },
   "storybook": {
     "placeholder": "Placeholder",
     "field": "Field"
+  },
+
+  "thirdExampleScreen": {
+    "header": "Will Su Demo",
+    "title": "MobX-State-Tree Demo",
+    "nextBtn": "Next Page",
+    "submitBtn": "Add a User"
+
   }
+
 }

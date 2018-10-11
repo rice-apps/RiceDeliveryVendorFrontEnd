@@ -73,12 +73,42 @@ const HEART: ImageStyle = {
   height: 10,
   resizeMode: "contain",
 }
+const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
+const FOOTER_CONTENT: ViewStyle = {
+  paddingVertical: spacing[4], 
+  paddingHorizontal: spacing[4],
+}
+import UserStore  from "../../../teststore/userStore" //importing it from userStore, the store I created
+import { observer } from 'mobx-react'
 
 export interface SecondExampleScreenProps extends NavigationScreenProps<{}> {}
 
-export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
-  goBack = () => this.props.navigation.goBack(null)
+const initialState = {
+  name: '',
+  vip: false
+}
 
+@observer
+export class SecondExampleScreen extends React.Component<SecondExampleScreenProps, {}> {
+
+  state = initialState
+  onChangeText(key, value) {
+    this.setState({
+      [key] : value
+    })
+  }
+  addUser(){
+    UserStore.addUser(this.state)
+    this.setState(initialState)
+  }
+  toggleVip(user) {
+    user.toggleVip()
+  }
+  delete(user) {
+    UserStore.removeUser(user)
+  }
+
+  goBack = () => this.props.navigation.navigate("firstExample")
   demoReactotron = async () => {
     console.tron.log("Your Friendly tron log message")
     console.tron.logImportant("I am important")
@@ -115,6 +145,7 @@ export class SecondExampleScreen extends React.Component<SecondExampleScreenProp
   }
 
   render() {
+    const { names } = UserStore
     return (
       <View style={FULL}>
         <Wallpaper />
@@ -128,11 +159,25 @@ export class SecondExampleScreen extends React.Component<SecondExampleScreenProp
               titleStyle={HEADER_TITLE}
             />
             <Text style={TITLE} preset="header" tx={"secondExampleScreen.title"} />
-            <Text style={TAGLINE} tx={"secondExampleScreen.tagLine"} />
-            <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-            <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
+            {
+                      names.map((user, index) => (
+                        <View  key ={index}>
+                          <Text>Member name: {user.name}</Text>)
 
-            <View>
+                          <Text onPress={() => this.toggleVip(user)} key={index}>
+                          Vip: {user.vip ? 'Yes': 'No'}
+                          </Text>
+                          
+                          <Text onPress = {() => this.delete(user)}> Delete </Text>
+
+                        </View>
+                      ))
+                     }
+                     </Screen>
+            </SafeAreaView>
+          
+            <SafeAreaView>
+            <View style={FOOTER_CONTENT}>
               <Button
                 style={DEMO}
                 textStyle={DEMO_TEXT}
@@ -140,13 +185,14 @@ export class SecondExampleScreen extends React.Component<SecondExampleScreenProp
                 onPress={this.demoReactotron}
               />
             </View>
+
             <Image source={logoIgnite} style={IGNITE} />
             <View style={LOVE_WRAPPER}>
               <Text style={LOVE} text="Made with" />
               <Image source={heart} style={HEART} />
               <Text style={LOVE} text="by Infinite Red" />
             </View>
-          </Screen>
+          
         </SafeAreaView>
       </View>
     )
