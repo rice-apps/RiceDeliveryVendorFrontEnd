@@ -10,6 +10,9 @@ import { color, spacing } from "../../../theme"
 import { BulletItem } from "../bullet-item"
 
 import { Api } from "../../../services/api/api"
+import { ApiConfig } from "../../../services/api/api-config"
+
+import {create} from 'apisauce'
 
 const TEXT: TextStyle = { 
   color: color.palette.white,
@@ -21,25 +24,25 @@ const CONTAINER: ViewStyle = {
     backgroundColor: color.transparent,
     paddingHorizontal: spacing[4],
   }
-  const HEADER: TextStyle = {
-    paddingTop: spacing[3],
-    paddingBottom: spacing[5] - 1,
-    paddingHorizontal: 0,
-  }
-  const HEADER_TITLE: TextStyle = {
-    ...BOLD,
-    fontSize: 12,
-    lineHeight: 15,
-    textAlign: "center",
-    letterSpacing: 1.5,
-  }
-  const TITLE: TextStyle = {
-    ...BOLD,
-    fontSize: 28,
-    lineHeight: 38,
-    textAlign: "center",
-    marginBottom: spacing[5],
-  }
+const HEADER: TextStyle = {
+  paddingTop: spacing[3],
+  paddingBottom: spacing[5] - 1,
+  paddingHorizontal: 0,
+}
+const HEADER_TITLE: TextStyle = {
+  ...BOLD,
+  fontSize: 12,
+  lineHeight: 15,
+  textAlign: "center",
+  letterSpacing: 1.5,
+}
+const TITLE: TextStyle = {
+  ...BOLD,
+  fontSize: 28,
+  lineHeight: 38,
+  textAlign: "center",
+  marginBottom: spacing[5],
+}
 const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
 const FOOTER_CONTENT: ViewStyle = {
   paddingVertical: spacing[4], 
@@ -57,18 +60,36 @@ const CONTINUE_TEXT: TextStyle = {
   letterSpacing: 2,
 }
 
+// key for the dark sky api
 const darkSkyKey = "62b37bb38c07e1acdff739f253676d11"
-  
+
+// demo api
+const demoAPI = create({
+  baseURL: 'https://jsonplaceholder.typicode.com',
+})
+
+// create the api
+const api = create({
+  baseURL: 'https://api.github.com',
+  headers: {'Accept': 'application/vnd.github.v3+json'}
+})
+
+const testAPI = new Api({
+  url :  'https://api.github.com',
+  timeout : 300
+})
+
 
 export interface ThirdExampleScreenProps extends NavigationScreenProps<{}> {}
 
-export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps, {text: string, weather: string}> {
+export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps, {owner: string, repo: string, demo: string}> {
 
   constructor(props) {
     super(props)
     this.state = {
-      text: '',
-      weather: ''
+      owner: '',
+      repo: '',
+      demo: ''
     };
   }
 
@@ -77,7 +98,18 @@ export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps,
   goBack = () => this.props.navigation.goBack(null)
 
   onSubmitEdit = () => {
-    this.setState({weather: this.state.text})
+  
+    api
+    .get('/repos/' + this.state.owner + '/' + this.state.repo + '/commits')
+    .then(resp => this.setState({demo: resp.data[0].commit.message}))
+
+
+    // make the get call
+    // testAPI.getDemo(this.state.owner, this.state.repo)
+    //   .then(response => {
+    //     this.setState({demo: response.data[0].commit.message})
+    //   })
+
   }
 
     render() {
@@ -87,7 +119,6 @@ export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps,
             <SafeAreaView style={FULL}>
               <Screen style={CONTAINER} backgroundColor={color.transparent} preset="scrollStack">
                   <Header
-                  // headerTx="secondExampleScreen.howTo"
                   headerTx="thirdExampleScreen.header"
                   leftIcon="back"
                   onLeftPress={this.goBack}
@@ -95,26 +126,31 @@ export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps,
                   titleStyle={HEADER_TITLE}
                   />
                   <Text style={TITLE} preset="header" tx={"thirdExampleScreen.title"} />
-                  <BulletItem text="This is the APIsauce demo" />
-                  <TextInput
-                    style={{height: 40, backgroundColor: 'white'}}
-                    placeholder="Type here!"
-                    onChangeText={(input) => this.setState({text: input})}
-                    // value={this.state.text}
-                    // onChangeText={(text) => this.setState({text})},
-                    // returnKeyType='My Custom button'
-                    // onSubmitEditing={(event) => this.updateText(event.nativeEvent.text)}
-                    />
+                  <Text style={{paddingBottom: 10}} text="Enter in your Github repository info" />
 
-                    <Button 
+                  <TextInput
+                    style={{height: 40, backgroundColor: 'white', paddingLeft: 10}}
+                    placeholder="Owner"
+                    onChangeText={(input) => this.setState({owner: input})}
+                  />
+
+                  <TextInput
+                    style={{height: 40, backgroundColor: 'white', paddingLeft: 10}}
+                    placeholder="Repository"
+                    onChangeText={(input) => this.setState({repo: input})}
+                  />
+
+                  <Button 
                     textStyle={CONTINUE_TEXT}
                     style={{backgroundColor: "#5D2555"}}
                     tx="thirdExampleScreen.submitBtn"
                     onPress={this.onSubmitEdit}
-                    />
+                  />
+
+                  <Text style={{paddingTop: 10,paddingBottom: 10}} text="Latest commit message:" />
 
                   <Text >
-                    {"\n"}{this.state.weather}
+                    {"\n"}{this.state.demo}
                   </Text>
         
 
@@ -122,7 +158,7 @@ export class ThirdExampleScreen extends React.Component<ThirdExampleScreenProps,
                 </Screen>
                 </SafeAreaView>
 
-                // Button
+
                 <SafeAreaView style={FOOTER}>
                     <View style={FOOTER_CONTENT}>
                       <Button

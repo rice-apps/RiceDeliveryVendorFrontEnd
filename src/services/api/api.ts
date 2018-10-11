@@ -45,6 +45,24 @@ export class Api {
   }
 
   /**
+   * Part of demo.
+   */
+  async getDemo(owner: string, repo: string) {
+    const response: ApiResponse<any> = await this.apisauce.get('/repos/' + owner + '/' + repo + '/commits')
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+    try {
+      return {kind: "ok", resp: response}
+    }
+    catch {
+      return {kind: "bad"}
+    }
+  }
+
+  /**
    * Gets a list of users.
    */
   async getUsers(): Promise<Types.GetUsersResult> {
