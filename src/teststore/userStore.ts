@@ -30,7 +30,7 @@ const UserStore = types
 })
 )
 .create({
-     names: [{name: "William Su", vip: true}]
+     names: []
  })
 
 
