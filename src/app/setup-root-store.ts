@@ -30,7 +30,7 @@ export async function setupRootStore() {
     
     const vendors = (await query()).data.data.vendor
     // console.log(vendors)
-    // data = {{vendors: vendors} || {}}
+    data = {}
     rootStore = RootStoreModel.create(data, env)
   } catch(e) {
     // if there's any problems loading, then let's at least fallback to an empty state
