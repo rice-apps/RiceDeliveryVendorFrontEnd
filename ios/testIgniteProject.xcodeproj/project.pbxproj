@@ -14,10 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* testIgniteProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* testIgniteProjectTests.m */; };
 		05F22AC9616F439DA1635DFB /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFDD9336F0124129B39E0B31 /* Montserrat-SemiBoldItalic.ttf */; };
-<<<<<<< HEAD
-=======
 		13381310F72B447FA03C70B9 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3B5A7DE0A6481889B1A717 /* FontAwesome.ttf */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -27,10 +24,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-<<<<<<< HEAD
-=======
 		1CB333FE2BB049C3B0F0FE6B /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AF4FFF230BE450EB23C7CD1 /* Entypo.ttf */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		25E004C9134844EBA97A7AE3 /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0219B5FD532E49A7BE3153F1 /* Montserrat-BlackItalic.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -45,14 +39,6 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* testIgniteProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* testIgniteProjectTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-<<<<<<< HEAD
-		3BC8E44037C34CA7849C3DD6 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 056E4D917199451F9B2E5179 /* Montserrat-ExtraBoldItalic.ttf */; };
-		3D79D09D5ABF4F46A4667CB0 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3F902AAC1FBF41188957CB0D /* Montserrat-Thin.ttf */; };
-		40CB7B1456344AD5B4616758 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B276B474DFBB4A599D4C80B5 /* Montserrat-ExtraLight.ttf */; };
-		5A8376364AAA4857BFF83B2C /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DEEB6330CE549E69059F079 /* Montserrat-Medium.ttf */; };
-		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
-		613DA858722F4327A08DBA53 /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D318E89D2E4A67A4328CEC /* Montserrat-LightItalic.ttf */; };
-=======
 		2EB2FCFE158E4F7C95F67D75 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 804D3433BCF44873A534FDD5 /* Octicons.ttf */; };
 		33DF7C4355024F408F7C0C1C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32985460C759449197A5787E /* SimpleLineIcons.ttf */; };
 		3BC8E44037C34CA7849C3DD6 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 056E4D917199451F9B2E5179 /* Montserrat-ExtraBoldItalic.ttf */; };
@@ -63,26 +49,19 @@
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		613DA858722F4327A08DBA53 /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41D318E89D2E4A67A4328CEC /* Montserrat-LightItalic.ttf */; };
 		6A128643EB924E29820AC1BF /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FBC42D97E0B4CCB981B105E /* Ionicons.ttf */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		7186205ADA334760975C057C /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 134F05CB2FF94298B6993481 /* Montserrat-Bold.ttf */; };
 		7190BA056E184776B3DF8BC1 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6F0A391FC8B4306A8CD6CB5 /* Montserrat-Light.ttf */; };
 		7E093AA2E38548B2BDD6066F /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFF92B74575D452596FA78B2 /* Montserrat-ExtraLightItalic.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-<<<<<<< HEAD
-=======
 		8970DDF9F1794BE2B290C998 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2747DC2FD77B49D790157FE4 /* Foundation.ttf */; };
 		8A120569D562467A851DFADB /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CDC1C2E1B4AF4260B5D0226C /* MaterialCommunityIcons.ttf */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		926272150B58401FB333732B /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 361534ADDAF2436F977E446B /* Montserrat-MediumItalic.ttf */; };
 		92C3D7C064E645398BE7A15A /* Montserrat-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B3F82C41076480FA592E24B /* Montserrat-ThinItalic.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		AF6209FC0D3E48D3AEB07BA6 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFCB910AA14F466A8D318E00 /* EvilIcons.ttf */; };
 		B873720746A74A2E98EAE979 /* libRNI18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB26C32E6B464823AD917FDA /* libRNI18n.a */; };
 		BB11D7BA7B0E4A75B62EC80C /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E1F962C92984FA18D3A4C93 /* Montserrat-BoldItalic.ttf */; };
-<<<<<<< HEAD
-=======
 		BEFBA50A658D4395A9EEFD7B /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4B06178F53747ECAA03D6C9 /* MaterialIcons.ttf */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		C84E9ECA878A4B548F65FDBE /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC9447299D749F6A5DD1D80 /* libSplashScreen.a */; };
 		C9EF1BF2521E4769BFFC249B /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90862204541945F4A829F28A /* Montserrat-SemiBold.ttf */; };
 		D09423D40AE9403997E97022 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D16F6D3B3C4A79AC40563A /* libRNKeychain.a */; };
@@ -91,10 +70,7 @@
 		DB77C5920112460D9DF27469 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2914DA8398924370905FF14C /* Montserrat-Italic.ttf */; };
 		EA1C383A9ABC4DA79C350909 /* libRNI18n-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413A2FACECEA4653830135EB /* libRNI18n-tvOS.a */; };
 		F53E3527C2A14B84AD8D57B9 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79E924CA6A1345209F390628 /* Montserrat-Black.ttf */; };
-<<<<<<< HEAD
-=======
 		FDEA42A391CF43A4B8961169 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9E0B74428E24A1D9BA5C6AC /* libRNVectorIcons.a */; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -364,63 +340,41 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-<<<<<<< HEAD
-		9C563746215FF6F300D2546D /* PBXContainerItemProxy */ = {
-=======
 		9CB011F72177E4610053E58D /* PBXContainerItemProxy */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXContainerItemProxy;
 			containerPortal = C326983337AA4E278546CFEB /* RNI18n.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNI18n;
 		};
-<<<<<<< HEAD
-		9C563748215FF6F300D2546D /* PBXContainerItemProxy */ = {
-=======
 		9CB011F92177E4610053E58D /* PBXContainerItemProxy */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXContainerItemProxy;
 			containerPortal = C326983337AA4E278546CFEB /* RNI18n.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 6476C4051EEAA69700B10F51;
 			remoteInfo = "RNI18n-tvOS";
 		};
-<<<<<<< HEAD
-		9C56374C215FF6F300D2546D /* PBXContainerItemProxy */ = {
-=======
 		9CB011FD2177E4610053E58D /* PBXContainerItemProxy */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXContainerItemProxy;
 			containerPortal = EE50DAE4420C41E8B1E47FDF /* RNKeychain.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5D82366F1B0CE05B005A9EF3;
 			remoteInfo = RNKeychain;
 		};
-<<<<<<< HEAD
-		9C56374E215FF6F300D2546D /* PBXContainerItemProxy */ = {
-=======
 		9CB011FF2177E4610053E58D /* PBXContainerItemProxy */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXContainerItemProxy;
 			containerPortal = EE50DAE4420C41E8B1E47FDF /* RNKeychain.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 6478985F1F38BF9100DA1C12;
 			remoteInfo = "RNKeychain-tvOS";
 		};
-<<<<<<< HEAD
-		9C563751215FF6F300D2546D /* PBXContainerItemProxy */ = {
-=======
 		9CB012022177E4610053E58D /* PBXContainerItemProxy */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXContainerItemProxy;
 			containerPortal = 7A5F3A7624084412972406FA /* SplashScreen.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
 		};
-<<<<<<< HEAD
-=======
 		9CB012402177E4880053E58D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 14B86B9630E14290863AF373 /* RNVectorIcons.xcodeproj */;
@@ -428,7 +382,6 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -450,11 +403,8 @@
 		00E356F21AD99517003FC87E /* testIgniteProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = testIgniteProjectTests.m; sourceTree = "<group>"; };
 		0219B5FD532E49A7BE3153F1 /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BlackItalic.ttf"; path = "../src/theme/fonts/Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
 		056E4D917199451F9B2E5179 /* Montserrat-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBoldItalic.ttf"; path = "../src/theme/fonts/Montserrat-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		0D3B5A7DE0A6481889B1A717 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		0FBC42D97E0B4CCB981B105E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		134F05CB2FF94298B6993481 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../src/theme/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -466,20 +416,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = testIgniteProject/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = testIgniteProject/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		14B86B9630E14290863AF373 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		2747DC2FD77B49D790157FE4 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		2914DA8398924370905FF14C /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../src/theme/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* testIgniteProject-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "testIgniteProject-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* testIgniteProject-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "testIgniteProject-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DC9447299D749F6A5DD1D80 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		32985460C759449197A5787E /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		32D16F6D3B3C4A79AC40563A /* libRNKeychain.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeychain.a; sourceTree = "<group>"; };
 		361534ADDAF2436F977E446B /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/theme/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 		3F902AAC1FBF41188957CB0D /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../src/theme/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
@@ -490,11 +434,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		79E924CA6A1345209F390628 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Black.ttf"; path = "../src/theme/fonts/Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		7A5F3A7624084412972406FA /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		7AF4FFF230BE450EB23C7CD1 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		804D3433BCF44873A534FDD5 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8E1F962C92984FA18D3A4C93 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../src/theme/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
 		90862204541945F4A829F28A /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/theme/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -503,23 +444,16 @@
 		AB26C32E6B464823AD917FDA /* libRNI18n.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNI18n.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B276B474DFBB4A599D4C80B5 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLight.ttf"; path = "../src/theme/fonts/Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-		C326983337AA4E278546CFEB /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
-=======
 		B9E0B74428E24A1D9BA5C6AC /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		C326983337AA4E278546CFEB /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		CDC1C2E1B4AF4260B5D0226C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		D4B06178F53747ECAA03D6C9 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		D6F0A391FC8B4306A8CD6CB5 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../src/theme/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		D90C435F39114E959F42FFE4 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../src/theme/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		DFDD9336F0124129B39E0B31 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../src/theme/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		EE50DAE4420C41E8B1E47FDF /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-=======
 		F3B348D7124B4C84BE241833 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FFCB910AA14F466A8D318E00 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 		FFF92B74575D452596FA78B2 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../src/theme/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -663,8 +597,6 @@
 				DFDD9336F0124129B39E0B31 /* Montserrat-SemiBoldItalic.ttf */,
 				3F902AAC1FBF41188957CB0D /* Montserrat-Thin.ttf */,
 				9B3F82C41076480FA592E24B /* Montserrat-ThinItalic.ttf */,
-<<<<<<< HEAD
-=======
 				7AF4FFF230BE450EB23C7CD1 /* Entypo.ttf */,
 				FFCB910AA14F466A8D318E00 /* EvilIcons.ttf */,
 				0D3B5A7DE0A6481889B1A717 /* FontAwesome.ttf */,
@@ -675,7 +607,6 @@
 				804D3433BCF44873A534FDD5 /* Octicons.ttf */,
 				32985460C759449197A5787E /* SimpleLineIcons.ttf */,
 				F3B348D7124B4C84BE241833 /* Zocial.ttf */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -804,11 +735,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				0CEE9E3E0C9A424FB64B9AEB /* Resources */,
-<<<<<<< HEAD
-				9C563718215FF6F100D2546D /* Recovered References */,
-=======
 				9CB011C92177E45B0053E58D /* Recovered References */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -826,65 +753,36 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-		9C563718215FF6F100D2546D /* Recovered References */ = {
-=======
 		9CB011C92177E45B0053E58D /* Recovered References */ = {
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			isa = PBXGroup;
 			children = (
 				AB26C32E6B464823AD917FDA /* libRNI18n.a */,
 				32D16F6D3B3C4A79AC40563A /* libRNKeychain.a */,
 				2DC9447299D749F6A5DD1D80 /* libSplashScreen.a */,
 				413A2FACECEA4653830135EB /* libRNI18n-tvOS.a */,
-<<<<<<< HEAD
-=======
 				B9E0B74428E24A1D9BA5C6AC /* libRNVectorIcons.a */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-		9C56373E215FF6F300D2546D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C563747215FF6F300D2546D /* libRNI18n.a */,
-				9C563749215FF6F300D2546D /* libRNI18n-tvOS.a */,
-=======
 		9CB011EF2177E4600053E58D /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				9CB011F82177E4610053E58D /* libRNI18n.a */,
 				9CB011FA2177E4610053E58D /* libRNI18n-tvOS.a */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-		9C563740215FF6F300D2546D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C56374D215FF6F300D2546D /* libRNKeychain.a */,
-				9C56374F215FF6F300D2546D /* libRNKeychain.a */,
-=======
 		9CB011F12177E4600053E58D /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				9CB011FE2177E4610053E58D /* libRNKeychain.a */,
 				9CB012002177E4610053E58D /* libRNKeychain.a */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
-		9C563742215FF6F300D2546D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9C563752215FF6F300D2546D /* libSplashScreen.a */,
-=======
 		9CB011F32177E4600053E58D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -897,7 +795,6 @@
 			isa = PBXGroup;
 			children = (
 				9CB012412177E4880053E58D /* libRNVectorIcons.a */,
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1071,17 +968,6 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-<<<<<<< HEAD
-					ProductGroup = 9C56373E215FF6F300D2546D /* Products */;
-					ProjectRef = C326983337AA4E278546CFEB /* RNI18n.xcodeproj */;
-				},
-				{
-					ProductGroup = 9C563740215FF6F300D2546D /* Products */;
-					ProjectRef = EE50DAE4420C41E8B1E47FDF /* RNKeychain.xcodeproj */;
-				},
-				{
-					ProductGroup = 9C563742215FF6F300D2546D /* Products */;
-=======
 					ProductGroup = 9CB011EF2177E4600053E58D /* Products */;
 					ProjectRef = C326983337AA4E278546CFEB /* RNI18n.xcodeproj */;
 				},
@@ -1095,7 +981,6 @@
 				},
 				{
 					ProductGroup = 9CB011F32177E4600053E58D /* Products */;
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 					ProjectRef = 7A5F3A7624084412972406FA /* SplashScreen.xcodeproj */;
 				},
 			);
@@ -1362,41 +1247,6 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-<<<<<<< HEAD
-		9C563747215FF6F300D2546D /* libRNI18n.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNI18n.a;
-			remoteRef = 9C563746215FF6F300D2546D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C563749215FF6F300D2546D /* libRNI18n-tvOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libRNI18n-tvOS.a";
-			remoteRef = 9C563748215FF6F300D2546D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C56374D215FF6F300D2546D /* libRNKeychain.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNKeychain.a;
-			remoteRef = 9C56374C215FF6F300D2546D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C56374F215FF6F300D2546D /* libRNKeychain.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNKeychain.a;
-			remoteRef = 9C56374E215FF6F300D2546D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		9C563752215FF6F300D2546D /* libSplashScreen.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSplashScreen.a;
-			remoteRef = 9C563751215FF6F300D2546D /* PBXContainerItemProxy */;
-=======
 		9CB011F82177E4610053E58D /* libRNI18n.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1437,7 +1287,6 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = 9CB012402177E4880053E58D /* PBXContainerItemProxy */;
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
@@ -1618,10 +1467,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = testIgniteProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1653,10 +1499,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = testIgniteProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1746,10 +1589,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = "testIgniteProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1759,10 +1599,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-<<<<<<< HEAD
-=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1793,10 +1630,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = "testIgniteProject-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1806,10 +1640,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-<<<<<<< HEAD
-=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1839,10 +1670,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = "testIgniteProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1852,10 +1680,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-<<<<<<< HEAD
-=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1885,10 +1710,7 @@
 					"$(SRCROOT)/../node_modules/react-native-i18n/ios",
 					"$(SRCROOT)/../node_modules/react-native-keychain/RNKeychainManager",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
-<<<<<<< HEAD
-=======
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				INFOPLIST_FILE = "testIgniteProject-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1898,10 +1720,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-<<<<<<< HEAD
-=======
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
->>>>>>> 47b93e6... Transition test: react-native-icons working!
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

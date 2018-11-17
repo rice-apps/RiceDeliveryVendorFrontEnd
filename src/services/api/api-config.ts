@@ -28,7 +28,7 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
  * GraphQL API endpoint.
  */
 export const GRAPHQL_API = create({
-  baseURL: 'http://localhost:3000/graphql',
+  baseURL: 'http://localhost:4000/graphql',
   headers: {'Accept': 'application/json'}
 })
 
