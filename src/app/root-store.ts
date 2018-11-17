@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree"
 import { NavigationStoreModel } from "../navigation/navigation-store"
-// import { Location, MenuItem} from "./stores/menu-store"
-// import { Order } from "./stores/order-store"
+import { Location, MenuItem} from "./stores/menu-store"
+import { Order } from "./stores/order-store"
 
 const VendorModel = types.model({
   name: "default" 
@@ -12,15 +12,15 @@ const VendorModel = types.model({
   // orders: "default"
 })
 
-// const Vendor = types
-// .model('Vendor', {
-//     _id: types.string,
-//     name: types.string,
-//     phone: types.string,
-//     locationOptions: types.array(Location),
-//     menu: types.array(MenuItem),
-//     orders: types.array(Order)
-// })
+const Vendor = types
+.model('Vendor', {
+    _id: types.string,
+    name: types.string,
+    phone: types.string,
+    locationOptions: types.array(Location),
+    menu: types.array(MenuItem),
+    orders: types.array(Order)
+})
 
 // type Vendor {
 //   _id: String
@@ -37,7 +37,7 @@ const VendorModel = types.model({
  */
 export const RootStoreModel = types.model("RootStore").props({
   navigationStore: types.optional(NavigationStoreModel, {}),
-  vendors: types.array(VendorModel)
+  vendors: types.optional(types.array(VendorModel), [])
 }).actions(self => {
   function addVendor(name) {
     // self.vendors.push({name})
