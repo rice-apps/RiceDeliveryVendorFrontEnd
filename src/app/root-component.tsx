@@ -17,6 +17,7 @@ interface RootComponentState {
   rootStore?: RootStore
 }
 
+
 /**
  * This is the root component of our app.
  */

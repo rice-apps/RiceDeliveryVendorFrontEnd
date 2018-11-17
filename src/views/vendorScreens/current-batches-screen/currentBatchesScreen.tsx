@@ -2,10 +2,7 @@ import * as React from 'react'
 import { View, Text, Button } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../app/root-store';
-import { 
-  vendorQuery,
-  GET_ALL_ORDERS
- } from '../../../graphql/queries/vendorQueries'
+import {   vendorQuery } from '../../../graphql/queries/vendorQueries'
 import { client } from '../../../app/main'
 interface CurrentBatchesScreenProps {
   // injected props
@@ -36,16 +33,6 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     })
   }
 
-  // function to get all orders
-  async getOrders() {
-    const orders = await client.query({
-      query: GET_ALL_ORDERS, 
-      variables: {vendor_name: "Nicolas LLC"}
-    })
-    console.log(orders)
-  }
-  
-
   render() {
     return (
       <View>
@@ -61,7 +48,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
 
                 <Text>
         <Button
-        onPress={this.getOrders}
+        onPress={() => console.log('pressed')}
         title="Find All Orders"
         color="#841584"
         accessibilityLabel="Learn more about this purple button"
