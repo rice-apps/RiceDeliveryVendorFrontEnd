@@ -4,7 +4,8 @@ import { Location, MenuItem} from "./stores/menu-store"
 import { Order } from "./stores/order-store"
 
 const VendorModel = types.model({
-  name: "default" 
+  name: "default", 
+  phone: ""
   // hours: "default",
   // phone: "default",
   // menu: "default",
@@ -39,8 +40,8 @@ export const RootStoreModel = types.model("RootStore").props({
   navigationStore: types.optional(NavigationStoreModel, {}),
   vendors: types.optional(types.array(VendorModel), [])
 }).actions(self => {
-  function addVendor(name) {
-    // self.vendors.push({name})
+  function addVendor(vendor) {
+    self.vendors.push(vendor)
   }
   return {
     addVendor

@@ -1,8 +1,24 @@
 
 import * as React from 'react'
 import { View, Text, FlatList, StyleSheet, Button} from 'react-native';
+import { 
+  GET_ALL_ORDERS
+ } from '../../../graphql/queries/vendorQueries'
+ import { client } from '../../../app/main'
+
+  
 
 export class PendingOrdersScreen extends React.Component<any, any> {
+    // function to get all orders
+    async getOrders() {
+      const orders = await client.query({
+        query: GET_ALL_ORDERS, 
+        variables: {vendor_name: "Nicolas LLC"}
+      })
+      console.log(orders);
+      return orders
+    }
+
   render() {
     return (
       <View>
