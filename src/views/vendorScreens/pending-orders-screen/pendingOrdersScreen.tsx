@@ -56,7 +56,7 @@ const TITLE: TextStyle = {
 const UPDATE_ORDER_STATUS = gql`
   mutation updateOrderStatus($orderId: String!) {
     order(orderId: $orderId) {
-        setOnTheWay(time: "70000") {
+        setOnTheWay(time: "0") {
             _id
         }
     }
