@@ -14,6 +14,7 @@ export const GET_ALL_ORDERS = gql`
       vendor(name: $vendor_name) {
         name
         orders{
+          _id
           location{
             name
           }
