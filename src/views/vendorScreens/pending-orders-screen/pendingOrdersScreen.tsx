@@ -56,7 +56,7 @@ const TITLE: TextStyle = {
 const UPDATE_ORDER_STATUS = gql`
   mutation updateOrderStatus($orderId: String!) {
     order(orderId: $orderId) {
-        setOnTheWay(time: "99999999") {
+        setOnTheWay(time: "70000") {
             _id
         }
     }
@@ -70,7 +70,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 
     this.state={
       orders: [],
-      firstMenuItemInOrder: []
+      firstMenuItemInOrder: [],
+      fake: []
     }
     this.getMenuItems();
   }
@@ -79,29 +80,15 @@ export class PendingOrdersScreen extends React.Component<any, any> {
    * Function to get all orders associated with a particular vendor
    */
   async getOrders() {
-    const orders : any = await client.query({
+    const orders : any = await client.watchQuery({
       query: GET_ALL_ORDERS, 
-      variables: {vendor_name: "Kessler Ltd"}
+      variables: {vendor_name: "Kessler Ltd"},
+      pollInterval: 100
+    }).subscribe({
+      next: ({data}) => {this.setState({orders: data.vendor[0].orders});
+      console.log(data)}
     })
-    console.log(orders.data.vendor[0].orders)
-    this.setState({orders: orders.data.vendor[0].orders})
   }
-
-  //  /**
-  //  * Function that, when given a menuId, returns the menuItem associated with that id
-  //  */
-  // getMenuItem(orders: []) {
-  //   const menuItems = []
-  //   orders.forEach (async(menuId) => {
-  //     const menuItem = await client.query({
-  //       query: GET_MENU_ITEM,
-  //       variables: {itemId: menuId}
-  //     })
-  //     menuItems.push(menuItem.data)
-  //   })
-  //   console.log(menuItems)
-  //   return menuItems
-  // }
 
   /**
   //  * Function to get information about the menuitems in the cart.
@@ -124,16 +111,19 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
+    {console.log(this.state.fake)}
+    {console.log("bye")}
+    {console.log(this.state.firstMenuItemInOrder)}
     return (
       <View style={FULL}>
-
             <FlatList
             data= {this.state.orders}
             renderItem={({item}) => 
             <View style={{flexDirection: 'row'}}>
-              {console.log("bye")}
-              {console.log(this.state.firstMenuItemInOrder)}
-                <Text style={styles.item}>{item.user.netid +"'s Order"}</Text>
+                <View>
+                  <Text style={styles.item}>{item.user.netid +"'s Order"}</Text>
+                  <Text style={styles.small}>{"On The Way Status: " + item.status.onTheWay}</Text>
+                </View>
               <Button
                 onPress= {() => this.changeStatusToOnTheWay(item._id)}
                 title="On The Way!"
@@ -144,7 +134,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
       )
   }
 
-  // function that changes the order status of a given order
+  // function that changes the order status of a given order in the backend
   async changeStatusToOnTheWay(orderId: String) {
     await client.mutate({
       mutation: UPDATE_ORDER_STATUS,
@@ -163,4 +153,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+  small: {
+    paddingLeft: 10,
+    fontSize: 14,
+    height: 24,
+  }
 })
