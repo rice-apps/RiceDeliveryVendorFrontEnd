@@ -52,7 +52,6 @@ const TITLE: TextStyle = {
   }
 `
 // Function to send update an order status
-// hardcoded string with time stamp for proof of concept 
 const UPDATE_ORDER_STATUS = gql`
   mutation updateOrderStatus($orderId: String!) {
     order(orderId: $orderId) {
@@ -91,8 +90,9 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   /**
-  //  * Function to get information about the menuitems in the cart.
-  //  */
+   * Function to get information about the menuitems in the cart. This could be helpful in the future,
+   * but for the proof of concept, after setting the state, it isn't used yet.
+   */
   async getMenuItems() {
     await this.getOrders();
     const menuItems = []
@@ -134,7 +134,9 @@ export class PendingOrdersScreen extends React.Component<any, any> {
       )
   }
 
-  // function that changes the order status of a given order in the backend
+  /**
+   * Function that changes the order status of a given order in the backend
+   */
   async changeStatusToOnTheWay(orderId: String) {
     await client.mutate({
       mutation: UPDATE_ORDER_STATUS,
@@ -143,6 +145,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
 }
+
+// styles that define how the text is displayed
 const styles = StyleSheet.create({
   container: {
    flex: 1,
