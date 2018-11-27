@@ -16,7 +16,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 const APP_NAME = "testIgniteProject"
 
 const link = createHttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'http://localhost:3000/graphql'
 })
 export const client = new ApolloClient({
   link: link,

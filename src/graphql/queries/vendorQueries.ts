@@ -20,6 +20,8 @@ export const GET_ALL_ORDERS = gql`
           }
           user {
             netid
+            firstName
+            lastName
           }
           items {
             item {

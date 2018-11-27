@@ -81,7 +81,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   async getOrders() {
     const orders : any = await client.watchQuery({
       query: GET_ALL_ORDERS, 
-      variables: {vendor_name: "Kessler Ltd"},
+      variables: {vendor_name: "Nicolas LLC"},
       pollInterval: 100
     }).subscribe({
       next: ({data}) => {this.setState({orders: data.vendor[0].orders});
@@ -111,7 +111,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
-    {console.log(this.state.fake)}
+    {console.log(this.state.orders)}
     {console.log("bye")}
     {console.log(this.state.firstMenuItemInOrder)}
     return (
@@ -121,8 +121,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
             renderItem={({item}) => 
             <View style={{flexDirection: 'row'}}>
                 <View>
-                  <Text style={styles.item}>{item.user.netid +"'s Order"}</Text>
-                  <Text style={styles.small}>{"On The Way Status: " + item.status.onTheWay}</Text>
+                  <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
+                  <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
                 </View>
               <Button
                 onPress= {() => this.changeStatusToOnTheWay(item._id)}
