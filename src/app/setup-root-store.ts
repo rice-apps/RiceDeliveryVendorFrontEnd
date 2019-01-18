@@ -1,9 +1,7 @@
 import { onSnapshot } from "mobx-state-tree"
-import { RootStoreModel, RootStore } from "./root-store"
+import { RootStoreModel, RootStore } from "./stores/root-store"
 import { Environment } from "./environment"
 import * as storage from "../lib/storage"
-import { Reactotron } from "../services/reactotron"
-import { Api, GRAPHQL_API} from "../services/api"
 import { client } from "./main"
 /**
  * The key we'll be saving our state as within async storage.
@@ -30,13 +28,9 @@ export async function setupRootStore() {
     rootStore = RootStoreModel.create({}, env)
 
     // but please inform us what happened
-    __DEV__ && console.tron.error(e.message, null)
   }
 
   // reactotron logging
-  if (__DEV__) {
-    env.reactotron.setRootStore(rootStore, data)
-  }
 
   // track changes & save to storage
   onSnapshot(rootStore, snapshot => storage.save(ROOT_STATE_STORAGE_KEY, snapshot))
@@ -55,12 +49,8 @@ export async function createEnvironment() {
   const env = new Environment()
 
   // create each service
-  env.reactotron = new Reactotron()
-  env.api = new Api()
 
   // allow each service to setup
-  await env.reactotron.setup()
-  await env.api.setup()
 
   return env
 }

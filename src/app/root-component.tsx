@@ -1,15 +1,13 @@
-import "../i18n"
 import * as React from "react"
 import { Header } from "./header-component"
 import { setupRootStore } from "./setup-root-store"
 import { RootNavigator } from "../navigation/root-navigator"
-import { RootStore } from "./root-store"
+import { RootStore } from "./stores/root-store"
 import { Provider } from "mobx-react"
 import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
-import { DEFAULT_NAVIGATION_CONFIG } from "../navigation/navigation-config"
 import SplashScreen from "react-native-splash-screen"
-import { YellowBox, View, StatusBar, Platform } from 'react-native'
+import { YellowBox, View, StyleSheet, StatusBar, Platform } from 'react-native'
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 YellowBox.ignoreWarnings(['Module RCTImageLoader requires',]);
 YellowBox.ignoreWarnings(['Class RCTCxxModule']);
@@ -39,7 +37,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
    * @param routeName The currently active route name.
    */
   canExit(routeName: string) {
-    return contains(routeName, DEFAULT_NAVIGATION_CONFIG.exitRoutes)
+    return contains(routeName)
   }
 
   render() {
@@ -63,15 +61,21 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     const otherStores = {}
     // --- am: end list of stores ---
     return (
-      <Provider rootStore={rootStore} navigationStore={rootStore.navigationStore} {...otherStores}>
-        <BackButtonHandler canExit={this.canExit}>
+      <Provider rootStore={rootStore} {...otherStores}>
+        <View style={styles.container}>
           <View style={{ height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
-            <StatusBar />
-          </View>
-          <Header />
-          <RootNavigator />        
-        </BackButtonHandler>
+              <StatusBar />
+            </View>
+            <Header />
+            <RootNavigator />        
+        </View>
       </Provider>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})

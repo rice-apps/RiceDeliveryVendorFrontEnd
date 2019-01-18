@@ -4,7 +4,6 @@
 
 import { AppRegistry } from "react-native"
 import { RootComponent } from "./root-component"
-import { StorybookUIRoot } from "../../storybook"
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
@@ -18,6 +17,7 @@ const APP_NAME = "testIgniteProject"
 const link = createHttpLink({
   uri: 'http://localhost:3000/graphql'
 })
+
 export const client = new ApolloClient({
   link: link,
   cache: new InMemoryCache()
@@ -26,20 +26,11 @@ export const client = new ApolloClient({
 // Should we show storybook instead of our app?
 //
 // ⚠️ Leave this as `false` when checking into git.
-const SHOW_STORYBOOK = false
 
 // appease the typescript overlords
 declare global {
   var module
 }
 
-if (SHOW_STORYBOOK && __DEV__) {
-  // 🎗 REMINDER: Storybook has a server you need to run from a terminal window.
-  //
-  // $> yarn run storybook
-  //
-  AppRegistry.registerComponent(APP_NAME, () => StorybookUIRoot)
-} else {
-  // load our app
-  AppRegistry.registerComponent(APP_NAME, () => RootComponent)
-}
+AppRegistry.registerComponent(APP_NAME, () => RootComponent)
+
