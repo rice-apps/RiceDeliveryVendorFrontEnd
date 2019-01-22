@@ -11,7 +11,7 @@ class LoginScreen extends React.Component {
         return (
             <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                 <Text style={{fontSize:30}}>
-                    LoginScreen
+                    LoginScreen 32
                 </Text>
                 <Text>Email</Text>
                 <TextInput 
