@@ -62,13 +62,13 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
     // --- am: end list of stores ---
     return (
       <Provider rootStore={rootStore} {...otherStores}>
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <View style={{ height: Platform.OS === 'ios' ? 20 : StatusBar.currentHeight }}>
               <StatusBar />
             </View>
-            <Header />
+            <Header /> */}
             <RootNavigator />        
-        </View>
+        {/* </View> */}
       </Provider>
     )
   }

@@ -79,20 +79,20 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   render() {
     return (
       <View style={styles.container}>
-            <FlatList
-            data= {this.state.orders}
-            renderItem={({item}) => 
-            <View style={{flexDirection: 'row'}}>
-                <View>
-                  <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
-                  <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
-                </View>
-              <Button
-                onPress= {() => this.changeStatusToOnTheWay(item._id)}
-                title="On The Way!"
-              />
-            </View>}
-            />
+        <FlatList
+        data= {this.state.orders}
+        renderItem={({item}) => 
+        <View style={{flexDirection: 'row'}}>
+            <View>
+              <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
+              <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
+            </View>
+          <Button
+            onPress= {() => this.changeStatusToOnTheWay(item._id)}
+            title="On The Way!"
+          />
+        </View>}
+        />
       </View>
       )
   }

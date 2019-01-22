@@ -1,42 +1,75 @@
-import { createBottomTabNavigator, createMaterialTopTabNavigator, createStackNavigator } from "react-navigation"
+import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/current-batches-screen/"
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/pending-orders-screen"
-import { TransactionHistoryScreen } from "../app/screens/vendorScreens/transaction-history-screen"
-import {currentBatchesIcon, pendingOrdersIcon, transactionHistoryIcon} from './navigationIcons/icons'
+import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
+import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
 import LoginScreen from "../app/screens/vendorScreens/login-screen/login-screen";
+
+
+const pendingOrdersStackNavigator = createStackNavigator({
+  Orders: { 
+    screen: PendingOrdersScreen, 
+    navigationOptions: {
+      title: 'Pending Orders'
+      }
+    }
+  }
+)
+
+const batchStackNavigator = createStackNavigator({
+    Batches: { 
+      screen: CurrentBatchesScreen,
+      navigationOptions: {
+        title: 'Current Batch'
+        }
+    }
+  }
+)
+const accountStackNavigator = createStackNavigator({
+  Account: { 
+    screen: AccountScreen,
+    navigationOptions: {
+      title: 'Account Settings'
+      }
+  }
+})
 
 export const TabNavigator = createBottomTabNavigator(
   {
-    // this is an example of having multiple navigators being rendered by a single navigator
-    // there are multiple types here: stack and tab navigators; navigate to them just as you would navigate
-    // to any other screen 
-    currentBatches: { 
-      screen: CurrentBatchesScreen, 
+    OrderStack: {
+      screen: pendingOrdersStackNavigator,
       navigationOptions: {
-        tabBarIcon: currentBatchesIcon
+        tabBarIcon: pendingOrdersIcon, 
       }
-     },
-    pendingOrders: { 
-      screen: PendingOrdersScreen,
+    }, 
+    BatchesStack: {
+      screen: batchStackNavigator,
       navigationOptions: {
-        tabBarIcon: pendingOrdersIcon
+        tabBarIcon: currentBatchesIcon, 
+        title: 'Current Batch'
       }
-    },
-    transactionHistory: { 
-      screen: TransactionHistoryScreen, 
+    }, 
+    AccountStack: {
+      screen: accountStackNavigator,
       navigationOptions: {
-        tabBarIcon: transactionHistoryIcon
+        tabBarIcon: accountIcon
       }
     }
-
-  },
+  }
 )
 
-export const RootNavigator = createStackNavigator({
-  Login: {
-    screen: LoginScreen
+export const RootNavigator = createStackNavigator(
+  {
+    Login: {
+      screen: LoginScreen
+    }, 
+    Tabs: {
+      screen: TabNavigator, 
+    }, 
   }, 
-  Tabs: {
-    screen: TabNavigator
+  {
+    mode: 'modal', 
+    initialRouteName: 'Login', 
+    headerMode: 'none'
   }
-})
+)
