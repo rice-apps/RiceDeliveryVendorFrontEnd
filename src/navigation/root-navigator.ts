@@ -1,6 +1,4 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
-
-//import screens
 import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/current-batches-screen/"
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/pending-orders-screen"
@@ -25,18 +23,16 @@ const pendingOrdersStackNavigator = createStackNavigator({
         title: 'Single Order Screen'
         }
       }
-  }
-)
+})
 
 const batchStackNavigator = createStackNavigator({
-    Batches: { 
-      screen: CurrentBatchesScreen,
-      navigationOptions: {
-        title: 'Current Batch'
-        }
-    }
+  Batches: { 
+    screen: CurrentBatchesScreen,
+    navigationOptions: {
+      title: 'Current Batch'
+      }
   }
-)
+})
 const accountStackNavigator = createStackNavigator({
   Account: { 
     screen: AccountScreen,
@@ -59,46 +55,39 @@ const accountStackNavigator = createStackNavigator({
   }
 })
 
-export const TabNavigator = createBottomTabNavigator(
-  {
-    OrderStack: {
-      screen: pendingOrdersStackNavigator,
-      navigationOptions: {
-        tabBarIcon: pendingOrdersIcon, 
-      }
-    }, 
-    BatchesStack: {
-      screen: batchStackNavigator,
-      navigationOptions: {
-        tabBarIcon: currentBatchesIcon, 
-        title: 'Current Batch'
-      }
-    }, 
-    AccountStack: {
-      screen: accountStackNavigator,
-      navigationOptions: {
-        tabBarIcon: accountIcon
-      }
+export const TabNavigator = createBottomTabNavigator({
+  OrderStack: {
+    screen: pendingOrdersStackNavigator,
+    navigationOptions: {
+      tabBarIcon: pendingOrdersIcon, 
+    }
+  }, 
+  BatchesStack: {
+    screen: batchStackNavigator,
+    navigationOptions: {
+      tabBarIcon: currentBatchesIcon, 
+      title: 'Current Batch'
+    }
+  }, 
+  AccountStack: {
+    screen: accountStackNavigator,
+    navigationOptions: {
+      tabBarIcon: accountIcon
     }
   },
+},
+{initialRouteName: 'BatchesStack'})
 
-  //the first screen to go from the login page to is the Batches Screen
-  {initialRouteName: 'BatchesStack'}
-
-)
-
-export const RootNavigator = createStackNavigator(
-  {
+export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
     Tabs: {
       screen: TabNavigator, 
-    }, 
+    },
   }, 
   {
     mode: 'modal', 
     initialRouteName: 'Login', 
     headerMode: 'none'
-  }
-)
+})
