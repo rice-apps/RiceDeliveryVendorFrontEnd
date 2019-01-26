@@ -16,6 +16,7 @@ const pendingOrdersStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'Pending Orders'
       }
+<<<<<<< HEAD
     },
     SingleOrder: { 
       screen: SingleOrderScreen, 
@@ -23,6 +24,9 @@ const pendingOrdersStackNavigator = createStackNavigator({
         title: 'Single Order Screen'
         }
       }
+=======
+    }
+>>>>>>> 9335b4f4f925460a4352c2187fecafd41fe29591
 })
 
 const batchStackNavigator = createStackNavigator({
@@ -40,6 +44,7 @@ const accountStackNavigator = createStackNavigator({
       title: 'Account Settings'
       }
   }
+<<<<<<< HEAD
   ,
   VendorInfo: { 
     screen: VendorInfoScreen,
@@ -78,6 +83,32 @@ export const TabNavigator = createBottomTabNavigator({
 },
 {initialRouteName: 'BatchesStack'})
 
+=======
+})
+
+export const TabNavigator = createBottomTabNavigator({
+  OrderStack: {
+    screen: pendingOrdersStackNavigator,
+    navigationOptions: {
+      tabBarIcon: pendingOrdersIcon, 
+    }
+  }, 
+  BatchesStack: {
+    screen: batchStackNavigator,
+    navigationOptions: {
+      tabBarIcon: currentBatchesIcon, 
+      title: 'Current Batch'
+    }
+  }, 
+  AccountStack: {
+    screen: accountStackNavigator,
+    navigationOptions: {
+      tabBarIcon: accountIcon
+    }
+  }
+})
+
+>>>>>>> 9335b4f4f925460a4352c2187fecafd41fe29591
 export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
