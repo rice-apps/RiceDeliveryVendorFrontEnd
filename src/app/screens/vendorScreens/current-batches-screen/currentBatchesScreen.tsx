@@ -2,6 +2,8 @@ import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
+// import { createStackNavigator, createAppContainer } from 'react-navigation';
+
 import { 
   vendorQuery,
   GET_ALL_ORDERS
@@ -51,19 +53,24 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       <View style={styles.container} >
         <Button
           onPress={this.vendorQuery}
-          title="Find All Available Vendors"
+          title="Find All Available Vendors (doesn't work)"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
         <Text>
           {JSON.stringify(this.props.rootStore.vendors)}
         </Text>
+
         <Button
-          onPress={this.getOrders}
+          
+          onPress={() => this.props.navigation.navigate('OrderStack')}
+          // onPress={this.getOrders}
           title="Find All Orders"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
           />
+
+
         <Text>
           Existing orders
         </Text>

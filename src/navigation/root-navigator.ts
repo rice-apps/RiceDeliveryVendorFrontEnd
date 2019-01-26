@@ -1,9 +1,15 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
+
+//import screens
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/current-batches-screen/"
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/pending-orders-screen"
+import { SingleOrderScreen } from "../app/screens/vendorScreens/single-order-screen"
 import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
+import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
+import { VendorInfoScreen } from "../app/screens/vendorScreens/vendor-info-screen";
+
 import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
-import LoginScreen from "../app/screens/vendorScreens/login-screen/login-screen";
+
 
 
 const pendingOrdersStackNavigator = createStackNavigator({
@@ -12,7 +18,13 @@ const pendingOrdersStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'Pending Orders'
       }
-    }
+    },
+    SingleOrder: { 
+      screen: SingleOrderScreen, 
+      navigationOptions: {
+        title: 'Single Order Screen'
+        }
+      }
   }
 )
 
@@ -30,6 +42,13 @@ const accountStackNavigator = createStackNavigator({
     screen: AccountScreen,
     navigationOptions: {
       title: 'Account Settings'
+      }
+  }
+  ,
+  VendorInfo: { 
+    screen: VendorInfoScreen,
+    navigationOptions: {
+      title: 'Vendor Info'
       }
   }
 })
@@ -55,7 +74,11 @@ export const TabNavigator = createBottomTabNavigator(
         tabBarIcon: accountIcon
       }
     }
-  }
+  },
+
+  //the first screen to go from the login page to is the Batches Screen
+  {initialRouteName: 'BatchesStack'}
+
 )
 
 export const RootNavigator = createStackNavigator(

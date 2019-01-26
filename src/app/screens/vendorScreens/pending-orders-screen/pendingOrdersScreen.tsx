@@ -79,6 +79,16 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   render() {
     return (
       <View style={styles.container}>
+        <Button
+          
+          onPress={() => this.props.navigation.navigate('SingleOrder')}
+          // onPress={this.getOrders}
+          title="Order 1"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+          />        
+
+
         <FlatList
         data= {this.state.orders}
         renderItem={({item}) => 
@@ -91,6 +101,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
             onPress= {() => this.changeStatusToOnTheWay(item._id)}
             title="On The Way!"
           />
+
+          
         </View>}
         />
       </View>
