@@ -1,16 +1,16 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
 
 //import screens
+import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/current-batches-screen/"
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/pending-orders-screen"
 import { SingleOrderScreen } from "../app/screens/vendorScreens/single-order-screen"
 import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
-import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
 import { VendorInfoScreen } from "../app/screens/vendorScreens/vendor-info-screen";
+import { HoursOperationScreen } from "../app/screens/vendorScreens/hours-operation-screen";
+
 
 import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
-
-
 
 const pendingOrdersStackNavigator = createStackNavigator({
   Orders: { 
@@ -49,6 +49,12 @@ const accountStackNavigator = createStackNavigator({
     screen: VendorInfoScreen,
     navigationOptions: {
       title: 'Vendor Info'
+      }
+  },
+  HoursOperation: { 
+    screen: HoursOperationScreen,
+    navigationOptions: {
+      title: 'Hours of Operation Info'
       }
   }
 })
