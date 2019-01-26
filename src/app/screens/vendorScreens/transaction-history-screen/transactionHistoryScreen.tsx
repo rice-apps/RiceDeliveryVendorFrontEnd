@@ -7,7 +7,8 @@ interface AccountScreenProps {
   rootStore?: RootStore;
 }
 
-export class AccountScreen extends React.Component<AccountScreenProps, any> {
+export class AccountS creen extends React.Component<AccountScreenProps, any> {
+  
   render() {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center", borderColor: "red", borderWidth: 1}}>
@@ -25,6 +26,13 @@ export class AccountScreen extends React.Component<AccountScreenProps, any> {
           onPress={() => this.props.navigation.navigate('HoursOperation')}
           // onPress={this.getOrders}
           title="Hours of Operation"
+          color="#841584"
+          />    
+
+          <Button
+          onPress={() => this.props.navigation.navigate('Menu')}
+          // onPress={this.getOrders}
+          title="Menu"
           color="#841584"
           />     
 
