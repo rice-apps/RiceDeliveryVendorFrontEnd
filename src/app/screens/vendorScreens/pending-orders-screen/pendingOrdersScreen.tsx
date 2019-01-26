@@ -10,10 +10,8 @@ import gql from 'graphql-tag'
 import { TransactionHistoryScreen } from '../transaction-history-screen';
 import ApolloClient from "apollo-boost"
 
-import { ListItem } from "react-native-elements"
+import { OrderList } from "../../../components/order-list"
 
-
-// import { Order } from "../../../stores/order-store"
 
 // query to get a menu item
  const GET_MENU_ITEM = gql`
@@ -45,7 +43,50 @@ export class PendingOrdersScreen extends React.Component<any, any> {
       firstMenuItemInOrder: [],
       fake: []
     }
-    // this.getMenuItems();
+
+    // Mock orders state
+    this.state = {orders:[
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+      this.mock_order,
+    ]}
+  }
+
+  mock_order = {
+    id : 696969,
+    user : {
+      firstName : "Jonathan",
+      lastName : "Cai",
+    },
+    status : {
+      pending : "yep",
+      onTheWay: "nope", 
+      fulfilled: "nah", 
+      unfulfilled: false,
+    }, 
+    location : "Jones",
+    items : [
+      { item : {
+        "itemName" : "fuck",
+        },
+        quantity : 2,
+      },
+      { item : {
+        "itemName" : "shit",
+        },
+        quantity : 4,
+      },
+      { item : {
+        "itemName" : "goddamn",
+        },
+        quantity : 1,
+      },
+    ],
   }
   
   /**
@@ -58,7 +99,6 @@ export class PendingOrdersScreen extends React.Component<any, any> {
       pollInterval: 100
     }).subscribe({
       next: ({data}) => {this.setState({orders: data.vendor[0].orders});
-      
      }
     })
   }
@@ -82,46 +122,10 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
-
-    var mock_order = {
-      user : {
-        firstName : "Jonathan",
-        lastName : "Cai",
-      },
-      status : {
-        pending : "yep",
-        onTheWay: "nope", 
-        fulfilled: "nah", 
-        unfulfilled: false,
-      }, 
-      location : "Jones",
-      items : [
-        { item : {
-          "itemName" : "some goddamn food",
-          },
-          quantity : 2,
-        },
-      ],
-    }
-
-    console.log(mock_order);
-
+    console.log(this.state.orders)
     return (
-      <View style={styles.container}>
-        <FlatList
-        data= {this.state.orders}
-        renderItem={({item}) => 
-        <View style={{flexDirection: 'row'}}>
-            <View>
-              <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
-              <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
-            </View>
-          <Button
-            onPress= {() => this.changeStatusToOnTheWay(item._id)}
-            title="On The Way!"
-          />
-        </View>}
-        />
+      <View>
+        <OrderList orders={this.state.orders}/>
       </View>
       )
   }
@@ -139,20 +143,44 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 }
 
 // styles that define how the text is displayed
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   justifyContent: "center", 
-   alignItems: "center"
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-  small: {
-    paddingLeft: 10,
-    fontSize: 14,
-    height: 24,
-  }
-})
+// const styles = StyleSheet.create({
+//   container: {
+//    flex: 1,
+//    justifyContent: "center", 
+//    alignItems: "center"
+//   },
+//   item: {
+//     padding: 10,
+//     fontSize: 18,
+//     height: 44,
+//   },
+//   small: {
+//     paddingLeft: 10,
+//     fontSize: 14,
+//     height: 24,
+//   }, 
+//   flatList: {
+//     width: "100%"
+//   }
+// })
+
+// OLD RETURN VALUE IN RENDER FUNC:
+      // <View style={styles.container}>
+      //   <FlatList
+      //   style={styles.flatList}
+      //   data= {this.state.orders}
+      //   renderItem={({item}) => 
+      //   <View style={{flexDirection: 'row'}}>
+      //       {/* <View>
+      //         <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
+      //         <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
+      //       </View>
+      //       <Button
+      //         onPress= {() => this.changeStatusToOnTheWay(item._id)}
+      //         title="On The Way!"
+      //       /> */}
+      //   </View>
+      // }
+      //   />
+      // </View>
+      // )
