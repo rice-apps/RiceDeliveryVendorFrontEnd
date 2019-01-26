@@ -6,7 +6,7 @@ import { SingleOrderScreen } from "../app/screens/vendorScreens/single-order-scr
 import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
 import { VendorInfoScreen } from "../app/screens/vendorScreens/vendor-info-screen";
 import { HoursOperationScreen } from "../app/screens/vendorScreens/hours-operation-screen";
-
+import { MenuScreen } from "../app/screens/menu-screen/menuScreen";
 
 import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
 
@@ -16,7 +16,6 @@ const pendingOrdersStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'Pending Orders'
       }
-<<<<<<< HEAD
     },
     SingleOrder: { 
       screen: SingleOrderScreen, 
@@ -24,9 +23,6 @@ const pendingOrdersStackNavigator = createStackNavigator({
         title: 'Single Order Screen'
         }
       }
-=======
-    }
->>>>>>> 9335b4f4f925460a4352c2187fecafd41fe29591
 })
 
 const batchStackNavigator = createStackNavigator({
@@ -44,7 +40,6 @@ const accountStackNavigator = createStackNavigator({
       title: 'Account Settings'
       }
   }
-<<<<<<< HEAD
   ,
   VendorInfo: { 
     screen: VendorInfoScreen,
@@ -56,6 +51,12 @@ const accountStackNavigator = createStackNavigator({
     screen: HoursOperationScreen,
     navigationOptions: {
       title: 'Hours of Operation Info'
+      }
+  },
+  Menu: { 
+    screen: MenuScreen,
+    navigationOptions: {
+      title: 'Menu'
       }
   }
 })
@@ -83,32 +84,6 @@ export const TabNavigator = createBottomTabNavigator({
 },
 {initialRouteName: 'BatchesStack'})
 
-=======
-})
-
-export const TabNavigator = createBottomTabNavigator({
-  OrderStack: {
-    screen: pendingOrdersStackNavigator,
-    navigationOptions: {
-      tabBarIcon: pendingOrdersIcon, 
-    }
-  }, 
-  BatchesStack: {
-    screen: batchStackNavigator,
-    navigationOptions: {
-      tabBarIcon: currentBatchesIcon, 
-      title: 'Current Batch'
-    }
-  }, 
-  AccountStack: {
-    screen: accountStackNavigator,
-    navigationOptions: {
-      tabBarIcon: accountIcon
-    }
-  }
-})
-
->>>>>>> 9335b4f4f925460a4352c2187fecafd41fe29591
 export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
