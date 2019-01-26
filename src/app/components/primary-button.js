@@ -1,5 +1,5 @@
 import { Button } from 'react-native-elements'
-
+import React from 'react'
 export default class PrimaryButton extends React.Component {
     render() {
         const {title } = this.props;
