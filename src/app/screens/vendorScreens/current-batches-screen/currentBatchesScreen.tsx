@@ -4,6 +4,8 @@ import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
 import PrimaryButton from '../../../components/primary-button.js'
+import SecondaryButton from '../../../components/secondary-button.js'
+
 
 import { 
   vendorQuery,
@@ -53,7 +55,10 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     return (
       <View style={styles.container} >
         <PrimaryButton
-          title ="Hello"
+          title ="Primary Button"
+        />
+        <SecondaryButton
+          title ="Secondary Button"
         />
         <Button
           onPress={this.vendorQuery}
