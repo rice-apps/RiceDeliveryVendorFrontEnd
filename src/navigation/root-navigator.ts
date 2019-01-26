@@ -6,7 +6,7 @@ import { SingleOrderScreen } from "../app/screens/vendorScreens/single-order-scr
 import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
 import { VendorInfoScreen } from "../app/screens/vendorScreens/vendor-info-screen";
 import { HoursOperationScreen } from "../app/screens/vendorScreens/hours-operation-screen";
-import { MenuScreen } from "../app/screens/menu-screen/menuScreen";
+import { MenuScreen } from "../app/screens/vendorScreens/menu-screen/menuScreen";
 
 import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
 
