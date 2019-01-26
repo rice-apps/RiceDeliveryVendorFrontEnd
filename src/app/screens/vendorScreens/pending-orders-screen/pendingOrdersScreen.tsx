@@ -10,6 +10,11 @@ import gql from 'graphql-tag'
 import { TransactionHistoryScreen } from '../transaction-history-screen';
 import ApolloClient from "apollo-boost"
 
+import { ListItem } from "react-native-elements"
+
+
+// import { Order } from "../../../stores/order-store"
+
 // query to get a menu item
  const GET_MENU_ITEM = gql`
   query getMenuItem($itemId: String) {
@@ -77,6 +82,30 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
+
+    var mock_order = {
+      user : {
+        firstName : "Jonathan",
+        lastName : "Cai",
+      },
+      status : {
+        pending : "yep",
+        onTheWay: "nope", 
+        fulfilled: "nah", 
+        unfulfilled: false,
+      }, 
+      location : "Jones",
+      items : [
+        { item : {
+          "itemName" : "some goddamn food",
+          },
+          quantity : 2,
+        },
+      ],
+    }
+
+    console.log(mock_order);
+
     return (
       <View style={styles.container}>
         <FlatList
