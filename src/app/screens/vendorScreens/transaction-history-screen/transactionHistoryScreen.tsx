@@ -8,15 +8,18 @@ export class AccountScreen extends React.Component<any, any> {
   list = [
     {
       name: 'Vendor Name',
-      subtitle: 'Change vendor information'
+      subtitle: 'Change vendor information',
+      navigateTo: 'VendorInfo'
     },
     {
       name: 'Hours of Operation',
-      subtitle: 'Change hours of operation'
+      subtitle: 'Change hours of operation',
+      navigateTo: 'HoursOperation'
     },
     {
       name: 'Menu',
-      subtitle: 'Change the menu for the night'
+      subtitle: 'Change the menu for the night',
+      navigateTo: 'Menu'
     },
     {
       name: 'Transaction History',
@@ -29,11 +32,8 @@ export class AccountScreen extends React.Component<any, any> {
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
-      subtitle={item.subtitle}
-      // Add your screen to the root navigator and then navigate to each of them. We may need another element in the list
-      // above to define which screen each button navigates to. Otherwise, if we just defined the navigate here, clicking
-      // every item on this list will redirect to the same screen
-      //onPress={() =>  this.props.navigation.navigate('')}
+      subtitle={item.subtitle}s
+      onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
     />
   )
   render() {
