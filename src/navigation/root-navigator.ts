@@ -13,18 +13,16 @@ const pendingOrdersStackNavigator = createStackNavigator({
       title: 'Pending Orders'
       }
     }
-  }
-)
+})
 
 const batchStackNavigator = createStackNavigator({
-    Batches: { 
-      screen: CurrentBatchesScreen,
-      navigationOptions: {
-        title: 'Current Batch'
-        }
-    }
+  Batches: { 
+    screen: CurrentBatchesScreen,
+    navigationOptions: {
+      title: 'Current Batch'
+      }
   }
-)
+})
 const accountStackNavigator = createStackNavigator({
   Account: { 
     screen: AccountScreen,
@@ -34,42 +32,38 @@ const accountStackNavigator = createStackNavigator({
   }
 })
 
-export const TabNavigator = createBottomTabNavigator(
-  {
-    OrderStack: {
-      screen: pendingOrdersStackNavigator,
-      navigationOptions: {
-        tabBarIcon: pendingOrdersIcon, 
-      }
-    }, 
-    BatchesStack: {
-      screen: batchStackNavigator,
-      navigationOptions: {
-        tabBarIcon: currentBatchesIcon, 
-        title: 'Current Batch'
-      }
-    }, 
-    AccountStack: {
-      screen: accountStackNavigator,
-      navigationOptions: {
-        tabBarIcon: accountIcon
-      }
+export const TabNavigator = createBottomTabNavigator({
+  OrderStack: {
+    screen: pendingOrdersStackNavigator,
+    navigationOptions: {
+      tabBarIcon: pendingOrdersIcon, 
+    }
+  }, 
+  BatchesStack: {
+    screen: batchStackNavigator,
+    navigationOptions: {
+      tabBarIcon: currentBatchesIcon, 
+      title: 'Current Batch'
+    }
+  }, 
+  AccountStack: {
+    screen: accountStackNavigator,
+    navigationOptions: {
+      tabBarIcon: accountIcon
     }
   }
-)
+})
 
-export const RootNavigator = createStackNavigator(
-  {
+export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
     Tabs: {
       screen: TabNavigator, 
-    }, 
+    },
   }, 
   {
     mode: 'modal', 
     initialRouteName: 'Login', 
     headerMode: 'none'
-  }
-)
+})
