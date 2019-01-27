@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Modal, TouchableHighlight, Alert } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
 
@@ -9,27 +9,28 @@ interface AddToBatchScreenProps {
     rootStore?: RootStore;
   }
 
+
 @inject("rootStore")
 @observer
 export class AddToBatchScreen extends React.Component<AddToBatchScreenProps, any> {
 
-  constructor(props) {
-    super(props) 
-    this.state = {
-      vendorInfo: "haven't fetched yet"
-    }
-  }
+//   constructor(props) {
+//     super(props) 
+//     this.state = {
+//       vendorInfo: "haven't fetched yet"
+//     }
+//   }
 
   render() {
+      
     return (
-      <View style={styles.container} >
-        <Text>
-          THIS IS THE ADD TO BATCH SCREEN
-        </Text>
-      </View>
-    
-      )
-  }
+        <View style={styles.container} >
+          <Text>
+            THIS IS THE Add to Batch Screen
+          </Text>
+        </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

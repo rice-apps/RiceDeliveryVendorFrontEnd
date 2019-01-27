@@ -61,13 +61,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
         <SecondaryButton
           title ="Secondary Button"
         />
-        <Button
-          
-          onPress={() => this.props.navigation.navigate('AddToBatch')}
-          // onPress={this.getOrders}
-          title="Add To Batch"
-          color="#841584"
-          />   
+       
 
         <Button
           onPress={this.vendorQuery}

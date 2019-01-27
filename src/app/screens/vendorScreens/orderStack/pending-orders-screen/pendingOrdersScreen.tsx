@@ -125,6 +125,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     console.log(this.state.orders)
     return (
       <View>
+         
         <Button
           
           onPress={() => this.props.navigation.navigate('SingleOrder')}
@@ -132,6 +133,15 @@ export class PendingOrdersScreen extends React.Component<any, any> {
           title="Order 1"
           color="#841584"
           />   
+
+          <Button
+          
+          onPress={() => this.props.navigation.navigate('AddToBatch')}
+          // onPress={this.getOrders}
+          title="Add To Batch"
+          color="#123584"
+          />  
+
         <OrderList orders={this.state.orders}/>
       </View>
       )

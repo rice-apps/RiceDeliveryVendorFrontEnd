@@ -4,11 +4,12 @@ import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIc
 import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
 //BatchesStack
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/batchesStack/current-batches-screen/"
-import { AddToBatchScreen } from "../app/screens/vendorScreens/batchesStack/add-to-batch-screen/"
 
 //OrderStack
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/orderStack/pending-orders-screen"
 import { SingleOrderScreen } from "../app/screens/vendorScreens/orderStack/single-order-screen"
+import { AddToBatchScreen } from "../app/screens/vendorScreens/orderStack/add-to-batch-screen/"
+
 //AccountStack
 import { AccountScreen } from "../app/screens/vendorScreens/accountStack/account-setting-screen"
 import { VendorInfoScreen } from "../app/screens/vendorScreens/accountStack/vendor-info-screen";
@@ -30,7 +31,15 @@ const OrdersStackNavigator = createStackNavigator({
         title: 'Single Order Screen'
         }
       }
-})
+      ,
+    AddToBatch: { 
+      screen: AddToBatchScreen,
+      navigationOptions: {
+        title: 'Add to Batch'
+        }
+    }
+}
+)
 
 const batchStackNavigator = createStackNavigator({
   Batches: { 
@@ -38,17 +47,7 @@ const batchStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'Current Batch'
       }
-  }, 
-  AddToBatch: { 
-    screen: AddToBatchScreen,
-    navigationOptions: {
-      title: 'Add to Batch'
-      }
   }
-},  
-{
-  mode: 'modal', 
-  headerMode: 'none'
 }
 )
 
@@ -98,7 +97,7 @@ export const TabNavigator = createBottomTabNavigator({
     screen: batchStackNavigator,
     navigationOptions: {
       tabBarIcon: currentBatchesIcon, 
-      // title: 'Current Batch'
+      title: 'Current Batch'
     }
   }, 
   AccountStack: {
