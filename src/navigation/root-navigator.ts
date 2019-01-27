@@ -1,18 +1,24 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
+import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
+//First Screen
 import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
+//BatchesStack
 import { CurrentBatchesScreen } from "../app/screens/vendorScreens/batchesStack/current-batches-screen/"
+import { AddToBatchScreen } from "../app/screens/vendorScreens/batchesStack/add-to-batch-screen/"
+
+//OrderStack
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/orderStack/pending-orders-screen"
 import { SingleOrderScreen } from "../app/screens/vendorScreens/orderStack/single-order-screen"
+//AccountStack
 import { AccountScreen } from "../app/screens/vendorScreens/accountStack/account-setting-screen"
 import { VendorInfoScreen } from "../app/screens/vendorScreens/accountStack/vendor-info-screen";
 import { HoursOperationScreen } from "../app/screens/vendorScreens/accountStack/hours-operation-screen";
 import { MenuScreen } from "../app/screens/vendorScreens/accountStack/menu-screen";
 import { TransactionHistScreen } from "../app/screens/vendorScreens/accountStack/transaction-hist-screen"
 
-import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
-
-const pendingOrdersStackNavigator = createStackNavigator({
-  Orders: { 
+//orderStack
+const OrdersStackNavigator = createStackNavigator({
+  Order: { 
     screen: PendingOrdersScreen, 
     navigationOptions: {
       title: 'Pending Orders'
@@ -32,8 +38,21 @@ const batchStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'Current Batch'
       }
+  }, 
+  AddToBatch: { 
+    screen: AddToBatchScreen,
+    navigationOptions: {
+      title: 'Add to Batch'
+      }
   }
-})
+},  
+{
+  mode: 'modal', 
+  headerMode: 'none'
+}
+)
+
+//accountStack
 const accountStackNavigator = createStackNavigator({
   Account: { 
     screen: AccountScreen,
@@ -70,7 +89,7 @@ const accountStackNavigator = createStackNavigator({
 
 export const TabNavigator = createBottomTabNavigator({
   OrderStack: {
-    screen: pendingOrdersStackNavigator,
+    screen: OrdersStackNavigator,
     navigationOptions: {
       tabBarIcon: pendingOrdersIcon, 
     }
@@ -79,7 +98,7 @@ export const TabNavigator = createBottomTabNavigator({
     screen: batchStackNavigator,
     navigationOptions: {
       tabBarIcon: currentBatchesIcon, 
-      title: 'Current Batch'
+      // title: 'Current Batch'
     }
   }, 
   AccountStack: {
@@ -89,7 +108,8 @@ export const TabNavigator = createBottomTabNavigator({
     }
   },
 },
-{initialRouteName: 'BatchesStack'})
+  {initialRouteName: 'BatchesStack'}
+)
 
 export const RootNavigator = createStackNavigator({
     Login: {

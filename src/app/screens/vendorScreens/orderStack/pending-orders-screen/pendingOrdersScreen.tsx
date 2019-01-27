@@ -131,7 +131,6 @@ export class PendingOrdersScreen extends React.Component<any, any> {
           // onPress={this.getOrders}
           title="Order 1"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
           />   
         <OrderList orders={this.state.orders}/>
       </View>

@@ -56,16 +56,24 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       <View style={styles.container} >
         <PrimaryButton
           title ="Primary Button"
+          
         />
         <SecondaryButton
           title ="Secondary Button"
         />
         <Button
+          
+          onPress={() => this.props.navigation.navigate('AddToBatch')}
+          // onPress={this.getOrders}
+          title="Add To Batch"
+          color="#841584"
+          />   
+
+        <Button
           onPress={this.vendorQuery}
           title="Find All Available Vendors (doesn't work)"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+          />
         <Text>
           {JSON.stringify(this.props.rootStore.vendors)}
         </Text>
@@ -76,7 +84,6 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
           // onPress={this.getOrders}
           title="Find All Orders"
           color="#841584"
-          accessibilityLabel="Learn more about this purple button"
           />
 
 
