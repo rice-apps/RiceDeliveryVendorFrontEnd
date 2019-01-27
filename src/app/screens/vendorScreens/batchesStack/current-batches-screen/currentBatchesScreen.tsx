@@ -1,17 +1,17 @@
 import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { RootStore } from '../../../stores/root-store';
+import { RootStore } from '../../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
-import PrimaryButton from '../../../components/primary-button.js'
-import SecondaryButton from '../../../components/secondary-button.js'
+import PrimaryButton from '../../../../components/primary-button.js'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
 
 import { 
   vendorQuery,
   GET_ALL_ORDERS
- } from '../../../../graphql/queries/vendorQueries'
-import { client } from '../../../main'
+ } from '../../../../../graphql/queries/vendorQueries'
+import { client } from '../../../../main'
 interface CurrentBatchesScreenProps {
   // injected props
   rootStore?: RootStore;

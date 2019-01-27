@@ -1,12 +1,13 @@
 import { createBottomTabNavigator, createStackNavigator } from "react-navigation"
 import LoginScreen  from "../app/screens/vendorScreens/login-screen/login-screen";
-import { CurrentBatchesScreen } from "../app/screens/vendorScreens/current-batches-screen/"
-import { PendingOrdersScreen } from "../app/screens/vendorScreens/pending-orders-screen"
-import { SingleOrderScreen } from "../app/screens/vendorScreens/single-order-screen"
-import { AccountScreen } from "../app/screens/vendorScreens/transaction-history-screen"
-import { VendorInfoScreen } from "../app/screens/vendorScreens/vendor-info-screen";
-import { HoursOperationScreen } from "../app/screens/vendorScreens/hours-operation-screen";
-import { MenuScreen } from "../app/screens/vendorScreens/menu-screen/menuScreen";
+import { CurrentBatchesScreen } from "../app/screens/vendorScreens/batchesStack/current-batches-screen/"
+import { PendingOrdersScreen } from "../app/screens/vendorScreens/orderStack/pending-orders-screen"
+import { SingleOrderScreen } from "../app/screens/vendorScreens/orderStack/single-order-screen"
+import { AccountScreen } from "../app/screens/vendorScreens/accountStack/account-setting-screen"
+import { VendorInfoScreen } from "../app/screens/vendorScreens/accountStack/vendor-info-screen";
+import { HoursOperationScreen } from "../app/screens/vendorScreens/accountStack/hours-operation-screen";
+import { MenuScreen } from "../app/screens/vendorScreens/accountStack/menu-screen";
+import { TransactionHistScreen } from "../app/screens/vendorScreens/accountStack/transaction-hist-screen"
 
 import {currentBatchesIcon, pendingOrdersIcon, accountIcon} from './navigationIcons/icons'
 
@@ -57,6 +58,12 @@ const accountStackNavigator = createStackNavigator({
     screen: MenuScreen,
     navigationOptions: {
       title: 'Menu'
+      }
+  },
+  TransactionHist: { 
+    screen: TransactionHistScreen,
+    navigationOptions: {
+      title: 'TransactionHist'
       }
   }
 })

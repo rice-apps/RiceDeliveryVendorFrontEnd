@@ -23,7 +23,8 @@ export class AccountScreen extends React.Component<any, any> {
     },
     {
       name: 'Transaction History',
-      subtitle: 'View all past orders'
+      subtitle: 'View all past orders',
+      navigateTo: "TransactionHist"
     },
   ];
 

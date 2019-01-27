@@ -3,14 +3,14 @@ import * as React from 'react'
 import { View, Text, FlatList, StyleSheet, Button, ViewStyle, TextStyle, SafeAreaView} from 'react-native';
 import { 
   GET_ALL_ORDERS
- } from '../../../../graphql/queries/vendorQueries'
- import { client } from '../../../../app/main'
+ } from '../../../../../graphql/queries/vendorQueries'
+ import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
-import { TransactionHistoryScreen } from '../transaction-history-screen';
+import { TransactionHistoryScreen } from '../../transaction-history-screen';
 import ApolloClient from "apollo-boost"
 
-import { OrderList } from "../../../components/order-list"
+import { OrderList } from "../../../../components/order-list"
 
 
 // query to get a menu item

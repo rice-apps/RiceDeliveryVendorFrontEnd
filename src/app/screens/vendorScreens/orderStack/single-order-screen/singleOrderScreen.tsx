@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { RootStore } from '../../../stores/root-store';
+import { RootStore } from '../../../../stores/root-store';
 
 
 interface SingleOrderScreenProps {
