@@ -2,7 +2,7 @@ import { Button } from 'react-native-elements'
 import React from 'react'
 export default class PrimaryButton extends React.Component {
     render() {
-        const {title } = this.props;
+        const {title, onPress} = this.props;
         return (
             <Button
                 title = {title}
@@ -10,8 +10,11 @@ export default class PrimaryButton extends React.Component {
                     backgroundColor: "rgba(92, 99,216, 1)",
                     borderColor: "transparent",
                     borderWidth: 2,
-                    borderRadius: 5
+                    borderRadius: 5,
+                    margin: 5
                 }}
+                style={{margin: 10, padding: 10}}
+                onPress = {onPress}
             />
         )
     }

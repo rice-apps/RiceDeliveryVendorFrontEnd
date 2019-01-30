@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { View, Text, FlatList, StyleSheet, Button, ViewStyle, TextStyle, SafeAreaView} from 'react-native';
+import { View, ScrollView, Text, FlatList, StyleSheet, Button, ViewStyle, TextStyle, SafeAreaView} from 'react-native';
 import { 
   GET_ALL_ORDERS
  } from '../../../../../graphql/queries/vendorQueries'
@@ -11,7 +11,8 @@ import { TransactionHistoryScreen } from '../../transaction-history-screen';
 import ApolloClient from "apollo-boost"
 
 import { OrderList } from "../../../../components/order-list"
-
+import PrimaryButton from '../../../../components/primary-button.js'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
 // query to get a menu item
  const GET_MENU_ITEM = gql`
@@ -124,25 +125,26 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   render() {
     console.log(this.state.orders)
     return (
-      <View>
-         
-        <Button
-          
-          onPress={() => this.props.navigation.navigate('SingleOrder')}
-          // onPress={this.getOrders}
-          title="Order 1"
-          color="#841584"
-          />   
-
+      <View style={{flex:1}}>
+        <ScrollView>
           <Button
-          
-          onPress={() => this.props.navigation.navigate('AddToBatch')}
-          // onPress={this.getOrders}
-          title="Add To Batch"
-          color="#123584"
-          />  
-
+            onPress={() => this.props.navigation.navigate('SingleOrder')}
+            // onPress={this.getOrders}
+            title="Order 1"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+            />   
         <OrderList orders={this.state.orders}/>
+        </ScrollView>
+        <View>
+          <PrimaryButton
+            title ="Add to Batch"
+            onPress={this.loginHandler}
+          />
+          <SecondaryButton
+            title ="Create Batch"
+          />
+        </View>
       </View>
       )
   }

@@ -1,5 +1,8 @@
 import React from 'react'
 import {View, Text, Button, TextInput} from 'react-native'
+import PrimaryButton from '../../../components/primary-button.js'
+import SecondaryButton from '../../../components/secondary-button.js'
+
 
 class LoginScreen extends React.Component {
 
@@ -21,9 +24,12 @@ class LoginScreen extends React.Component {
                 <TextInput 
                     placeholder="Enter password"
                 />                
-                <Button 
-                    title="Login"
+                <PrimaryButton
+                    title ="Sign In"
                     onPress={this.loginHandler}
+                />
+                <SecondaryButton
+                    title ="Create Account"
                 />
             </View>
         )

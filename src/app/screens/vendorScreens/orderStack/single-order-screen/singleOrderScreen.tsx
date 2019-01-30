@@ -2,6 +2,8 @@ import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
+import PrimaryButton from '../../../../components/primary-button.js'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
 
 interface SingleOrderScreenProps {
@@ -28,6 +30,13 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
         <Text>
           THIS IS THE SINGLE ORDER SCREEN.
         </Text>
+        <PrimaryButton
+            title ="Cancel Order"
+            onPress={this.loginHandler}
+          />
+          <SecondaryButton
+            title ="Fulfill Order"
+          />
       </View>
     
       )

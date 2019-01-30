@@ -3,7 +3,6 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
-import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
 
@@ -54,15 +53,9 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
   render() {
     return (
       <View style={styles.container} >
-        <PrimaryButton
-          title ="Primary Button"
-          
-        />
         <SecondaryButton
-          title ="Secondary Button"
+          title ="Create Batch"
         />
-     
-
         <Button
           onPress={this.vendorQuery}
           title="Find All Available Vendors (doesn't work)"
