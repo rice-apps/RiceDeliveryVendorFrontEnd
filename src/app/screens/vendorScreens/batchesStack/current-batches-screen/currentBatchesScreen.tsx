@@ -61,7 +61,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
         <SecondaryButton
           title ="Secondary Button"
         />
-       
+     
 
         <Button
           onPress={this.vendorQuery}
