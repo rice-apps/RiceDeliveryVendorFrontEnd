@@ -5,6 +5,7 @@ import { RootStore } from '../../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SecondaryButton from '../../../../components/secondary-button.js'
 
+const style = require("../../../style");
 
 import { 
   vendorQuery,
@@ -49,10 +50,10 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     console.log(orders)
   }
   
-
+  
   render() {
     return (
-      <View style={styles.container} >
+      <View style={style.defaultScreen} >
         <SecondaryButton
           title ="Create Batch"
         />
@@ -82,11 +83,3 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-  }
-})

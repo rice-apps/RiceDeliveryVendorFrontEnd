@@ -5,6 +5,7 @@ import { RootStore } from '../../../../stores/root-store';
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
+const style = require("../../../style");
 
 interface SingleOrderScreenProps {
     // injected props
@@ -24,7 +25,7 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={style.defaultScreen}>
         <Text>
           Order ID: {/*replace this with some number*/}#98{"\n"}
           Placed at: {/*replace this with some date and time*/}1/12/19 10:30PM{"\n"}
@@ -61,10 +62,3 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "stretch", 
-  }
-})

@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet, Modal, TouchableHighlight, Alert } from
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
 
+const style = require("../../../style");
 
 interface AddToBatchScreenProps {
     // injected props
@@ -24,7 +25,7 @@ export class AddToBatchScreen extends React.Component<AddToBatchScreenProps, any
   render() {
       
     return (
-        <View style={styles.container} >
+        <View style = {style.defaultScreen}>
           <Text>
             THIS IS THE Add to Batch Screen
           </Text>
@@ -33,12 +34,3 @@ export class AddToBatchScreen extends React.Component<AddToBatchScreenProps, any
     }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-    borderColor: "red", 
-    borderWidth: 1
-  }
-})

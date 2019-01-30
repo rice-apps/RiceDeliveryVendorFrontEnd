@@ -3,6 +3,7 @@ import { ScrollView, View, Text, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
+const style = require("../../../style");
 
 export class AccountScreen extends React.Component<any, any> {
 
@@ -41,7 +42,8 @@ export class AccountScreen extends React.Component<any, any> {
   render() {
 
     return (
-      <View style={{flex:1}}>
+      <View>
+
         <ScrollView>
           <FlatList
             keyExtractor={this.keyExtractor}
@@ -49,11 +51,16 @@ export class AccountScreen extends React.Component<any, any> {
             renderItem={this.renderItem}
           />
         </ScrollView>
+
         <View>
           <SecondaryButton
             title ="Logout"
           />
         </View>
+
+        <Text> "Hi tyring out new text" </Text>
+
+
       </View>
       
       

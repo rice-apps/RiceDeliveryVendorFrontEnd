@@ -5,6 +5,8 @@ import SecondaryButton from '../../../components/secondary-button.js'
 
 console.disableYellowBox = true;
 
+const style = require("../../style");
+
 class LoginScreen extends React.Component {
 
     loginHandler = () => {
@@ -13,7 +15,8 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+            <View style={style.defaultScreen}>
+
                 <Text style={{fontSize:30}}>
                     LoginScreen 32
                 </Text>
@@ -32,6 +35,7 @@ class LoginScreen extends React.Component {
                 <SecondaryButton
                     title ="Create Account"
                 />
+
             </View>
         )
     }
