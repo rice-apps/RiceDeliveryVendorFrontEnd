@@ -7,8 +7,6 @@ import {
  import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
-import { TransactionHistoryScreen } from '../../transaction-history-screen';
-import ApolloClient from "apollo-boost"
 
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
@@ -139,7 +137,6 @@ export class PendingOrdersScreen extends React.Component<any, any> {
         <View>
           <PrimaryButton
             title ="Add to Batch"
-            onPress={this.loginHandler}
           />
           <SecondaryButton
             title ="Create Batch"

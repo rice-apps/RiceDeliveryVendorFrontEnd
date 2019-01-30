@@ -3,6 +3,7 @@ import {View, Text, Button, TextInput} from 'react-native'
 import PrimaryButton from '../../../components/primary-button.js'
 import SecondaryButton from '../../../components/secondary-button.js'
 
+console.disableYellowBox = true;
 
 class LoginScreen extends React.Component {
 

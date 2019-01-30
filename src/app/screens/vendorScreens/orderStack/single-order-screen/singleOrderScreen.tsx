@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 import PrimaryButton from '../../../../components/primary-button.js'
@@ -32,11 +32,10 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
         </Text>
         <PrimaryButton
             title ="Cancel Order"
-            onPress={this.loginHandler}
           />
-          <SecondaryButton
-            title ="Fulfill Order"
-          />
+        <SecondaryButton
+          title ="Fulfill Order"
+        />
       </View>
     
       )
@@ -48,7 +47,5 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: "center", 
     alignItems: "center", 
-    borderColor: "red", 
-    borderWidth: 1
   }
 })
