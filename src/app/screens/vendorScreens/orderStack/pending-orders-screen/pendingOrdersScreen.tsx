@@ -55,6 +55,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
       this.mock_order,
       this.mock_order,
       this.mock_order,
+      this.mock_order,
+      this.mock_order,
     ]}
   }
 
