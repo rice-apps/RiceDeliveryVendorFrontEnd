@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { View, Text, FlatList} from 'react-native';
+import { ScrollView, View, Text, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
 
 export class AccountScreen extends React.Component<any, any> {
@@ -40,11 +41,23 @@ export class AccountScreen extends React.Component<any, any> {
   render() {
 
     return (
-      <FlatList
-        keyExtractor={this.keyExtractor}
-        data={this.list}
-        renderItem={this.renderItem}
-      />
+      <View style={{flex:1}}>
+        <ScrollView>
+          <FlatList
+            keyExtractor={this.keyExtractor}
+            data={this.list}
+            renderItem={this.renderItem}
+          />
+        </ScrollView>
+        <View>
+          <SecondaryButton
+            title ="Logout"
+          />
+        </View>
+      </View>
+      
+      
+      
     )
   }
 }

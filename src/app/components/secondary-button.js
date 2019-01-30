@@ -14,7 +14,7 @@ export default class SecondaryButton extends React.Component {
                     borderRadius: 5,
                     margin: 5
                 }}
-                style={{margin: 2.5}}
+                style={{margin: 2}}
                 onPress = {onPress}
             />
         )

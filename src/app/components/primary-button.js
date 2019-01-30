@@ -13,7 +13,7 @@ export default class PrimaryButton extends React.Component {
                     borderRadius: 5,
                     margin: 5
                 }}
-                style={{margin: 10, padding: 10}}
+                style={{margin: 2}}
                 onPress = {onPress}
             />
         )

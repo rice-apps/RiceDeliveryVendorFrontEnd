@@ -24,12 +24,31 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
 
   render() {
     return (
-      <View style={styles.container} >
-
-    
+      <View style={styles.container}>
         <Text>
-          THIS IS THE SINGLE ORDER SCREEN.
+          Order ID: {/*replace this with some number*/}#98{"\n"}
+          Placed at: {/*replace this with some date and time*/}1/12/19 10:30PM{"\n"}
         </Text>
+         {/*This view below creates the horizontal line that separates things*/}
+        <View style={{borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth, width:"80%"}}/>
+        <Text>
+          Justin{/*replace this with someone's name*/}'s Order{"\n"}
+          Location: {/*replace this with some location*/} Martel{"\n"}
+          Status: {/*we need a custom status text component here*/} pending
+        </Text>
+        <View style={{borderBottomColor: 'gray', borderBottomWidth: StyleSheet.hairlineWidth, width:"80%"}}/>
+        <Text>
+          Order Details:{/*replace this with someone's name*/}{"\n"}
+        </Text>
+        <View style={{backgroundColor: "lightgray", width: "100%"}}>
+          <Text>
+            {/*replace this with acutal order info*/}
+            1x Pizza, pepperoni, half{"\n"}
+            1x Pizza, pepperoni, half{"\n"}
+            1x Pizza, pepperoni, half{"\n"}
+            1x Pizza, pepperoni, half{"\n"}
+          </Text>
+        </View>
         <PrimaryButton
             title ="Cancel Order"
           />
@@ -46,6 +65,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     justifyContent: "center", 
-    alignItems: "center", 
+    alignItems: "stretch", 
   }
 })

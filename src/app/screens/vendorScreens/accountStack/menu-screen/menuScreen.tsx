@@ -20,7 +20,8 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
       menu: "haven't fetched yet"
     }
   }
-
+  
+  // replace this with real menu from stripe
   render() {
     return (
       <View style={styles.container} >
@@ -31,7 +32,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
           title ="Launch Stripe"
         />
         <Text>
-          Current Menu
+        Current Menu:{"\n"}   Pizza{"\n"}   Banh Mi{"\n"}   Snacks{"\n"}   Drinks
         </Text>
       </View>
     
@@ -44,5 +45,5 @@ const styles = StyleSheet.create({
     flex: 1, 
     justifyContent: "flex-start", 
     alignItems: "center", 
-  }
+  },
 })
