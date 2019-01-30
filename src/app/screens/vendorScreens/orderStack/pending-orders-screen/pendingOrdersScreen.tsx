@@ -1,10 +1,8 @@
 
 import * as React from 'react'
-import { View, ScrollView, Text, FlatList, StyleSheet, Button, ViewStyle, TextStyle, SafeAreaView} from 'react-native';
-import { 
-  GET_ALL_ORDERS
- } from '../../../../../graphql/queries/vendorQueries'
- import { client } from '../../../../../app/main'
+import { View, ScrollView, StyleSheet, Button, TextStyle} from 'react-native';
+import { GET_ALL_ORDERS } from '../../../../../graphql/queries/vendorQueries'
+import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
 import { TransactionHistoryScreen } from '../../transaction-history-screen';
@@ -13,6 +11,9 @@ import ApolloClient from "apollo-boost"
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
+
+import { mock_order } from '../../../../components/temporary-mock-order'
+// Using one mock order from temp file
 
 // query to get a menu item
  const GET_MENU_ITEM = gql`
@@ -23,6 +24,7 @@ import SecondaryButton from '../../../../components/secondary-button.js'
     }
   }
 `
+
 // Function to send update an order status
 const UPDATE_ORDER_STATUS = gql`
   mutation updateOrderStatus($orderId: String!) {
@@ -33,65 +35,29 @@ const UPDATE_ORDER_STATUS = gql`
     }
   }
 ` 
+// Hide yellow warnings
+console.disableYellowBox = true;
 
 export class PendingOrdersScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props); 
-
-    this.state={
+    this.state = {
       orders: [],
       firstMenuItemInOrder: [],
       fake: []
     }
-
-    // Mock orders state
+    // Populate orders with all mock orders
+    // Not using functions getOrders() or getMenuItems()
     this.state = {orders:[
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
-      this.mock_order,
+      mock_order,
+      mock_order,
+      mock_order,
+      mock_order,
+      mock_order,
     ]}
   }
 
-  mock_order = {
-    id : 696969,
-    user : {
-      firstName : "Jonathan",
-      lastName : "Cai",
-    },
-    status : {
-      pending : "yep",
-      onTheWay: "nope", 
-      fulfilled: "nah", 
-      unfulfilled: false,
-    }, 
-    location : "Jones",
-    items : [
-      { item : {
-        "itemName" : "fuck",
-        },
-        quantity : 2,
-      },
-      { item : {
-        "itemName" : "shit",
-        },
-        quantity : 4,
-      },
-      { item : {
-        "itemName" : "goddamn",
-        },
-        quantity : 1,
-      },
-    ],
-  }
-  
   /**
    * Function to get all orders associated with a particular vendor
    */
@@ -125,18 +91,19 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
-    console.log(this.state.orders)
     return (
-      <View style={{flex:1}}>
+      <View style={styles.container}>
         <ScrollView>
-          <Button
+          {/* <Button
             onPress={() => this.props.navigation.navigate('SingleOrder')}
             // onPress={this.getOrders}
             title="Order 1"
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
-            />   
+            />    */}
+
         <OrderList orders={this.state.orders}/>
+        
         </ScrollView>
         <View>
           <PrimaryButton
@@ -164,44 +131,24 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 }
 
 // styles that define how the text is displayed
-// const styles = StyleSheet.create({
-//   container: {
-//    flex: 1,
-//    justifyContent: "center", 
-//    alignItems: "center"
-//   },
-//   item: {
-//     padding: 10,
-//     fontSize: 18,
-//     height: 44,
-//   },
-//   small: {
-//     paddingLeft: 10,
-//     fontSize: 14,
-//     height: 24,
-//   }, 
-//   flatList: {
-//     width: "100%"
-//   }
-// })
-
-// OLD RETURN VALUE IN RENDER FUNC:
-      // <View style={styles.container}>
-      //   <FlatList
-      //   style={styles.flatList}
-      //   data= {this.state.orders}
-      //   renderItem={({item}) => 
-      //   <View style={{flexDirection: 'row'}}>
-      //       {/* <View>
-      //         <Text style={styles.item}>{item.user.firstName + " " + item.user.lastName +"'s Order"}</Text>
-      //         <Text style={styles.small}>{"On The Way Status: " + item.status.pending}</Text>
-      //       </View>
-      //       <Button
-      //         onPress= {() => this.changeStatusToOnTheWay(item._id)}
-      //         title="On The Way!"
-      //       /> */}
-      //   </View>
-      // }
-      //   />
-      // </View>
-      // )
+const styles = StyleSheet.create({
+  container: {
+    padding:10,
+   flex: 1,
+  //  justifyContent: "center", 
+  //  alignItems: "center"
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+  small: {
+    paddingLeft: 10,
+    fontSize: 14,
+    height: 24,
+  }, 
+  flatList: {
+    width: "100%"
+  }
+})

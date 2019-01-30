@@ -1,65 +1,104 @@
 import * as React from 'react'
-import { Text, FlatList, StyleSheet, Button, ViewStyle, TextStyle, SafeAreaView} from 'react-native';
-import { ListItem } from 'react-native-elements';
-// import { Order } from "../stores/order-store"
-//test if i can push
-// Not using above Order model, but using below
-// Mock interface for orders
-export interface Order {
-    id : number
-    user : {
-        firstName : string,
-        lastName : string,
-    },
-    status : {
-        pending : string,
-        onTheWay: string, 
-        fulfilled: string, 
-        unfulfilled: boolean,
-    }, 
-    location : string,
-    items : [
-        OrderItem
-    ],
-}
+import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+// import { ListItem } from 'react-native-elements';
+import { color, typography } from '../../theme';
+import { withNavigation } from 'react-navigation';
 
-export interface OrderItem {
-    item : {
-        itemName : string,
-    },
-    quantity : number
-}
+import Order from './temporary-mock-order';
+// import { Order } from "../stores/order-store"
+// Using temporary Order object instead of order-store Order object
 
 interface OrderListItemProps {
     order : Order
 }
 
-export class OrderListItem extends React.Component<OrderListItemProps, any> {
-    
+class OrderListItem extends React.Component<OrderListItemProps, any> {
     constructor(props) {
-        super(props)
+        super(props);
+        this.onPress = this.onPress.bind(this);
+    }
+
+    onPress() {
+        this.props.navigation.navigate('SingleOrder'); 
     }
     
     render() {
-        var { firstName, lastName } = this.props.order.user
-        var { location } = this.props.order
-        // Reduce all item names and quantities down to single string
+        var { firstName, lastName } = this.props.order.user;
+        var { location } = this.props.order;
+        var { pending, onTheWay, fulfilled } = this.props.order.status;
+
+        // Fold all item names and quantities down to single string
+        // actually, don't need to display order items, but still keeping this line
         var items = this.props.order.items.reduce((accu, curr) => 
-            accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "")
-        
+            accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
+
         return (
-                <ListItem
-                    key={this.props.order.id}
-                    title={firstName + ' ' + lastName}
-                    rightTitle={location}
-                    subtitle={items} 
-                    containerStyle={styles.itemContainer}
-                />
+                <View style={styles.row}>
+                    <View style={styles.row_cell}>
+                        <Text style={styles.row_location}> {location} </Text>
+                        <Text style={styles.row_name}> {firstName + ' ' + lastName}</Text>
+                        <Text style={styles.row_time}> {pending}</Text>
+                    </View>
+                    <TouchableHighlight
+                        // style={styles.button}
+                        onPress={this.onPress}
+                        >
+                        <Text> Touch Here </Text>
+                    </TouchableHighlight>
+                </View>
         )
     }
 }
+
+// Because this component is not a screen, it is not automatically passed the "navigation" prop,
+// thus, we have to use this wrapper "withNavigation"
+export default withNavigation(OrderListItem);
+
 const styles = StyleSheet.create({
-    itemContainer: {
-        // height: "10%",
-    },
+    row: {
+        elevation: 1,
+        borderRadius: 2,
+        backgroundColor: color.background,
+        flex: 1,
+        flexDirection: 'row',  // main axis
+        justifyContent: 'flex-start', // main axis
+        alignItems: 'center', // cross axis
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 18,
+        paddingRight: 16,
+        marginLeft: 14,
+        marginRight: 14,
+        marginTop: 7,
+        marginBottom: 7,
+      },
+      row_cell: {
+        flex: 1,
+        flexDirection: 'column',
+      },
+      row_location: {
+        color: color.storybookTextColor,
+        textAlignVertical: 'top',
+        includeFontPadding: false,
+        flex: 0,
+        fontSize: 40,
+        fontFamily: typography.primary,
+      },
+      row_name: {
+        color: color.storybookTextColor,
+        // textAlignVertical: 'bottom',
+        includeFontPadding: false,
+        flex: 0,
+        fontSize: 20,
+        fontFamily: typography.primary,
+      },
+      row_time: {
+        color: color.storybookTextColor,
+        textAlignVertical: 'bottom',
+        // textAlign:'center',
+        includeFontPadding: false,
+        flex: 0,
+        fontSize: 10,
+        fontFamily: typography.primary,
+      },
 })

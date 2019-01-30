@@ -1,16 +1,16 @@
 import * as React from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { Order , OrderListItem} from "./order-list-item"
-// import { Order } from "../stores/order-store"
+import { View, FlatList, StyleSheet } from 'react-native';
+import OrderListItem from './order-list-item';
 
-// Again, not using Order model from order store, using mock interface
+import Order from './temporary-mock-order'
+// import { Order } from "../stores/order-store"
+// Using temporary Order object instead of order-store Order object
   
 interface OrderListProps {
     orders : [Order]
 }
 
 export class OrderList extends React.Component<OrderListProps, any> {
-    
     constructor(props) {
         super(props)
     }
@@ -21,13 +21,13 @@ export class OrderList extends React.Component<OrderListProps, any> {
                 <FlatList
                 style={styles.flatList}
                 data= {this.props.orders}
+                keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({item}) => 
-                    < OrderListItem order={item}></OrderListItem>
+                    <OrderListItem order={item}></OrderListItem>
                 }
               />
             </View>
             )
-      
     }
 }
 const styles = StyleSheet.create({
