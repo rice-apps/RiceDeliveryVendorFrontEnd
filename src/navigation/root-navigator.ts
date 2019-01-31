@@ -8,7 +8,6 @@ import { CurrentBatchesScreen } from "../app/screens/vendorScreens/batchesStack/
 //OrderStack
 import { PendingOrdersScreen } from "../app/screens/vendorScreens/orderStack/pending-orders-screen"
 import { SingleOrderScreen } from "../app/screens/vendorScreens/orderStack/single-order-screen"
-import { AddToBatchScreen } from "../app/screens/vendorScreens/orderStack/add-to-batch-screen/"
 
 //AccountStack
 import { AccountScreen } from "../app/screens/vendorScreens/accountStack/account-setting-screen"
@@ -30,14 +29,8 @@ const OrdersStackNavigator = createStackNavigator({
       navigationOptions: {
         title: 'Single Order Screen'
         }
-      },
-    AddToBatch: { 
-      screen: AddToBatchScreen,
-      navigationOptions: {
-        title: 'Modal'
-        }
-    }
-},
+      }
+}
   
 )
 

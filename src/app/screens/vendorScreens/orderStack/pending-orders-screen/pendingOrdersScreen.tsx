@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, Button, TextStyle} from 'react-native';
+import { View, ScrollView, StyleSheet, Button, TextStyle, Alert } from 'react-native';
 import { GET_ALL_ORDERS } from '../../../../../graphql/queries/vendorQueries'
 import { client } from '../../../../../app/main'
 
@@ -91,7 +91,24 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   addToBatchHandler = () => {
     this.props.navigation.navigate("AddToBatch")
   }
-  
+
+  addToBatch = () =>{
+    Alert.alert(
+      'Add all the selected to batch?',
+      '',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+
+      ],
+
+      {cancelable: true},
+    );
+ }
+ 
   render() {
     return (
       <View style={css.screen.paddedScreen}>
@@ -104,7 +121,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
         <View>
           <PrimaryButton
             title ="Add to Batch"
-            onPress={this.addToBatchHandler}
+            onPress={this.addToBatch}
           />
           <SecondaryButton
             title ="Create Batch"
