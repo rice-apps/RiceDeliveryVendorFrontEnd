@@ -84,19 +84,21 @@ export const TabNavigator = createBottomTabNavigator({
     screen: OrdersStackNavigator,
     navigationOptions: {
       tabBarIcon: pendingOrdersIcon, 
+      title: "Pending Orders"
     }
   }, 
   BatchesStack: {
     screen: batchStackNavigator,
     navigationOptions: {
       tabBarIcon: currentBatchesIcon, 
-      title: 'Current Batch'
+      title: 'Current Batches'
     }
   }, 
   AccountStack: {
     screen: accountStackNavigator,
     navigationOptions: {
-      tabBarIcon: accountIcon
+      tabBarIcon: accountIcon,
+      title: "Account"
     }
   },
 },
