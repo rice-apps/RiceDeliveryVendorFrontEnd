@@ -34,7 +34,7 @@ export class AccountScreen extends React.Component<any, any> {
 
   renderItem = ({ item }) => (
     <ListItem
-      titleStyle={styles.headerText}
+      titleStyle={css.text.bodyText}
       title={item.name}
       subtitle={item.subtitle}
       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
@@ -60,7 +60,6 @@ export class AccountScreen extends React.Component<any, any> {
           <SecondaryButton
             title ="Logout"
           />
-          
         </View>
 
       </View>
@@ -68,22 +67,3 @@ export class AccountScreen extends React.Component<any, any> {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   justifyContent: "center", 
-   alignItems: "center"
-  },
-  headerText: {
-    paddingLeft : 0,
-    textAlignVertical: 'top',
-    includeFontPadding: false,
-    flex: 0,
-    fontSize: 20,
-    // fontFamily: typography.primary,
-  },
-  logout_button : {
-      top: 170,
-      bottom : 10,
-  },
-})

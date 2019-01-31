@@ -35,8 +35,8 @@ export const text = StyleSheet.create({
         fontSize: 30,
         fontFamily: FONT_FAMILY,
         color: GRAY,
-        paddingBottom: 100
-      },
+        paddingBottom: 180
+    },
     regularText: {
         fontSize: 15,
         fontFamily: FONT_FAMILY,
@@ -46,23 +46,20 @@ export const text = StyleSheet.create({
         color: color.storybookTextColor,
         fontWeight: '800',
         fontSize: 40,
-        paddingTop: 10,
       },
-      bodyText: {
-        paddingTop: 10,
-        paddingBottom: 10,
+    bodyText: {
         fontSize: 20,
         color: color.storybookTextColor,
-      },
-      bigBodyText: {
-        paddingTop: 10,
-        fontSize: 30,
+        textAlign: "left"
+    },
+    bigBodyText: {
+        fontSize: 26,
         color: color.storybookTextColor,
-      },
-      smallText : {
+        textAlign: "left"
+    },
+    smallText : {
         fontSize : 15,
-        paddingBottom : 10,
-      },
+    },
     textInput: {
         margin: 10,
         paddingLeft: 15,
@@ -85,11 +82,30 @@ export const flatlist = StyleSheet.create({
       }
 });
 
+//TOUCHABLEOPACITY
+export const touchableopacity = StyleSheet.create({
+    timescroller: {
+        height: 40, 
+        width: 300, 
+        padding: 4, 
+        borderColor: 'gray', 
+        borderWidth: 0
+    }
+
+});
+
+//DATEPICKERIOS
+export const datepickerios = StyleSheet.create({
+    timescroller : { 
+        height: 160, 
+        alignContent: "center"
+    }
+});
+
 
 //IMAGE
 export const image = StyleSheet.create({
     logo : {
-
         width: 45, 
         height: 45
     }

@@ -43,7 +43,6 @@ export const orderList = StyleSheet.create({
     
 });
 
-// We need to centralize these to be reusible/importable
 export const orderListItem = StyleSheet.create({
   row: {
     elevation: 1,
