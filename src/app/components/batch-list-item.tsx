@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+// import { ListItem } from 'react-native-elements';
 import { color, typography } from '../../theme';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,11 +9,11 @@ import Order from './temporary-mock-order';
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 
-interface OrderListItemProps {
+interface BatchListItemProps {
     order : Order
 }
 
-class OrderListItem extends React.Component<OrderListItemProps, any> {
+class BatchListItem extends React.Component<BatchListItemProps, any> {
     constructor(props) {
         super(props);
         this.singleOrderPress = this.singleOrderPress.bind(this);
@@ -31,14 +32,13 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
     }
     
     render() {
-        let { firstName, lastName } = this.props.order.user;
-        let { location } = this.props.order;
-        let { pending, onTheWay, fulfilled } = this.props.order.status;
+        var { firstName, lastName } = this.props.order.user;
+        var { location } = this.props.order;
+        var { pending, onTheWay, fulfilled } = this.props.order.status;
 
         // Fold all item names and quantities down to single string
-        // actually, don't need to display order items, but still keeping this line 
-        // cus one-liners are dope.
-        let items = this.props.order.items.reduce((accu, curr) => 
+        // actually, don't need to display order items, but still keeping this line
+        var items = this.props.order.items.reduce((accu, curr) => 
             accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
 
         return (
@@ -51,7 +51,7 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
                     </View>
 
                     <TouchableHighlight onPress={this.addOrderPress}>
-                        <Icon name="add" size={50} color="black" />
+                        <Icon name="chevron-right" size={50} color="black" />
                     </TouchableHighlight>
                     
                 </View>
@@ -60,9 +60,9 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
     }
 }
 
-// Because this component is not a screen, it is not automatically passed the 
-// "navigation" prop, thus, we have to use this wrapper "withNavigation"
-export default withNavigation(OrderListItem);
+// Because this component is not a screen, it is not automatically passed the "navigation" prop,
+// thus, we have to use this wrapper "withNavigation"
+export default withNavigation(BatchListItem);
 
 
 // We need to centralize these to be reusible/importable

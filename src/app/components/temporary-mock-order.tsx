@@ -100,6 +100,22 @@ export var mock_orders = {
     order3 : order3,
 }
 
+export var mock_batches = {
+  batch1 : {
+    batchNumber : 1,
+    orders : [
+      order1,
+      order2,
+    ]
+  },
+  batch2 : {
+    batchNumber : 2,
+    orders : [
+      order3,
+    ]
+  },
+}
+
 export default interface Order {
     id : number
     user : {
@@ -113,14 +129,17 @@ export default interface Order {
         unfulfilled: boolean,
     }, 
     location : string,
-    items : [
-        OrderItem
-    ],
+    items : OrderItem[],
 }
  
 interface OrderItem {
     item : {
         itemName : string,
     },
-    quantity : number
+    quantity : number,
+}
+
+export interface Batch {
+  batchNumber : number,
+  orders : Order[],
 }

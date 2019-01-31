@@ -1,20 +1,22 @@
 import * as React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
-import SecondaryButton from '../../../../components/secondary-button.js'
+import SecondaryButton from '../../../../components/secondary-button.js';
+import { Batch, mock_batches } from '../../../../components/temporary-mock-order';
+// Using mock interfaces from temp file
 
 const style = require("../../../style");
 
-import { 
-  vendorQuery,
-  GET_ALL_ORDERS
- } from '../../../../../graphql/queries/vendorQueries'
+import { vendorQuery, GET_ALL_ORDERS } from '../../../../../graphql/queries/vendorQueries'
 import { client } from '../../../../main'
+import { BatchList } from '../../../../components/batch-list';
+
 interface CurrentBatchesScreenProps {
   // injected props
   rootStore?: RootStore;
+  batches : Batch[],
 }
 
 @inject("rootStore")
@@ -24,7 +26,8 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
   constructor(props) {
     super(props) 
     this.state = {
-      vendor: "haven't fetched yet"
+      vendor: "haven't fetched yet",
+      batches : mock_batches,
     }
   }
 
@@ -50,36 +53,47 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     console.log(orders)
   }
   
-  
   render() {
     return (
       <View style={style.defaultScreen} >
-        <SecondaryButton
-          title ="Create Batch"
-        />
-        <Button
+        <SecondaryButton title="Create Batch"/>
+
+        {/* <Button
           onPress={this.vendorQuery}
           title="Find All Available Vendors (doesn't work)"
           color="#841584"
-          />
-        <Text>
+          /> */}
+        {/* <Text>
           {JSON.stringify(this.props.rootStore.vendors)}
-        </Text>
+        </Text> */}
 
-        <Button
-          
-          onPress={() => this.props.navigation.navigate('OrderStack')}
-          // onPress={this.getOrders}
-          title="Find All Orders"
-          color="#841584"
-          />
+        <View style={styles.container}>
+          <FlatList
+                // style={styles.flatList}
+                data={[
+                  mock_batches.batch1,
+                  mock_batches.batch2,
+                ]}
+                keyExtractor={(item, index) => item.batchNumber.toString()}
+                renderItem={({item}) => 
+                    <BatchList batch={item}></BatchList>
+                }
+              />
+          {/* <BatchList batch={mock_batches.batch1}/> */}
+        </View>
 
-
-        <Text>
-          Existing orders
-        </Text>
       </View>
     
       )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding:10, 
+    flex: 1,
+    width : "100%",
+    //  justifyContent: "center", 
+    //  alignItems: "center"
+  },
+});

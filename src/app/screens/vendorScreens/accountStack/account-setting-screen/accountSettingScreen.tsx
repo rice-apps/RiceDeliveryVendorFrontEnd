@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { ScrollView, View, Text, FlatList} from 'react-native';
+import { ScrollView, View, StyleSheet, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../../components/secondary-button.js'
-
-const style = require("../../../style");
+import { color } from '../../../../../theme'
 
 export class AccountScreen extends React.Component<any, any> {
 
@@ -34,8 +33,9 @@ export class AccountScreen extends React.Component<any, any> {
 
   renderItem = ({ item }) => (
     <ListItem
+      titleStyle={styles.headerText}
       title={item.name}
-      subtitle={item.subtitle}s
+      subtitle={item.subtitle}
       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
     />
   )
@@ -44,8 +44,6 @@ export class AccountScreen extends React.Component<any, any> {
 
     return (
       <View>
-
-     
         <ScrollView>
           <FlatList
             keyExtractor={this.keyExtractor}
@@ -54,22 +52,32 @@ export class AccountScreen extends React.Component<any, any> {
           />
         </ScrollView>
 
-
-        <View style = { {
-          top: 170,
-          bottom : 10
-        }} >
-
-          <SecondaryButton
-            title ="Logout"
-          />
-          
+        <View style = {styles.logout_button} >
+          <SecondaryButton title ="Logout"/>
         </View>
 
       </View>
-     
-      
-      
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   justifyContent: "center", 
+   alignItems: "center"
+  },
+  headerText: {
+    paddingLeft : 0,
+    color: color.storybookTextColor,
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 20,
+    // fontFamily: typography.primary,
+  },
+  logout_button : {
+      top: 170,
+      bottom : 10,
+  },
+})
