@@ -109,6 +109,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
             title ="Create Batch"
           />
         </View>
+
       </View>
       )
   }

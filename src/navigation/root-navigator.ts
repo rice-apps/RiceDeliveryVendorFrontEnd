@@ -30,15 +30,15 @@ const OrdersStackNavigator = createStackNavigator({
       navigationOptions: {
         title: 'Single Order Screen'
         }
-      }
-      ,
+      },
     AddToBatch: { 
       screen: AddToBatchScreen,
       navigationOptions: {
-        title: 'Add to Batch'
+        title: 'Modal'
         }
     }
-}
+},
+  
 )
 
 const batchStackNavigator = createStackNavigator({
@@ -110,13 +110,14 @@ export const TabNavigator = createBottomTabNavigator({
   {initialRouteName: 'BatchesStack'}
 )
 
+
 export const RootNavigator = createStackNavigator({
     Login: {
       screen: LoginScreen
     }, 
     Tabs: {
       screen: TabNavigator, 
-    },
+    }
   }, 
   {
     mode: 'modal', 
