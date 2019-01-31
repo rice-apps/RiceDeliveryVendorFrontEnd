@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ScrollView, View, Text, FlatList} from 'react-native';
+import { ScrollView, View, StyleSheet, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../../components/secondary-button.js'
 import * as css from "../../../style";
@@ -34,8 +34,9 @@ export class AccountScreen extends React.Component<any, any> {
 
   renderItem = ({ item }) => (
     <ListItem
+      titleStyle={styles.headerText}
       title={item.name}
-      subtitle={item.subtitle}s
+      subtitle={item.subtitle}
       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
     />
   )
@@ -63,9 +64,26 @@ export class AccountScreen extends React.Component<any, any> {
         </View>
 
       </View>
-     
-      
-      
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   justifyContent: "center", 
+   alignItems: "center"
+  },
+  headerText: {
+    paddingLeft : 0,
+    textAlignVertical: 'top',
+    includeFontPadding: false,
+    flex: 0,
+    fontSize: 20,
+    // fontFamily: typography.primary,
+  },
+  logout_button : {
+      top: 170,
+      bottom : 10,
+  },
+})

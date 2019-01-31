@@ -77,8 +77,14 @@ export const flatlist = StyleSheet.create({
         fontSize: 15,
         paddingTop : 5,
         paddingBottom : 5,
+      },
+      container: {
+        padding:10, 
+        flex: 1,
+        width : "100%",
       }
 });
+
 
 //IMAGE
 export const image = StyleSheet.create({

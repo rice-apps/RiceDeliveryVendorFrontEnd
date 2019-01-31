@@ -91,6 +91,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   addToBatchHandler = () => {
     this.props.navigation.navigate("AddToBatch")
   }
+  
   render() {
     return (
       <View style={css.screen.paddedScreen}>

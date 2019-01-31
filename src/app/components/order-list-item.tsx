@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { color, typography } from '../../theme';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Order from './temporary-mock-order';
@@ -30,13 +31,14 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
     }
     
     render() {
-        var { firstName, lastName } = this.props.order.user;
-        var { location } = this.props.order;
-        var { pending, onTheWay, fulfilled } = this.props.order.status;
+        let { firstName, lastName } = this.props.order.user;
+        let { location } = this.props.order;
+        let { pending, onTheWay, fulfilled } = this.props.order.status;
 
         // Fold all item names and quantities down to single string
-        // actually, don't need to display order items, but still keeping this line
-        var items = this.props.order.items.reduce((accu, curr) => 
+        // actually, don't need to display order items, but still keeping this line 
+        // cus one-liners are dope.
+        let items = this.props.order.items.reduce((accu, curr) => 
             accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
 
         return (
@@ -58,8 +60,8 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
     }
 }
 
-// Because this component is not a screen, it is not automatically passed the "navigation" prop,
-// thus, we have to use this wrapper "withNavigation"
+// Because this component is not a screen, it is not automatically passed the 
+// "navigation" prop, thus, we have to use this wrapper "withNavigation"
 export default withNavigation(OrderListItem);
 
 
