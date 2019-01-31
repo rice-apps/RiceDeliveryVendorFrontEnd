@@ -39,11 +39,13 @@ export class AccountScreen extends React.Component<any, any> {
       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
     />
   )
+
   render() {
 
     return (
       <View>
 
+     
         <ScrollView>
           <FlatList
             keyExtractor={this.keyExtractor}
@@ -52,17 +54,20 @@ export class AccountScreen extends React.Component<any, any> {
           />
         </ScrollView>
 
-        <View>
+
+        <View style = { {
+          top: 170,
+          bottom : 10
+        }} >
+
           <SecondaryButton
             title ="Logout"
           />
+          
         </View>
 
-        <Text> "Hi tyring out new text" </Text>
-
-
       </View>
-      
+     
       
       
     )
