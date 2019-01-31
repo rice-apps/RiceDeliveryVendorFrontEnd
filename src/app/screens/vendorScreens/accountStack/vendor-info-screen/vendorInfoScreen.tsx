@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../stores/root-store';
-
+import * as css from "../../../style"
 
 interface VendorInfoScreenProps {
     // injected props
@@ -22,7 +22,7 @@ export class VendorInfoScreen extends React.Component<VendorInfoScreenProps, any
 
   render() {
     return (
-      <View style={styles.container} >
+      <View style={css.screen.defaultScreen} >
         <Text>
           THIS IS THE VENDOR INFO SCREEN.
         </Text>
@@ -32,10 +32,4 @@ export class VendorInfoScreen extends React.Component<VendorInfoScreenProps, any
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-  }
-})
+

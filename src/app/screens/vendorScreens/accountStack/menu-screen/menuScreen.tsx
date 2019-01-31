@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RootStore } from "../../../../stores/root-store";
 import PrimaryButton from '../../../../components/primary-button.js'
 
-const style = require("../../../style");
+import * as css from "../../../style"
 
 interface MenuScreenProps {
     // injected props
@@ -25,7 +25,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
   // replace this with real menu from stripe
   render() {
     return (
-      <View style={style.defaultScreen} >
+      <View style={css.screen.paddedScreen} >
         <Text>
           Make changes to your menu on your Stripe dashboard
         </Text>

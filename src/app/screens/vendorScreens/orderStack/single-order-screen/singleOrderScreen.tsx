@@ -6,6 +6,7 @@ import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 import { color } from '../../../../../theme';
 import { Divider } from 'react-native-elements';
+import * as css from "../../../style"
 
 const style = require("../../../style");
 
@@ -41,35 +42,35 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
         accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
 
     return (
-      <View style={styles.container}>
+      <View style={css.screen.defaultScreen}>
     
       <View style={styles.display}>
-        <Text style={styles.headerText}>
+        <Text style={css.text.headerText}>
           Order ID: #{id}
         </Text>
-        <Text style={styles.smallText}>
+        <Text style={css.text.smallText}>
           {'Placed at : ' + pending}
         </Text>
 
-        <Divider style={styles.divider} />
+        <Divider style={css.screen.divider} />
 
-        <Text style={styles.bodyText}>
+        <Text style={css.text.bodyText}>
           {firstName + ' ' + lastName + '\'s order'}
         </Text>
-        <Text style={styles.bigBodyText}>
+        <Text style={css.text.bodyText}>
           {'Location : ' + location}
         </Text>
-        <Text style={styles.bodyText}>
+        <Text style={css.text.bodyText}>
           {'Status : ' + 'pending'}
         </Text>
 
-        <Divider style={styles.divider} />
+        <Divider style={css.screen.divider} />
 
-        <Text style={styles.bigBodyText}>
+        <Text style={css.text.bigBodyText}>
           Order Details
         </Text>
 
-        <View style={styles.itemView}>
+        <View>
           <FlatList
                 // style={}
                 data= {order.items}
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     fontSize : 15,
     paddingBottom : 10,
   },
-  itemView : {
+  itemView : { 
     // marginTop : 10,
     // backgroundColor : color.background,
   }

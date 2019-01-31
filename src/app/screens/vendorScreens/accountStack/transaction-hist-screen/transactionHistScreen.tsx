@@ -5,7 +5,7 @@ import { RootStore } from '../../../../stores/root-store';
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
-const style = require("../../../style");
+import * as css from "../../../style"
 
 interface TransactionHistScreenProps {
     // injected props
@@ -25,7 +25,7 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
 
   render() {
     return (
-      <View style={style.defaultScreen} >
+      <View style={css.screen.defaultScreen} >
         <ScrollView>
           <Text>
             View all previous orders!

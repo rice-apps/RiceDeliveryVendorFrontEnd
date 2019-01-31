@@ -1,12 +1,10 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
-// import { ListItem } from 'react-native-elements';
-import { color, typography } from '../../theme';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import Order from './temporary-mock-order';
-// import { Order } from "../stores/order-store"
+import * as css from "./style";
+
 // Using temporary Order object instead of order-store Order object
 
 interface OrderListItemProps {
@@ -43,11 +41,11 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
 
         return (
             <TouchableHighlight onPress={this.singleOrderPress}>
-                <View style={styles.row}>
-                    <View style={styles.row_cell}>
-                        <Text style={styles.row_location}> {location} </Text>
-                        <Text style={styles.row_name}> {firstName + ' ' + lastName}</Text>
-                        <Text style={styles.row_time}> {pending}</Text>
+                <View style={css.orderListItem.row}>
+                    <View style={css.orderListItem.row_cell}>
+                        <Text style={css.orderListItem.row_location}> {location} </Text>
+                        <Text style={css.orderListItem.row_name}> {firstName + ' ' + lastName}</Text>
+                        <Text style={css.orderListItem.row_time}> {pending}</Text>
                     </View>
 
                     <TouchableHighlight onPress={this.addOrderPress}>
@@ -65,55 +63,3 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
 export default withNavigation(OrderListItem);
 
 
-// We need to centralize these to be reusible/importable
-const styles = StyleSheet.create({
-    row: {
-        elevation: 1,
-        borderRadius: 2,
-        backgroundColor: color.background,
-        flex: 1,
-        flexDirection: 'row',  // main axis
-        justifyContent: 'flex-start', // main axis
-        alignItems: 'center', // cross axis
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 14,
-        paddingRight: 16,
-        marginLeft: 6,
-        marginRight: 6,
-        marginTop: 5,
-        marginBottom: 5,
-      },
-      row_cell: {
-        flex: 1,
-        flexDirection: 'column',
-      },
-      row_location: {
-        paddingLeft : 0,
-        color: color.storybookTextColor,
-        textAlignVertical: 'top',
-        includeFontPadding: false,
-        flex: 0,
-        fontSize: 40,
-        // fontFamily: typography.primary,
-      },
-      row_name: {
-        paddingLeft : 0,
-        color: color.storybookTextColor,
-        // textAlignVertical: 'bottom',
-        includeFontPadding: false,
-        flex: 0,
-        fontSize: 20,
-        // fontFamily: typography.primary,
-      },
-      row_time: {
-        paddingLeft : 0,
-        color: color.storybookTextColor,
-        textAlignVertical: 'bottom',
-        // textAlign:'center',
-        includeFontPadding: false,
-        flex: 0,
-        fontSize: 10,
-        // fontFamily: typography.primary,
-      },
-})

@@ -4,8 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 import Moment from 'moment';
 import PrimaryButton from '../../../../components/primary-button.js'
-
-const style = require("../../../style");
+import * as css from "../../../style"
 
 interface HoursOperationScreenProps {
     // injected props
@@ -49,7 +48,7 @@ export class HoursOperationScreen extends React.Component<HoursOperationScreenPr
         mode="time"/> : <View />
     
     return (
-    <View >
+    <View style = {css.screen.paddedScreen}>
         <Text>
           We are currently open from
         </Text>

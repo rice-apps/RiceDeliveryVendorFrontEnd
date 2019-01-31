@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { View, FlatList, StyleSheet } from 'react-native';
 import OrderListItem from './order-list-item';
-
 import Order from './temporary-mock-order'
+import * as css from "./style";
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
   
@@ -17,9 +17,9 @@ export class OrderList extends React.Component<OrderListProps, any> {
     
     render() {
         return (
-            <View style={styles.flatList}>
+            <View style={css.orderList.flatList}>
                 <FlatList
-                style={styles.flatList}
+                style={css.orderList.flatList}
                 data= {this.props.orders}
                 keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({item}) => 
@@ -30,14 +30,3 @@ export class OrderList extends React.Component<OrderListProps, any> {
             )
     }
 }
-const styles = StyleSheet.create({
-    container: {
-     flex: 1,
-     justifyContent: "center", 
-     alignItems: "center"
-    },
-    flatList: {
-      width: "100%"
-    }
-  })
-  

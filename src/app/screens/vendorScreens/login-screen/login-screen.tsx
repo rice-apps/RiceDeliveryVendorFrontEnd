@@ -4,8 +4,7 @@ import PrimaryButton from '../../../components/primary-button.js'
 import SecondaryButton from '../../../components/secondary-button.js'
 
 console.disableYellowBox = true;
-
-const style = require("../../style");
+import * as css from "../../style"
 
 class LoginScreen extends React.Component {
 
@@ -15,37 +14,30 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={style.defaultScreen}>
+            <View style={css.screen.defaultScreen}>
 
-                <Text style={style.headerText}>
+                <Text style={css.text.logo}>
                     hedwig.
                 </Text>
 
-                <Text style={style.regularText}>
+                <Text style={css.text.regularText}>
                 Email
                 </Text>
 
                 <TextInput 
-                    style = {style.textInput}
+                    style = {css.text.textInput}
                     placeholder = "Enter email"
-                    selectionColor = "#CCCCCC"
-           
                 />
 
-                
-                
-               
-                <Text style={style.regularText}>
+                <Text style={css.text.textInput}>
                 Password
                 </Text>
                 
-        
                 <TextInput 
-                    style = {style.textInput}
+                    style = {css.text.textInput}
                     placeholder="Enter password"
                 />        
     
-
                 <PrimaryButton
                     title ="Sign In"
                     onPress={this.loginHandler}

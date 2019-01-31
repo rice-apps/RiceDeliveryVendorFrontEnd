@@ -1,7 +1,6 @@
 import { Button } from 'react-native-elements'
 import React from 'react'
-
-const style = require("./style.ts")
+import * as css from "./style.ts";
 
 export default class SecondaryButton extends React.Component {
     render() {
@@ -9,7 +8,7 @@ export default class SecondaryButton extends React.Component {
         return (
             <Button
                 title = {title}
-                buttonStyle={style.secondaryButton}
+                buttonStyle={css.button.secondaryButton}
                 style={{margin: 2}}
                 onPress = {onPress}
             />

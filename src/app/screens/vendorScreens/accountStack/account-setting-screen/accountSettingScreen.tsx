@@ -2,8 +2,8 @@ import * as React from 'react'
 import { ScrollView, View, Text, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../../components/secondary-button.js'
+import * as css from "../../../style";
 
-const style = require("../../../style");
 
 export class AccountScreen extends React.Component<any, any> {
 
@@ -43,7 +43,7 @@ export class AccountScreen extends React.Component<any, any> {
   render() {
 
     return (
-      <View>
+      <View style = {css.screen.paddedScreen}>
 
      
         <ScrollView>
@@ -55,11 +55,7 @@ export class AccountScreen extends React.Component<any, any> {
         </ScrollView>
 
 
-        <View style = { {
-          top: 170,
-          bottom : 10
-        }} >
-
+        <View>
           <SecondaryButton
             title ="Logout"
           />

@@ -5,7 +5,7 @@ import { GET_ALL_ORDERS } from '../../../../../graphql/queries/vendorQueries'
 import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
-
+import * as css from "../../../style"
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
@@ -90,10 +90,13 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={css.screen.paddedScreen}>
+      
         <ScrollView>
         <OrderList orders={this.state.orders}/>
         </ScrollView>
+
+
         <View>
           <PrimaryButton
             title ="Add to Batch"
@@ -117,26 +120,3 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
 }
-
-// styles that define how the text is displayed
-const styles = StyleSheet.create({
-  container: {
-    padding:10, 
-   flex: 1,
-  //  justifyContent: "center", 
-  //  alignItems: "center"
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-  small: {
-    paddingLeft: 10,
-    fontSize: 14,
-    height: 24,
-  }, 
-  flatList: {
-    width: "100%"
-  }
-})
