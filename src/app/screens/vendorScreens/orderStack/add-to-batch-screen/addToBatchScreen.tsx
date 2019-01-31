@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, Text, Button, StyleSheet, Modal, TouchableHighlight, Alert } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { RootStore } from '../../../stores/root-store';
+import { RootStore } from '../../../../stores/root-store';
 
 const style = require("../../../style");
 

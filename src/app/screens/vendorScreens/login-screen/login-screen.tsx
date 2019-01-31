@@ -17,21 +17,40 @@ class LoginScreen extends React.Component {
         return (
             <View style={style.defaultScreen}>
 
-                <Text style={{fontSize:30}}>
-                    LoginScreen 32
+                <Text style={style.headerText}>
+                    hedwig.
                 </Text>
-                <Text>Email</Text>
+
+                <Text style={style.regularText}>
+                Email
+                </Text>
+
                 <TextInput 
-                    placeholder="Enter email"
+                    style = {style.textInput}
+                    placeholder = "Enter email"
+                    selectionColor = "#CCCCCC"
+           
                 />
-                <Text>Password</Text>
+
+                
+                
+               
+                <Text style={style.regularText}>
+                Password
+                </Text>
+                
+        
                 <TextInput 
+                    style = {style.textInput}
                     placeholder="Enter password"
-                />                
+                />        
+    
+
                 <PrimaryButton
                     title ="Sign In"
                     onPress={this.loginHandler}
                 />
+
                 <SecondaryButton
                     title ="Create Account"
                 />
