@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 import { color } from "../../theme";
 
+//Use this site to look for RGB colors.
+// https://www.w3schools.com/colors/colors_rgb.asp
+
+
 const GRAY = "#696969";
 const LIGHT_GRAY = "#DCDCDC"
 const FONT_FAMILY = "Verdana"
@@ -19,7 +23,6 @@ export const screen = StyleSheet.create({
         padding: 10,
         backgroundColor: LIGHT_GRAY
     }, 
-    
     divider : {
         backgroundColor : color.storybookDarkBg,
         height : 1,
@@ -75,4 +78,13 @@ export const flatlist = StyleSheet.create({
         paddingTop : 5,
         paddingBottom : 5,
       }
+});
+
+//IMAGE
+export const image = StyleSheet.create({
+    logo : {
+
+        width: 45, 
+        height: 45
+    }
 });

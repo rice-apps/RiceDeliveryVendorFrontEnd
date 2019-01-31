@@ -88,10 +88,13 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     this.setState({firstMenuItemInOrder: menuItems})
   }
 
+  addToBatchHandler = () => {
+    this.props.navigation.navigate("AddToBatch")
+  }
   render() {
     return (
       <View style={css.screen.paddedScreen}>
-      
+
         <ScrollView>
         <OrderList orders={this.state.orders}/>
         </ScrollView>
@@ -100,6 +103,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
         <View>
           <PrimaryButton
             title ="Add to Batch"
+            onPress={this.addToBatchHandler}
           />
           <SecondaryButton
             title ="Create Batch"

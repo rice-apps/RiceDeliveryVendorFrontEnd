@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, Button, TextInput} from 'react-native'
+import {View, Text, Button, TextInput, Image} from 'react-native'
 import PrimaryButton from '../../../components/primary-button.js'
 import SecondaryButton from '../../../components/secondary-button.js'
 
@@ -15,13 +15,13 @@ class LoginScreen extends React.Component {
     render() {
         return (
             <View style={css.screen.defaultScreen}>
-
                 <Text style={css.text.logo}>
                     hedwig.
-                </Text>
+                    <Image source={require('../../../img/hedwig.png')} style={css.image.logo} />
+                </Text> 
 
                 <Text style={css.text.regularText}>
-                Email
+                    Email
                 </Text>
 
                 <TextInput 
@@ -29,8 +29,8 @@ class LoginScreen extends React.Component {
                     placeholder = "Enter email"
                 />
 
-                <Text style={css.text.textInput}>
-                Password
+                <Text style={css.text.regularText}>
+                    Password
                 </Text>
                 
                 <TextInput 
