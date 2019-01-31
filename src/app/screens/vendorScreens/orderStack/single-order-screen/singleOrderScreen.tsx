@@ -7,6 +7,7 @@ import SecondaryButton from '../../../../components/secondary-button.js'
 import { color } from '../../../../../theme';
 import { Divider } from 'react-native-elements';
 
+const style = require("../../../style");
 
 interface SingleOrderScreenProps {
     // injected props

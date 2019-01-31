@@ -1,7 +1,9 @@
 import * as React from 'react'
-import { View, Text, FlatList} from 'react-native';
+import { ScrollView, View, Text, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
+const style = require("../../../style");
 
 export class AccountScreen extends React.Component<any, any> {
 
@@ -37,14 +39,37 @@ export class AccountScreen extends React.Component<any, any> {
       onPress={() =>  this.props.navigation.navigate(item.navigateTo)}
     />
   )
+
   render() {
 
     return (
-      <FlatList
-        keyExtractor={this.keyExtractor}
-        data={this.list}
-        renderItem={this.renderItem}
-      />
+      <View>
+
+     
+        <ScrollView>
+          <FlatList
+            keyExtractor={this.keyExtractor}
+            data={this.list}
+            renderItem={this.renderItem}
+          />
+        </ScrollView>
+
+
+        <View style = { {
+          top: 170,
+          bottom : 10
+        }} >
+
+          <SecondaryButton
+            title ="Logout"
+          />
+          
+        </View>
+
+      </View>
+     
+      
+      
     )
   }
 }

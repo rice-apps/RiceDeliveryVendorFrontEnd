@@ -1,8 +1,11 @@
 import * as React from 'react'
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
+import PrimaryButton from '../../../../components/primary-button.js'
+import SecondaryButton from '../../../../components/secondary-button.js'
 
+const style = require("../../../style");
 
 interface TransactionHistScreenProps {
     // injected props
@@ -22,22 +25,27 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
 
   render() {
     return (
-      <View style={styles.container} >
-        <Text>
-          THIS IS THE TransactionHistScreen
-        </Text>
+      <View style={style.defaultScreen} >
+        <ScrollView>
+          <Text>
+            View all previous orders!
+          </Text>
+        </ScrollView>
+        <View style={{flexDirection: "row"}}>
+          <PrimaryButton
+            title ="Load More"
+            style={{justifyContent: 'flex-start',}}
+          />
+          <SecondaryButton
+            title ="Filter By"
+            style={{justifyContent: 'flex-end',}}
+          />
+        </View>
+        
       </View>
     
       )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-    borderColor: "red", 
-    borderWidth: 1
-  }
-})
+

@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { RootStore } from "../../stores/root-store";
+import { RootStore } from "../../../../stores/root-store";
 import PrimaryButton from '../../../../components/primary-button.js'
 
+const style = require("../../../style");
 
 interface MenuScreenProps {
     // injected props
@@ -20,10 +21,11 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
       menu: "haven't fetched yet"
     }
   }
-
+  
+  // replace this with real menu from stripe
   render() {
     return (
-      <View style={styles.container} >
+      <View style={style.defaultScreen} >
         <Text>
           Make changes to your menu on your Stripe dashboard
         </Text>
@@ -31,7 +33,7 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
           title ="Launch Stripe"
         />
         <Text>
-          Current Menu
+        Current Menu:{"\n"}   Pizza{"\n"}   Banh Mi{"\n"}   Snacks{"\n"}   Drinks
         </Text>
       </View>
     
@@ -39,10 +41,3 @@ export class MenuScreen extends React.Component<MenuScreenProps, any> {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    justifyContent: "flex-start", 
-    alignItems: "center", 
-  }
-})

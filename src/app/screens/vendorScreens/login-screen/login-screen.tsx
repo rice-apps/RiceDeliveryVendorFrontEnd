@@ -3,6 +3,9 @@ import {View, Text, Button, TextInput} from 'react-native'
 import PrimaryButton from '../../../components/primary-button.js'
 import SecondaryButton from '../../../components/secondary-button.js'
 
+console.disableYellowBox = true;
+
+const style = require("../../style");
 
 class LoginScreen extends React.Component {
 
@@ -12,25 +15,46 @@ class LoginScreen extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-                <Text style={{fontSize:30}}>
-                    LoginScreen 32
+            <View style={style.defaultScreen}>
+
+                <Text style={style.headerText}>
+                    hedwig.
                 </Text>
-                <Text>Email</Text>
+
+                <Text style={style.regularText}>
+                Email
+                </Text>
+
                 <TextInput 
-                    placeholder="Enter email"
+                    style = {style.textInput}
+                    placeholder = "Enter email"
+                    selectionColor = "#CCCCCC"
+           
                 />
-                <Text>Password</Text>
+
+                
+                
+               
+                <Text style={style.regularText}>
+                Password
+                </Text>
+                
+        
                 <TextInput 
+                    style = {style.textInput}
                     placeholder="Enter password"
-                />                
+                />        
+    
+
                 <PrimaryButton
                     title ="Sign In"
                     onPress={this.loginHandler}
                 />
+
                 <SecondaryButton
                     title ="Create Account"
                 />
+
             </View>
         )
     }
