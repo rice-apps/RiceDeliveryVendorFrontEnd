@@ -12,7 +12,7 @@ import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
-import { mock_order } from '../../../../components/temporary-mock-order'
+import { mock_orders } from '../../../../components/temporary-mock-order'
 // Using one mock order from temp file
 
 // query to get a menu item
@@ -50,11 +50,11 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     // Populate orders with all mock orders
     // Not using functions getOrders() or getMenuItems()
     this.state = {orders:[
-      mock_order,
-      mock_order,
-      mock_order,
-      mock_order,
-      mock_order,
+      mock_orders.order1,
+      mock_orders.order2,
+      mock_orders.order3,
+      mock_orders.order1,
+      mock_orders.order1,
     ]}
   }
 
@@ -94,16 +94,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     return (
       <View style={styles.container}>
         <ScrollView>
-          {/* <Button
-            onPress={() => this.props.navigation.navigate('SingleOrder')}
-            // onPress={this.getOrders}
-            title="Order 1"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-            />    */}
-
         <OrderList orders={this.state.orders}/>
-        
         </ScrollView>
         <View>
           <PrimaryButton
@@ -133,7 +124,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 // styles that define how the text is displayed
 const styles = StyleSheet.create({
   container: {
-    padding:10,
+    padding:10, 
    flex: 1,
   //  justifyContent: "center", 
   //  alignItems: "center"

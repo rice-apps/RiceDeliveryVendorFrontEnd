@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 // import { ListItem } from 'react-native-elements';
 import { color, typography } from '../../theme';
 import { withNavigation } from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Order from './temporary-mock-order';
 // import { Order } from "../stores/order-store"
@@ -15,11 +16,19 @@ interface OrderListItemProps {
 class OrderListItem extends React.Component<OrderListItemProps, any> {
     constructor(props) {
         super(props);
-        this.onPress = this.onPress.bind(this);
+        this.singleOrderPress = this.singleOrderPress.bind(this);
     }
 
-    onPress() {
-        this.props.navigation.navigate('SingleOrder'); 
+    // Define action when pressing entire list item
+    singleOrderPress() {
+        this.props.navigation.navigate('SingleOrder', {
+            order : this.props.order,
+        }); 
+    }
+
+    // Define action when pressing "plus" button
+    addOrderPress() {
+        console.log("Trying to add order");
     }
     
     render() {
@@ -33,19 +42,20 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
             accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
 
         return (
+            <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
                         <Text style={styles.row_location}> {location} </Text>
                         <Text style={styles.row_name}> {firstName + ' ' + lastName}</Text>
                         <Text style={styles.row_time}> {pending}</Text>
                     </View>
-                    <TouchableHighlight
-                        // style={styles.button}
-                        onPress={this.onPress}
-                        >
-                        <Text> Touch Here </Text>
+
+                    <TouchableHighlight onPress={this.addOrderPress}>
+                        <Icon name="add" size={50} color="black" />
                     </TouchableHighlight>
+                    
                 </View>
+            </TouchableHighlight>
         )
     }
 }
@@ -54,6 +64,8 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
 // thus, we have to use this wrapper "withNavigation"
 export default withNavigation(OrderListItem);
 
+
+// We need to centralize these to be reusible/importable
 const styles = StyleSheet.create({
     row: {
         elevation: 1,
@@ -65,40 +77,43 @@ const styles = StyleSheet.create({
         alignItems: 'center', // cross axis
         paddingTop: 10,
         paddingBottom: 10,
-        paddingLeft: 18,
+        paddingLeft: 14,
         paddingRight: 16,
-        marginLeft: 14,
-        marginRight: 14,
-        marginTop: 7,
-        marginBottom: 7,
+        marginLeft: 6,
+        marginRight: 6,
+        marginTop: 5,
+        marginBottom: 5,
       },
       row_cell: {
         flex: 1,
         flexDirection: 'column',
       },
       row_location: {
+        paddingLeft : 0,
         color: color.storybookTextColor,
         textAlignVertical: 'top',
         includeFontPadding: false,
         flex: 0,
         fontSize: 40,
-        fontFamily: typography.primary,
+        // fontFamily: typography.primary,
       },
       row_name: {
+        paddingLeft : 0,
         color: color.storybookTextColor,
         // textAlignVertical: 'bottom',
         includeFontPadding: false,
         flex: 0,
         fontSize: 20,
-        fontFamily: typography.primary,
+        // fontFamily: typography.primary,
       },
       row_time: {
+        paddingLeft : 0,
         color: color.storybookTextColor,
         textAlignVertical: 'bottom',
         // textAlign:'center',
         includeFontPadding: false,
         flex: 0,
         fontSize: 10,
-        fontFamily: typography.primary,
+        // fontFamily: typography.primary,
       },
 })
