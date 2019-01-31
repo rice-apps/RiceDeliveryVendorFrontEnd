@@ -97,7 +97,7 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
   }
 }
 
-// We need to centralize these to be reusible/importable
+//We need to centralize these to be reusible/importable
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
