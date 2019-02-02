@@ -19,3 +19,9 @@ export const OrderItem = types.model("OrderItem", {
   quantity: types.number
 })
 
+export const OrderModel = types.model("OrderModel", {
+  pending: types.array(Order),
+  onTheWay: types.array(Order), 
+  // onTheWay: types.array(Batch), 
+})
+
