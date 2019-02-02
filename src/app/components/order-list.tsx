@@ -16,6 +16,8 @@ export class OrderList extends React.Component<OrderListProps, any> {
     }
     
     render() {
+        // console.log("Orders: \n");
+        // console.log( this.props.orders)
         return (
             <View style={css.orderList.flatList}>
                 <FlatList
