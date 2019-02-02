@@ -1,42 +1,15 @@
 import { types } from "mobx-state-tree"
-import { Location} from "./location-store"
+import { Vendor } from "./vendor-store"
 import { Order } from "./order-store"
-
-const VendorModel = types.model({
-  name: "default", 
-  phone: ""
-  // hours: "default",
-  // phone: "default",
-  // menu: "default",
-  // locationOptions: "default",
-  // orders: "default"
-})
-
-const Vendor = types
-.model('Vendor', {
-    _id: types.string,
-    name: types.string,
-    phone: types.string,
-    locationOptions: types.array(Location),
-    menu: types.array(MenuItem),
-    orders: types.array(Order)
-})
-
-// type Vendor {
-//   _id: String
-//   name: String
-//   hours: [Int]
-//   phone: String
-//   menu: [MenuItem]
-//   locationOptions: [Location]
-//   orders: [Order]
-//  }
+import { Location } from "./location-store"
+// import { Batch } from "./batch-store"
 
 /**
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  vendors: types.optional(types.array(VendorModel), [])
+  vendors: types.optional(types.array(Vendor), []),
+  orders: types.optional(types.array(Order))
 }).actions(self => {
   function addVendor(vendor) {
     self.vendors.push(vendor)
