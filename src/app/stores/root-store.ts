@@ -1,6 +1,6 @@
 import { types } from "mobx-state-tree"
 import { Vendor } from "./vendor-store"
-import { OrderModel } from "./order-store"
+import { OrderModel, Order } from "./order-store"
 import { Location } from "./location-store"
 // import { Batch } from "./batch-store"
 
@@ -9,7 +9,8 @@ import { Location } from "./location-store"
  */
 export const RootStoreModel = types.model("RootStore").props({
   vendors: types.optional(types.array(Vendor), []),
-  orders: types.optional(OrderModel, {})
+  orders: types.optional(OrderModel, {pending: [], onTheWay: []})
+
 }).actions(self => {
   function addVendor(vendor) {
     self.vendors.push(vendor)
