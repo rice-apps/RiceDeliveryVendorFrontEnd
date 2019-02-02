@@ -1,5 +1,5 @@
 import { types } from "mobx-state-tree"
-import { Location, MenuItem} from "./menu-store"
+import { Location} from "./location-store"
 import { Order } from "./order-store"
 
 const VendorModel = types.model({
