@@ -1,6 +1,6 @@
 import { types } from "mobx-state-tree"
 import { Location } from "./menu-store"
-import { Order } from "./order-store"
+// import { Order } from "./order-store"
 
 
 export const User = types.model("User", {

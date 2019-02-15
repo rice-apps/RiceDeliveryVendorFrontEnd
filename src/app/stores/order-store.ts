@@ -8,19 +8,26 @@ export const OrderItem = types.model("OrderItem", {
   quantity: types.number
 })
 
+export const OrderStatus = types.model("OrderStatus", {
+  pending: types.Date, //Might not convert int to date.
+  onTheWay: types.Date, //Might not convert int to date.
+  fulfilled: types.Date, //Might not convert int to date.
+  unfulfilled: types.boolean
+})
+
 export const Order = types.model("Order", {
-  _id: types.string,
+  id: types.string,
   amount: types.number,
   created: types.number,
   customer: types.string,
   email: types.string,
   items: types.array(OrderItem),
-  orderStatus: types.Date, //Might not convert int to date.
+  orderStatus: OrderStatus,
   paymentStatus: types.string, 
   location: Location
 })
 
-export const Batch = types.model('Location', {
+export const Batch = types.model('Batch', {
   _id: types.string,
   orders: types.array(Order)
 })
