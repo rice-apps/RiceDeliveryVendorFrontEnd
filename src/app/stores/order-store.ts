@@ -1,23 +1,39 @@
 import { types } from "mobx-state-tree"
-import { MenuItem, Location } from './menu-store'
-import { User } from './user-store'
+import { Location } from "./location-store"
 
 export const OrderItem = types.model("OrderItem", {
-  item: MenuItem, 
+  amount: types.number,
+  description: types.string,
+  parent: types.string,
   quantity: types.number
 })
+
 export const OrderStatus = types.model("OrderStatus", {
-  _id: types.string, 
-  pending: types.string, 
-  onTheWay: types.string, 
-  fulfilled: types.string, 
-  unfulfilled: types.boolean,
+  pending: types.Date, //Might not convert int to date.
+  onTheWay: types.Date, //Might not convert int to date.
+  fulfilled: types.Date, //Might not convert int to date.
+  unfulfilled: types.boolean
 })
 
 export const Order = types.model("Order", {
-  _id: types.string,
-  location: Location,
+  id: types.string,
+  amount: types.number,
+  created: types.number,
+  customer: types.string,
+  email: types.string,
   items: types.array(OrderItem),
-  status: OrderStatus,
-  user: User
+  orderStatus: OrderStatus,
+  paymentStatus: types.string, 
+  location: Location
 })
+
+export const Batch = types.model('Batch', {
+  _id: types.string,
+  orders: types.array(Order)
+})
+
+export const OrderModel = types.model("OrderModel", {
+  pending: types.array(Order),
+  onTheWay: types.array(Batch), 
+})
+
