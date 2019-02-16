@@ -14,6 +14,10 @@ export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
         justifyContent: "center", 
+        borderColor: "red", 
+        width:"100%",
+        height: "100%",
+        borderWidth: 1,
         alignItems: "center",
         backgroundColor: LIGHT_GRAY
     }, 
