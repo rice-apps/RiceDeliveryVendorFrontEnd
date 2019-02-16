@@ -17,6 +17,12 @@ export const RootStoreModel = types.model("RootStore").props({
     addVendor
   }
 })
+.views(self => ({
+  get getOrders() {
+      return self.orders.pending
+  }
+}))
+
 
 /**
  * The RootStore instance.
