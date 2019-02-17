@@ -23,7 +23,11 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
     constructor(props) {
         super(props)
         this.state = {
-            name: "none"
+            vendor: Vendor.create({
+                id: "", 
+                name: "", 
+                phone: ""
+            })
         }
     }
 
@@ -33,16 +37,15 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
 
     loginHandler = async () => {
         const { rootStore } = this.props
-        await rootStore.initializeVendors()
-        rootStore.increment()
-        // this.props.navigation.navigate("Tabs")
+        const vendor = await rootStore.initializeVendors()
+        this.props.navigation.navigate("Tabs")
     }
 
     render() {
         return (
             <View style={css.screen.defaultScreen}>
                 <Text style={css.text.logo}>
-                    hedwig. {this.props.rootStore.number} {this.state.name}
+                    Hedwig.
                     <Image source={require('../../../img/hedwig.png')} style={css.image.logo} />
                 </Text> 
 
@@ -72,6 +75,10 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
                 <SecondaryButton
                     title ="Create Account"
                 />
+                <Text style={css.text.regularText}>
+                    {this.props.rootStore.vendors.length > 0 ? "Logging in as" + this.props.rootStore.vendors[0].name : ""}
+                </Text>
+                
 
             </View>
         )

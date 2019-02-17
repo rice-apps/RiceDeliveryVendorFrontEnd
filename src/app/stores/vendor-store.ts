@@ -10,7 +10,4 @@ export const Vendor = types.model("Vendor", {
     locationOptions: types.optional(types.array(Location),[])
     // batchOrder: types.array(types.string)
 }).actions(self => ({
-    initializeVendors() {
-        console.log("here")
-    }
 }))

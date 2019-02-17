@@ -112,6 +112,9 @@ export const RootNavigator = createStackNavigator({
     }, 
     Tabs: {
       screen: TabNavigator, 
+      navigationOptions: {
+        gesturesEnabled: false
+      }
     }
   }, 
   {

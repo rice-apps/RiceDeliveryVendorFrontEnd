@@ -4,6 +4,20 @@ import { OrderModel } from "./order-store"
 import { client } from "../main";
 import gql from "graphql-tag";
 import { instanceOf } from "prop-types";
+const VENDOR_QUERY = gql`
+query {
+  vendor(name: "The Hoot") {
+    _id
+    name
+    phone
+    hours
+    locationOptions {
+      _id
+      name
+    }
+  }
+}
+`
 
 /**
  * An RootStore model.
@@ -18,77 +32,21 @@ export const RootStoreModel = types.model("RootStore").props({
       return self.orders.pending
   }
 })).actions(self => ({
-
-  increment: flow(function* increment() {
-    self.number++;
-  }),
-
-  addVendor(vendor) {
-    self.vendors.push(vendor)
-  }, 
-
-  initializeVendors() {
-    const info = client.query({
-      query: gql`
-        query {
-          vendor(name: "The Hoot") {
-            _id
-            name
-            phone
-            hours
-            locationOptions {
-              _id
-              name
-            }
-          }
-        }
-      `
-      }).then((data) =>{
-        self.initializeSuccess(data)
+  initializeVendors: flow(function* initializeVendors() {
+      const info = (yield client.query({
+        query: VENDOR_QUERY
+      }))
+      const data = info.data.vendor[0]
+      const vendor = Vendor.create({
+        id: data._id,
+        name: data.name,
+        phone: data.phone,
+        hours: data.hours,
+        locationOptions: data.locationOptions      
       })
-  },
-  initializeSuccess(data) {
-    // self.number++
-    const vendor = data.data.vendor[0]
-    self.vendors.push({
-      id: vendor._id,
-      name: vendor.name,
-      phone: vendor.phone,
-      hours: vendor.hours,
-      locationOptions: vendor.locationOptions
+      self.vendors.push(vendor)
+      return vendor
     })
-  }
-
-  // initializeVendors: flow(function* initializeVendors() {
-  //     // self.number++;
-  //     const info = (yield client.query({
-  //       query: gql`
-  //       query {
-  //         vendor(name: "The Hoot") {
-  //           _id
-  //           name
-  //           phone
-  //           hours
-  //           locationOptions {
-  //             _id
-  //             name
-  //           }
-  //         }
-  //       }
-  //       `
-  //     }))
-  //     const data = info.data.vendor[0]
-  //     const vendor = {
-  //       id: data._id,
-  //       name: data.name,
-  //       phone: data.phone,
-  //       hours: data.hours,
-  //       locationOptions: data.locationOptions
-  //     }
-  //     // console.log(vendor)
-  //     self.vendors.push(vendor)
-  //     console.log("Done")
-  //   })
 }))
 
 /**

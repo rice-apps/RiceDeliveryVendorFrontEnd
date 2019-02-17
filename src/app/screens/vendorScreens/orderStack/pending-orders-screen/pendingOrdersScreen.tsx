@@ -1,6 +1,6 @@
 
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, Button, TextStyle, Alert } from 'react-native';
+import { View, ScrollView, StyleSheet, Button, TextStyle, Alert, Text} from 'react-native';
 import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
@@ -54,6 +54,9 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props); 
+    this.state = {
+      orders: []
+    }
   }
 
   // async getOrders() {
@@ -85,27 +88,23 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     );
  }
 
-componentWillMount() {
-    this.props.rootStore.orders.queryOrders();
-    console.log("mounting");
+async componentWillMount() {
+    this.setState({
+      orders: await this.props.rootStore.orders.queryOrders()
+    })
  }
 
   render() {
-    console.log("Rendering");
-    console.log(this.props.rootStore.orders.pending.length);
-    // var pending = this.props.rootStore.orders.pending;
     return (
       <View style={css.screen.paddedScreen}>
-      
+
         <ScrollView>
-      
-        {/* <OrderList orders={this.state.orders}/> */}
-
-        <OrderList orders={this.props.rootStore.orders.pending}/>
-
+          <Text>
+            {this.props.rootStore.orders.pending.length > 0 ?
+              this.props.rootStore.orders.pending.length : 0 }
+          </Text>
+          <OrderList orders={this.state.orders}/>
         </ScrollView>
-
-
         <View>
           <PrimaryButton
             title ="Add to Batch"

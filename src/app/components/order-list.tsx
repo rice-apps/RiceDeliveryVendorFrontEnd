@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Text} from 'react-native';
 import OrderListItem from './order-list-item';
 import Order from './temporary-mock-order'
 import * as css from "./style";
@@ -27,21 +27,22 @@ export class OrderList extends React.Component<OrderListProps, {orders: Array<an
 
     componentWillMount() {
         this.setState({ orders: this.props.orders });
+        console.log(this.state.orders.length)
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
         this.setState({ orders: props.orders });
     }
     
     render() {
-        console.log("Orders: \n");
-        console.log(this.state.orders);
         return (
             <View style={css.orderList.flatList}>
+                <Text>
+                    {this.props.orders.length}
+                </Text>
                 <FlatList
                 style={css.orderList.flatList}
-                data= {this.state.orders}
+                data= {this.props.orders}
                 keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({item}) => 
                     <OrderListItem order={item}></OrderListItem>

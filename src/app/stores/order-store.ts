@@ -42,13 +42,11 @@ export const OrderModel = types.model("OrderModel", {
 })
 .actions(self => ({
   queryOrders:  flow(function* queryOrders() {
-    console.log("query function called");
     const info = (yield client.query({
       query: GET_ORDER_STORE
     })) 
     self.pending = info.data.order;
-    console.log("Function here");
-    console.log(self.pending);
+    return self.pending;
   }) //flow
 })) //
 
