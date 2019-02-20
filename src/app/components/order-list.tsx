@@ -14,6 +14,7 @@ interface OrderListProps {
     rootStore?: RootStore
 }
 
+// const OFlatList = observer(FlatList)
 
 @inject("rootStore")
 @observer
@@ -27,7 +28,6 @@ export class OrderList extends React.Component<OrderListProps, {orders: Array<an
 
     componentWillMount() {
         this.setState({ orders: this.props.orders });
-        console.log(this.state.orders.length)
     }
 
     componentWillReceiveProps(props) {
@@ -37,9 +37,6 @@ export class OrderList extends React.Component<OrderListProps, {orders: Array<an
     render() {
         return (
             <View style={css.orderList.flatList}>
-                <Text>
-                    {this.props.orders.length}
-                </Text>
                 <FlatList
                 style={css.orderList.flatList}
                 data= {this.props.orders}

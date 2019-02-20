@@ -1,52 +1,25 @@
 
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, Button, TextStyle, Alert, Text} from 'react-native';
+import { View, ScrollView, StyleSheet, Button, TextStyle, Alert, Text, RefreshControl} from 'react-native';
 import { client } from '../../../../../app/main'
 
 import gql from 'graphql-tag'
 import * as css from "../../../style"
+import * as componentCSS from "../../../../components/style"
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
 import { observer, inject } from 'mobx-react';
+import LoadingScreen from '../../loading-screen';
 // import { observable, action } from 'mobx';
-
-// Query info for the orderStore.
-const GET_ORDER_STORE = gql`
-  query orderStore {
-    vendor (name: "The Hoot") {
-      orders {
-        id
-        amount
-        created
-        customer
-        email
-        items {
-          parent
-          amount
-          description
-          quantity
-        }
-        orderStatus {
-          pending
-          onTheWay
-          fulfilled
-          unfulfilled
-        }
-        paymentStatus,
-        location {
-          _id
-          name
-        }
-      }
-    }
-  }
-`
 
 
 // Hide yellow warnings.
 console.disableYellowBox = true;
+
+const Oview = observer(View)
+const OScrollView = observer(ScrollView)
 
 @inject("rootStore")
 @observer
@@ -55,7 +28,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   constructor(props) {
     super(props); 
     this.state = {
-      orders: []
+      loading: true, 
+      refreshing: false
     }
   }
 
@@ -88,36 +62,49 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     );
  }
 
-async componentWillMount() {
+  async componentWillMount() {
+    await this.props.rootStore.orders.queryOrders()
     this.setState({
-      orders: await this.props.rootStore.orders.queryOrders()
+      loading: false 
     })
- }
-
-  render() {
-    return (
-      <View style={css.screen.paddedScreen}>
-
-        <ScrollView>
-          <Text>
-            {this.props.rootStore.orders.pending.length > 0 ?
-              this.props.rootStore.orders.pending.length : 0 }
-          </Text>
-          <OrderList orders={this.state.orders}/>
-        </ScrollView>
-        <View>
-          <PrimaryButton
-            title ="Add to Batch"
-            onPress={this.addToBatch}
-          />
-          <SecondaryButton
-            title ="Create Batch"
-          />
-        </View>
-
-      </View>
-      )
   }
 
+  onRefresh = async() => {
+    this.setState({refreshing: true})
+    await this.props.rootStore.orders.queryOrders()
+    this.setState({refreshing: false})
 
+  }
+
+  render() {
+    if (this.state.loading) {
+      return <LoadingScreen /> 
+    } else {
+      return (
+        <View style={css.screen.paddedScreen}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+                />
+            }
+          >
+            <OrderList orders={this.props.rootStore.orders.pending}/>
+          </ScrollView>
+          <View style={componentCSS.containers.batchContainer}>
+            <PrimaryButton
+              title ="Add to Batch"
+              onPress={this.addToBatch}
+            />
+            <SecondaryButton
+              title ="Create Batch"
+            />
+          </View>
+  
+        </View>
+        )
+    }
+
+  }
 }

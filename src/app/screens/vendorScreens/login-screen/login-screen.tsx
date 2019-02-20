@@ -32,7 +32,6 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
     }
 
     loginHandler = async () => {

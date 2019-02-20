@@ -106,7 +106,6 @@ export const datepickerios = StyleSheet.create({
     }
 });
 
-
 //IMAGE
 export const image = StyleSheet.create({
     logo : {

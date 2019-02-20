@@ -7,6 +7,7 @@ import SecondaryButton from '../../../../components/secondary-button.js'
 import { color } from '../../../../../theme';
 import { Divider } from 'react-native-elements';
 import * as css from "../../../style"
+import { client } from '../../../../main';
 
 const style = require("../../../style");
 
@@ -19,24 +20,37 @@ interface SingleOrderScreenProps {
 @observer
 export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, any> {
 
+  // const ITEM_QUERY = gql`
+  // {
+
+  // }
+  // `
   constructor(props) {
     super(props) 
     this.state = {
-      order: "haven't fetched yet"
+      order: "haven't fetched yet",
+      orderItems: []
     }
   }
 
+  getDate = (dateInSecondsSinceUnixEpoch) => {
+    return new Date(dateInSecondsSinceUnixEpoch).toDateString
+  }
+
+  async componentDidMount() {
+    const orderItems = await client.query({query: ITEM_QUERY})
+  }
   render() {
     var order = this.props.navigation.getParam('order', 'no_order_retrieved');
-
+    console.log(order)
     if (order == 'no_order_retrieved') {
       console.log("Didn't find passed in order prop!");
     }
 
-    var { firstName, lastName } = order.user;
-    var { location, id } = order;
-    var { pending, onTheWay, fulfilled } = order.status;
-
+    var { customer } = order.customer;
+    var { location, id, created} = order;
+    var { pending, onTheWay, fulfilled } = order.orderStatus;
+    
     // Fold all item names and quantities down to single string
     var items = order.items.reduce((accu, curr) => 
         accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
@@ -49,16 +63,16 @@ export class SingleOrderScreen extends React.Component<SingleOrderScreenProps, a
           Order ID: #{id}
         </Text>
         <Text style={css.text.smallText}>
-          {'Placed at : ' + pending}
+          {'Placed at : ' + this.getDate(created)}
         </Text>
 
         <Divider style={css.screen.divider} />
 
         <Text style={css.text.bodyText}>
-          {firstName + ' ' + lastName + '\'s order'}
+          {customer + '\'s order'}
         </Text>
         <Text style={css.text.bodyText}>
-          {'Location : ' + location}
+          {'Location : ' + location.name}
         </Text>
         <Text style={css.text.bodyText}>
           {'Status : ' + 'pending'}

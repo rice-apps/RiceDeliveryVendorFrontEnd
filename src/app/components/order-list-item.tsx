@@ -22,32 +22,33 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
     }
     
     componentWillMount() {
-        console.log(this.props);
     }
     
     // Define action when pressing entire list item
-    singleOrderPress() {
+    singleOrderPress = () => {
         this.props.navigation.navigate('SingleOrder', {
             // order : this.props.order,
             order : this.props
-
         }); 
+    }
+
+    getDate = (dateInSecondsSinceUnixEpoch) => {
+        let date = new Date(dateInSecondsSinceUnixEpoch)
+        return date.toDateString()
     }
 
     // Define action when pressing "plus" button
     addOrderPress() {
-        console.log("Trying to add order");
+        // console.log("Trying to add order");
     }
     
     render() {
-        console.log("This order:", this.props.order);
+        
         // let { }
         // let { firstName, lastName } = this.props.order.user;
         // let location = (this.props.order.location) ? this.props.order.location.name : "";
-        // let { location } = this.props.order.location;
+        // let { location } = this.props.order.c;
         // let { pending, onTheWay, fulfilled } = this.props.order.orderStatus ;
-
-
         let  id  = this.props.order.id;
 
         // Fold all item names and quantities down to single string
@@ -60,14 +61,10 @@ class OrderListItem extends React.Component<OrderListItemProps, any> {
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={css.orderListItem.row}>
                     <View style={css.orderListItem.row_cell}>
-                        <Text style={css.orderListItem.row_name}> {"sth"} </Text>
-
-                        {/* <Text style={css.orderListItem.row_location}> {location} </Text> */}
-                        {/* <Text style={css.orderListItem.row_name}> {firstName + ' ' + lastName}</Text> */}
-                        {/* <Text style={css.orderListItem.row_time}> {pending}</Text>  */}
-
+                        <Text style={css.orderListItem.row_location}> {this.props.order.location.name} </Text>
+                        <Text style={css.orderListItem.row_name}> {"Name"}</Text>
+                        <Text style={css.orderListItem.row_time}> {this.getDate(this.props.order.created)}</Text> 
                     </View>
-
                     <TouchableHighlight onPress={this.addOrderPress}>
                         <Icon name="add" size={50} color="black" />
                     </TouchableHighlight>

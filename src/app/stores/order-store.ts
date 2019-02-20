@@ -45,6 +45,7 @@ export const OrderModel = types.model("OrderModel", {
     const info = (yield client.query({
       query: GET_ORDER_STORE
     })) 
+    console.log(info.data.order)
     self.pending = info.data.order;
     return self.pending;
   }) //flow
@@ -77,6 +78,10 @@ const GET_ORDER_STORE = gql`
             _id
             name
           }
+      location {
+        _id
+        name
+      }
     }
     
   }

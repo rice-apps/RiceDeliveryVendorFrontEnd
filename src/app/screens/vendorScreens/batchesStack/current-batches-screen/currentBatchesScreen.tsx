@@ -51,7 +51,6 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       query: GET_ALL_ORDERS, 
       variables: {vendor_name: "Nicolas LLC"}
     })
-    console.log(orders)
   }
   
   render() {
