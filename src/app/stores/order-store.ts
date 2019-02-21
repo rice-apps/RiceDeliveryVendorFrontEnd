@@ -13,16 +13,16 @@ export const OrderItem = types.model("OrderItem", {
 })
 
 export const OrderStatus = types.model("OrderStatus", {
-  pending: types.maybe(types.string), 
+  pending: types.maybe(types.Date),
   onTheWay: types.maybe(types.string),
-  fulfilled: types.maybe(types.string),
+  fulfilled: types.maybe(types.Date),
   unfulfilled: types.boolean
 })
 
 export const Order = types.model("Order", {
   id: types.string,
   amount: types.number,
-  created: types.number,
+  created: types.Date,
   customer: types.maybe(types.string),
   email: types.maybe(types.string),
   items: types.array(OrderItem),

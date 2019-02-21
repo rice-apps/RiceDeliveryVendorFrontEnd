@@ -17,13 +17,14 @@ class OrderListItem extends React.Component<any, any> {
     }
     
    
-    
+    componentWillMount() {
+
+    }
     // Define action when pressing entire list item
     singleOrderPress = () => {
         this.props.navigation.navigate('SingleOrder', {
             // order : this.props.order,
             order : this.props.order
-            // index : this.props.index
         }); 
     }
 

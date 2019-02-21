@@ -68,6 +68,8 @@ export class PendingOrdersScreen extends React.Component<any, any> {
   }
 
   render() {
+    console.log("DATA");
+    console.log(this.props.rootStore.orders.pending);
     if (this.state.loading) {
       return <LoadingScreen /> 
     } else {
