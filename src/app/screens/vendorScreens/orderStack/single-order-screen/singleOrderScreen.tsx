@@ -33,16 +33,28 @@ export class SingleOrderScreen extends React.Component<any, any> {
     let date = new Date(dateInSecondsSinceUnixEpoch * 1000)
     return date.toLocaleDateString("en-US", 
         {weekday: "short", hour: "numeric", minute: "numeric"})
-}
+  }
+
+  
+  
 
   render() {
-    console.log("singleorder")
-    console.log(this.props.navigation.state.params.order);
+    
     let order  = this.props.navigation.state.params.order;
     let id  = order.id;
     let date = this.getDate(order.created);
     let email = order.email;
-    let food1 = order.items[0].description;
+    let products = order.items;
+    let allItems = [];
+    for(let i = 0; i < products.length; i++){
+      allItems.push(
+        <Text style={css.text.bodyText}>
+          {products[i].amount}
+          {" "}
+          {products[i].description}
+        </Text>
+      )
+    }
 
     return (
       <View style={css.screen.defaultScreen}>
@@ -51,7 +63,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     
         <Text style={css.text.headerText}>
           Order ID: #{id}
-        </Text>}
+        </Text>
 
         <Text style={css.text.smallText}>
           {'Placed at : ' + date}
@@ -69,9 +81,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
 
         <Divider style={css.screen.divider} />
 
-        <Text style={css.text.bodyText}>
-          {'Food: ' + food1}
-        </Text>
+        {allItems}
 
       </View>
 
