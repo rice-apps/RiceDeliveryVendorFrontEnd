@@ -33,15 +33,6 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     }
   }
 
-  // async getOrders() {
-  //   const orders : any = await client.query({
-  //     query: GET_ORDER_STORE, 
-  //   })
-
-  //   // Sets this page's state.
-  //   this.setState({orders: orders.data.vendor[0].orders});
-  // }
-
 
   addToBatchHandler = () => {
     this.props.navigation.navigate("AddToBatch")

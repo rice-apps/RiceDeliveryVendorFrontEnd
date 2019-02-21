@@ -41,8 +41,10 @@ export class OrderList extends React.Component<OrderListProps, {orders: Array<an
                 style={css.orderList.flatList}
                 data= {this.props.orders}
                 keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({item}) => 
+                renderItem={({item, index}) => 
                     <OrderListItem order={item}></OrderListItem>
+                    // <OrderListItem order={item} index={index}></OrderListItem>
+
                 }
               />
             </View>

@@ -16,21 +16,21 @@ class OrderListItem extends React.Component<any, any> {
         this.singleOrderPress = this.singleOrderPress.bind(this);
     }
     
-    componentWillMount() {
-    }
+   
     
     // Define action when pressing entire list item
     singleOrderPress = () => {
         this.props.navigation.navigate('SingleOrder', {
             // order : this.props.order,
-            order : this.props
+            order : this.props.order
+            // index : this.props.index
         }); 
     }
 
     getDate = (dateInSecondsSinceUnixEpoch) => {
-        // let date = new Date(dateInSecondsSinceUnixEpoch)
         let date = new Date(dateInSecondsSinceUnixEpoch * 1000)
-        return date.toLocaleDateString("en-US", {weekday: "short", hour: "numeric", minute: "numeric"})
+        return date.toLocaleDateString("en-US", 
+            {weekday: "short", hour: "numeric", minute: "numeric"})
     }
 
     // Define action when pressing "plus" button

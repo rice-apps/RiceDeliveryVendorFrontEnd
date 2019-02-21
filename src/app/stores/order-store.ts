@@ -13,7 +13,7 @@ export const OrderItem = types.model("OrderItem", {
 })
 
 export const OrderStatus = types.model("OrderStatus", {
-  pending: types.maybe(types.string), //Is a date, may need to convert.
+  pending: types.maybe(types.string), 
   onTheWay: types.maybe(types.string),
   fulfilled: types.maybe(types.string),
   unfulfilled: types.boolean

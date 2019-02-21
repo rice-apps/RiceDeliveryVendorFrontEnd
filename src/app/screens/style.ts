@@ -68,8 +68,23 @@ export const text = StyleSheet.create({
         margin: 10,
         paddingLeft: 15,
         paddingRight: 15,
-    }
+    },
 });
+
+//View
+export const view = StyleSheet.create({
+    display : {
+        width : "100%",
+        textAlign : "left",
+        color: color.background,
+        flex : 1,
+        paddingTop : 20,
+        paddingBottom : 20,
+        paddingLeft : 10,
+        paddingRight : 10,
+      }
+});
+
 
 //FLATLIST
 export const flatlist = StyleSheet.create({
