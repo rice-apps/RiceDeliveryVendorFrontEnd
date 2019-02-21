@@ -42,6 +42,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     let date = this.getDate(order.created);
     let email = order.email;
     let food1 = order.items[0].description;
+    
     return (
       <View style={css.screen.defaultScreen}>
     
