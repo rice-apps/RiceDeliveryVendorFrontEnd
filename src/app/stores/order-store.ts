@@ -41,7 +41,7 @@ export const OrderModel = types.model("OrderModel", {
   onTheWay: types.array(Batch), 
 })
 .actions(self => ({
-  queryOrders:  flow(function* queryOrders() {
+  queryOrders: flow(function* queryOrders() {
     const info = (yield client.query({
       query: GET_ORDER_STORE
     })) 
@@ -49,6 +49,11 @@ export const OrderModel = types.model("OrderModel", {
     self.pending = info.data.order;
     return self.pending;
   }) //flow
+})).views(self => ({
+  numPending() {
+    return self.pending.length
+  }
+
 })) //
 
 

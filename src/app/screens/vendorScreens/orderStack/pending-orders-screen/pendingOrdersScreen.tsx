@@ -11,15 +11,14 @@ import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
 
 import { observer, inject } from 'mobx-react';
+import { getSnapshot } from 'mobx-state-tree';
+
 import LoadingScreen from '../../loading-screen';
 // import { observable, action } from 'mobx';
 
 
 // Hide yellow warnings.
 console.disableYellowBox = true;
-
-const Oview = observer(View)
-const OScrollView = observer(ScrollView)
 
 @inject("rootStore")
 @observer
@@ -62,14 +61,15 @@ export class PendingOrdersScreen extends React.Component<any, any> {
 
   onRefresh = async() => {
     this.setState({refreshing: true})
+    console.log("Old Orders:")
+    console.log(this.props.rootStore.orders.numPending())
     await this.props.rootStore.orders.queryOrders()
+    console.log("New Orders:")
+    console.log(this.props.rootStore.orders.numPending())
     this.setState({refreshing: false})
-
   }
 
   render() {
-    console.log("DATA");
-    console.log(this.props.rootStore.orders.pending);
     if (this.state.loading) {
       return <LoadingScreen /> 
     } else {
@@ -83,7 +83,7 @@ export class PendingOrdersScreen extends React.Component<any, any> {
                 />
             }
           >
-            <OrderList orders={this.props.rootStore.orders.pending}/>
+            <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)}/>
           </ScrollView>
           <View style={componentCSS.containers.batchContainer}>
             <PrimaryButton
