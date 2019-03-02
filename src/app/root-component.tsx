@@ -8,6 +8,7 @@ import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import SplashScreen from "react-native-splash-screen"
 import { YellowBox, View, StyleSheet, StatusBar, Platform } from 'react-native'
+import LoadingScreen from "./screens/vendorScreens/loading-screen";
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated'])
 YellowBox.ignoreWarnings(['Module RCTImageLoader requires',]);
 YellowBox.ignoreWarnings(['Class RCTCxxModule']);
@@ -67,7 +68,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
               <StatusBar />
             </View>
             <Header /> */}
-            <RootNavigator />        
+            <RootNavigator renderLoadingExperimental={() => <LoadingScreen />} persistenceKey={"NavigationState2"}/>        
         {/* </View> */}
       </Provider>
     )

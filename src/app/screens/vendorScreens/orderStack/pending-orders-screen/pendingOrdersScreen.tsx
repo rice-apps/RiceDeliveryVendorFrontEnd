@@ -9,20 +9,61 @@ import * as componentCSS from "../../../../components/style"
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from '../../../../components/primary-button.js'
 import SecondaryButton from '../../../../components/secondary-button.js'
+import { toJS } from 'mobx';
 
 import { observer, inject } from 'mobx-react';
 import { getSnapshot } from 'mobx-state-tree';
 
 import LoadingScreen from '../../loading-screen';
+import { RootStore } from '../../../../stores/root-store';
+import { NavigationScreenProp } from 'react-navigation';
 // import { observable, action } from 'mobx';
 
 
 // Hide yellow warnings.
 console.disableYellowBox = true;
+interface pendingOrderProps {
+  rootStore: RootStore,
+  navigation: NavigationScreenProp<any, any>
+}
 
+const GET_ORDER_STORE = gql`
+  query queryOrders {
+    order(vendorName: "The Hoot") {
+      id
+      amount
+      created
+      customer
+      email
+      items {
+            parent
+            amount
+            description
+            quantity
+      }
+      orderStatus {
+            pending
+            onTheWay
+            fulfilled
+            unfulfilled
+        }
+      paymentStatus,
+          location {
+            _id
+            name
+          }
+      location {
+        _id
+        name
+      }
+    }
+    
+  }
+
+`
 @inject("rootStore")
 @observer
-export class PendingOrdersScreen extends React.Component<any, any> {
+export class PendingOrdersScreen extends React.Component<pendingOrderProps, any> {
 
   constructor(props) {
     super(props); 
@@ -59,32 +100,17 @@ export class PendingOrdersScreen extends React.Component<any, any> {
     })
   }
 
-  onRefresh = async() => {
-    this.setState({refreshing: true})
-    console.log("Old Orders:")
-    console.log(this.props.rootStore.orders.numPending())
-    await this.props.rootStore.orders.queryOrders()
-    console.log("New Orders:")
-    console.log(this.props.rootStore.orders.numPending())
-    this.setState({refreshing: false})
-  }
-
   render() {
     if (this.state.loading) {
       return <LoadingScreen /> 
     } else {
+      console.log("render")
+      // console.log(pendingOrde/rs.toJS().length)
       return (
         <View style={css.screen.paddedScreen}>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh}
-                />
-            }
-          >
+          <View>
             <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)}/>
-          </ScrollView>
+          </View>
           <View style={componentCSS.containers.batchContainer}>
             <PrimaryButton
               title ="Add to Batch"

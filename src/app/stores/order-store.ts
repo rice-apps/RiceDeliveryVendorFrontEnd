@@ -41,19 +41,22 @@ export const OrderModel = types.model("OrderModel", {
   onTheWay: types.array(Batch), 
 })
 .actions(self => ({
+  addOrders(orders) {
+    self.pending = orders
+    return self.pending
+  },
   queryOrders: flow(function* queryOrders() {
     const info = (yield client.query({
       query: GET_ORDER_STORE
     })) 
-    console.log(info.data.order)
     self.pending = info.data.order;
-    return self.pending;
+    console.log("added new orders")
+    return self.pending.length;
   }) //flow
 })).views(self => ({
   numPending() {
     return self.pending.length
   }
-
 })) //
 
 
@@ -90,7 +93,6 @@ const GET_ORDER_STORE = gql`
     }
     
   }
-
 `
 
 
