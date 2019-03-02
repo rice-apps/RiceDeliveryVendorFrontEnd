@@ -1,22 +1,15 @@
 import { types } from "mobx-state-tree"
-import { Vendor } from "./vendor-store"
+import { VendorStoreModel } from "./vendor-store"
 import { OrderModel } from "./order-store"
 
 /**
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  vendors: types.optional(types.array(Vendor), []),
+  vendorStore: types.optional(VendorStoreModel, {}),
   orders: types.optional(OrderModel, {pending: [], onTheWay: []})
 
-}).actions(self => {
-  function addVendor(vendor) {
-    self.vendors.push(vendor)
-  }
-  return {
-    addVendor
-  }
-})
+});
 
 /**
  * The RootStore instance.
