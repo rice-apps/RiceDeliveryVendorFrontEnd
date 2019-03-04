@@ -13,10 +13,15 @@ export const OrderItem = types.model("OrderItem", {
 })
 
 export const OrderStatus = types.model("OrderStatus", {
-  pending: types.maybe(types.Date),
-  onTheWay: types.maybe(types.string),
-  fulfilled: types.maybe(types.Date),
+  pending: types.maybe(types.number),
+  onTheWay: types.maybe(types.number),
+  fulfilled: types.maybe(types.number),
   unfulfilled: types.boolean
+})
+
+export const metaData = types.model("metaData", {
+  netID: types.string, 
+  location: types.string
 })
 
 export const Order = types.model("Order", {
@@ -28,7 +33,7 @@ export const Order = types.model("Order", {
   items: types.array(OrderItem),
   orderStatus: OrderStatus,
   paymentStatus: types.string, 
-  location: types.maybe(Location),
+  metadata: types.maybe(metaData),
 })
 
 export const Batch = types.model('Batch', {
@@ -50,9 +55,11 @@ export const OrderModel = types.model("OrderModel", {
       query: GET_ORDER_STORE
     })) 
     self.pending = info.data.order;
-    console.log("added new orders")
     return self.pending.length;
-  }) //flow
+  }),
+  addToBatch: flow(function* addToBatch(orders, batchId) {
+    //TODO: batch resolvers.
+  }),
 })).views(self => ({
   numPending() {
     return self.pending.length
@@ -81,14 +88,10 @@ const GET_ORDER_STORE = gql`
             fulfilled
             unfulfilled
         }
-      paymentStatus,
-          location {
-            _id
-            name
-          }
-      location {
-        _id
-        name
+      paymentStatus
+      metadata {
+        netID
+        location
       }
     }
     

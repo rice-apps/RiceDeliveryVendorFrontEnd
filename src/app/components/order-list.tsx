@@ -7,6 +7,7 @@ import { observer, inject } from 'mobx-react';
 import { RootStore } from '../stores/root-store';
 import { client } from '../main';
 import gql from 'graphql-tag';
+import { string } from 'prop-types';
 
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
@@ -17,84 +18,50 @@ interface OrderListProps {
 }
 
 // const OFlatList = observer(FlatList)
-
-// Query info for the orderStore.
-const GET_ORDER_STORE = gql`
-  query queryOrders {
-    order(vendorName: "The Hoot") {
-      id
-      amount
-      created
-      customer
-      email
-      items {
-            parent
-            amount
-            description
-            quantity
-      }
-      orderStatus {
-            pending
-            onTheWay
-            fulfilled
-            unfulfilled
-        }
-      paymentStatus,
-          location {
-            _id
-            name
-          }
-      location {
-        _id
-        name
-      }
-    }
-    
-  }
-
-`
 @inject("rootStore")
 @observer
 export class OrderList extends React.Component<OrderListProps, any> {
     constructor(props) {
         super(props)
         this.state = {
-            refreshing: false
+            refreshing: false,
+            selected: new Map()
         }
     }
-
-    componentWillMount() {
-        // this.setState({ orders: this.props.orders });
-    }
-
-    componentWillReceiveProps(props) {
-        // this.setState({ orders: props.orders });
-    }
     
-
     onRefresh = async() => {
-      console.log("refreshing")
       this.setState({refreshing: true})
-      const length = await this.props.rootStore.orders.queryOrders()
-      const info = (await client.query({
-        query: GET_ORDER_STORE
-      })) 
-      console.log(info.data.order.length)
-      console.log(length)
+      await this.props.rootStore.orders.queryOrders()
       this.setState({refreshing: false})
-      }
+    }
+    onPressItem = (id) => {
+      // updater functions are preferred for transactional updates
+      this.setState((state) => {
+        // copy the map rather than modifying state.
+        const selected = new Map(state.selected);
+        selected.set(id, !selected.get(id)); // toggle
+        return {selected};
+      });
+    }
+
+    renderItem = ({item}) => 
+      (<OrderListItem 
+        order={item}
+        onPressItem={this.onPressItem}
+        selected={!!this.state.selected.get(item.id)}
+      />)
+
     render() {
         return (
             <View style={css.orderList.flatList}>
                 <FlatList
                 style={css.orderList.flatList}
+                extraData={this.state}
                 onRefresh={this.onRefresh}
                 refreshing={this.state.refreshing}
                 data= {this.props.orders}
-                keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({item}) => 
-                    <OrderListItem order={item}></OrderListItem>
-                }
+                keyExtractor={(item, index) => item.id}
+                renderItem={this.renderItem}
               />
             </View>
             )

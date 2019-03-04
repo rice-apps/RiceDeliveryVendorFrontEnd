@@ -100,5 +100,8 @@ export const orderListItem = StyleSheet.create({
     includeFontPadding: false,
     flex: 0,
     fontSize: 10,
-  },
+  }, 
+  activeItem: {
+    backgroundColor: "orange"
+  }
 })

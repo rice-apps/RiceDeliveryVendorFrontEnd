@@ -27,40 +27,6 @@ interface pendingOrderProps {
   navigation: NavigationScreenProp<any, any>
 }
 
-const GET_ORDER_STORE = gql`
-  query queryOrders {
-    order(vendorName: "The Hoot") {
-      id
-      amount
-      created
-      customer
-      email
-      items {
-            parent
-            amount
-            description
-            quantity
-      }
-      orderStatus {
-            pending
-            onTheWay
-            fulfilled
-            unfulfilled
-        }
-      paymentStatus,
-          location {
-            _id
-            name
-          }
-      location {
-        _id
-        name
-      }
-    }
-    
-  }
-
-`
 @inject("rootStore")
 @observer
 export class PendingOrdersScreen extends React.Component<pendingOrderProps, any> {
@@ -104,11 +70,11 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, any>
     if (this.state.loading) {
       return <LoadingScreen /> 
     } else {
-      console.log("render")
+      console.log(getSnapshot(this.props.rootStore.orders.pending))
       // console.log(pendingOrde/rs.toJS().length)
       return (
         <View style={css.screen.paddedScreen}>
-          <View>
+          <View style = {{flex: 1}}>
             <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)}/>
           </View>
           <View style={componentCSS.containers.batchContainer}>
