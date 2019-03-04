@@ -52,13 +52,24 @@ export const OrderModel = types.model("OrderModel", {
   },
   queryOrders: flow(function* queryOrders() {
     const info = (yield client.query({
-      query: GET_ORDER_STORE
+      query: GET_ORDER_STORE, 
+      variables: {
+        vendorName: "The Hoot"
+      }
     })) 
     self.pending = info.data.order;
-    return self.pending.length;
+    return self.pending;
   }),
-  addToBatch: flow(function* addToBatch(orders, batchId) {
+  getBatches: flow(function* getBatches() {
     //TODO: batch resolvers.
+    const info = (yield client.query({
+      query: GET_BATCHES,
+      variables: {
+        vendorName: "The Hoot"
+      }
+    })) 
+    // self.onTheWay = info.data.batch;
+    // return self.pending.length;
   }),
 })).views(self => ({
   numPending() {
@@ -66,11 +77,17 @@ export const OrderModel = types.model("OrderModel", {
   }
 })) //
 
-
+const GET_BATCHES = gql`
+  query batches($vendorName: String!) {
+    batch(vendorName: $vendorName) {
+      _id
+    }
+  }
+`
 // Query info for the orderStore.
 const GET_ORDER_STORE = gql`
-  query queryOrders {
-    order(vendorName: "The Hoot") {
+  query queryOrders($vendorName: String!) {
+    order(vendorName: $vendorName) {
       id
       amount
       created

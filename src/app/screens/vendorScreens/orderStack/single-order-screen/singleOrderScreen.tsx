@@ -2,8 +2,8 @@ import * as React from 'react'
 import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
-import PrimaryButton from '../../../../components/primary-button.js'
-import SecondaryButton from '../../../../components/secondary-button.js'
+import PrimaryButton from '../../../../components/primary-button'
+import SecondaryButton from '../../../../components/secondary-button'
 import { color } from '../../../../../theme';
 import { Divider } from 'react-native-elements';
 import * as css from "../../../style"

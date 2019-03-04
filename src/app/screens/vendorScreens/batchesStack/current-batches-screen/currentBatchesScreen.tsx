@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 // import { createStackNavigator, createAppContainer } from 'react-navigation';
-import SecondaryButton from '../../../../components/secondary-button.js';
+import SecondaryButton from '../../../../components/secondary-button';
 import { Batch, mock_batches } from '../../../../components/temporary-mock-order';
 // Using mock interfaces from temp file
 
@@ -13,6 +13,7 @@ import { vendorQuery, GET_ALL_ORDERS } from '../../../../../graphql/queries/vend
 import { client } from '../../../../main'
 import { BatchList } from '../../../../components/batch-list';
 import * as css from "../../../style"
+import LoadingScreen from '../../loading-screen';
 
 interface CurrentBatchesScreenProps {
   // injected props
@@ -29,6 +30,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     this.state = {
       vendor: "haven't fetched yet",
       batches : mock_batches,
+      isLoading: true
     }
   }
 
@@ -45,46 +47,37 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     })
   }
 
-  // function to get all orders
-  async getOrders() {
-    const orders = await client.query({
-      query: GET_ALL_ORDERS, 
-      variables: {vendor_name: "Nicolas LLC"}
-    })
+  async componentWillMount() {
+    await this.props.rootStore.orders.getBatches()
+    this.setState({isLoading: false})
   }
   
   render() {
-    return (
-      <View style={css.screen.paddedScreen} >
-
-        {/* <Button
-          onPress={this.vendorQuery}
-          title="Find All Available Vendors (doesn't work)"
-          color="#841584"
-          /> */}
-        {/* <Text>
-          {JSON.stringify(this.props.rootStore.vendors)}
-        </Text> */}
-
-        <View style={css.flatlist.container}>
-          <FlatList
-                data={[
-                  mock_batches.batch1,
-                  mock_batches.batch2,
-                ]}
-                keyExtractor={(item, index) => item.batchNumber.toString()}
-                renderItem={({item}) => 
-                    <BatchList batch={item}></BatchList>
-                }
-              />
-          {/* <BatchList batch={mock_batches.batch1}/> */}
-
+    if (this.state.isLoading) {
+      return <LoadingScreen />
+    } else {
+      return (
+        <View style={css.screen.paddedScreen} >
+          <View style={css.flatlist.container}>
+            <FlatList
+                  data={[
+                    mock_batches.batch1,
+                    mock_batches.batch2,
+                  ]}
+                  keyExtractor={(item, index) => item.batchNumber.toString()}
+                  renderItem={({item}) => 
+                      <BatchList batch={item}></BatchList>
+                  }
+                />
+            {/* <BatchList batch={mock_batches.batch1}/> */}
+  
+          </View>
+          <SecondaryButton title="Create Batch"/>
+  
         </View>
-        <SecondaryButton title="Create Batch"/>
-
-      </View>
-    
-      )
+      
+        )
+    }
   }
 }
 

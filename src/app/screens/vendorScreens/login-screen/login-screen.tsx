@@ -1,7 +1,7 @@
 import React from 'react'
 import {View, Text, Button, TextInput, Image} from 'react-native'
-import PrimaryButton from '../../../components/primary-button.js'
-import SecondaryButton from '../../../components/secondary-button.js'
+import PrimaryButton from '../../../components/primary-button'
+import SecondaryButton from '../../../components/secondary-button'
 
 console.disableYellowBox = true;
 import * as css from "../../style"

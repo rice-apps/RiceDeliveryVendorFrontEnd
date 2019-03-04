@@ -2,7 +2,7 @@ import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from "../../../../stores/root-store";
-import PrimaryButton from '../../../../components/primary-button.js'
+import PrimaryButton from '../../../../components/primary-button'
 
 import * as css from "../../../style"
 

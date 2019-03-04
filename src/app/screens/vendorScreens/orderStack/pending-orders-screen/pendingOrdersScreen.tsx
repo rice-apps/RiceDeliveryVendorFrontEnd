@@ -7,8 +7,8 @@ import gql from 'graphql-tag'
 import * as css from "../../../style"
 import * as componentCSS from "../../../../components/style"
 import { OrderList } from "../../../../components/order-list"
-import PrimaryButton from '../../../../components/primary-button.js'
-import SecondaryButton from '../../../../components/secondary-button.js'
+import PrimaryButton from '../../../../components/primary-button'
+import SecondaryButton from '../../../../components/secondary-button'
 import { toJS } from 'mobx';
 
 import { observer, inject } from 'mobx-react';
@@ -77,15 +77,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, any>
           <View style = {{flex: 1}}>
             <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)}/>
           </View>
-          <View style={componentCSS.containers.batchContainer}>
-            <PrimaryButton
-              title ="Add to Batch"
-              onPress={this.addToBatch}
-            />
-            <SecondaryButton
-              title ="Create Batch"
-            />
-          </View>
+        
   
         </View>
         )

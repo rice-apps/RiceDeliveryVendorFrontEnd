@@ -3,8 +3,8 @@ import { TouchableOpacity, View, Text, Button, StyleSheet, DatePickerIOS } from 
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 import Moment from 'moment';
-import PrimaryButton from '../../../../components/primary-button.js'
-import SecondaryButton from '../../../../components/secondary-button.js'
+import PrimaryButton from '../../../../components/primary-button'
+import SecondaryButton from '../../../../components/secondary-button'
 
 import * as css from "../../../style"
 
