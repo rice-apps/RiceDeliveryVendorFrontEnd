@@ -49,7 +49,8 @@ export const orderList = StyleSheet.create({
        },
 
     flatList: {
-         width: "100%"
+         width: "100%",
+         flex: 1
         }
     
 });

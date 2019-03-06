@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, FlatList, StyleSheet, Text, RefreshControl} from 'react-native';
+import { View, FlatList, StyleSheet, Text, RefreshControl, ActivityIndicator} from 'react-native';
 import OrderListItem from './order-list-item';
 import Order from './temporary-mock-order'
 import * as css from "./style";
@@ -19,8 +19,11 @@ interface OrderListProps {
     rootStore?: RootStore
 }
 interface OrderListState {
-  refreshing: Boolean, 
-  selected: Map<String, Boolean>
+  refreshing: boolean, 
+  bottomRefresh: boolean,
+  onEndReachedCalledDuringMomentum: boolean,
+  page: any,
+  selected: Map<String, Boolean>,
 }
 
 // const OFlatList = observer(FlatList)
@@ -31,15 +34,19 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
         super(props)
         this.state = {
             refreshing: false,
+            page: 1,
+            onEndReachedCalledDuringMomentum: false,
+            bottomRefresh: false,
             selected: new Map()
         }
     }
     
     onRefresh = async() => {
-      this.setState({refreshing: true})
-      await this.props.rootStore.orders.queryOrders()
+      this.setState({refreshing: true, page: 1})
+      await this.props.rootStore.orders.queryOrders(this.state.page)
       this.setState({refreshing: false})
     }
+
     onPressItem = (id) => {
       // updater functions are preferred for transactional updates
       this.setState((state) => {
@@ -50,12 +57,13 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       });
     }
 
-    renderItem = ({item}) => 
-      (<OrderListItem 
+    renderItem = ({item}) => {
+      return (<OrderListItem 
         order={item}
         onPressItem={this.onPressItem}
         selected={!!this.state.selected.get(item.id)}
       />)
+    }
 
     renderIf = (condition, item) => {
       if (condition) {
@@ -64,10 +72,40 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
         return null  
       }
     }
+
+    renderFooter = () => {
+      if (!this.state.bottomRefresh) return null;
+      return (
+        <View
+          style={{
+            paddingVertical: 10,
+            borderTopWidth: 1,
+            borderColor: "#CED0CE"
+          }}
+        >
+          <ActivityIndicator animating size="large" />
+        </View>
+      );
+    };
+    
+    loadMore = async() => {
+      //make request to add things.
+      if (!this.state.onEndReachedCalledDuringMomentum) {
+        console.log("load more")
+        this.setState({page: this.state.page + 1, bottomRefresh: true})
+        console.log("calling query")
+        this.props.rootStore.orders.queryOrders(this.state.page)
+        console.log("Setting state")
+        this.setState({bottomRefresh: false, onEndReachedCalledDuringMomentum: true})
+        
+      }
+    };
+
     render() {
         return (
             <View style={css.orderList.flatList}>
                 <FlatList
+                onMomentumScrollBegin={() => {this.setState({onEndReachedCalledDuringMomentum: false})}}
                 style={css.orderList.flatList}
                 extraData={this.state}
                 onRefresh={this.onRefresh}
@@ -75,6 +113,9 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
                 data= {this.props.orders}
                 keyExtractor={(item, index) => item.id}
                 renderItem={this.renderItem}
+                ListFooterComponent={this.renderFooter}
+                onEndReached={this.loadMore}
+                onEndReachedThreshold={0.5}
               />
             {
               this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,

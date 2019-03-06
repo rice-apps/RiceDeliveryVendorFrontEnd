@@ -60,28 +60,22 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, any>
  }
 
   async componentWillMount() {
-    await this.props.rootStore.orders.queryOrders()
+    await this.props.rootStore.orders.queryOrders(1)
     this.setState({
       loading: false 
     })
   }
 
   render() {
-    if (this.state.loading) {
-      return <LoadingScreen /> 
-    } else {
-      console.log(getSnapshot(this.props.rootStore.orders.pending))
-      // console.log(pendingOrde/rs.toJS().length)
+    if (this.state.loading) { return <LoadingScreen /> } 
       return (
         <View style={css.screen.paddedScreen}>
           <View style = {{flex: 1}}>
             <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)}/>
           </View>
-        
-  
         </View>
         )
-    }
+    
 
   }
 }

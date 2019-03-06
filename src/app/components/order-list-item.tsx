@@ -44,7 +44,7 @@ class OrderListItem extends React.Component<any, any> {
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
                     <View style={css.orderListItem.row_cell}>
-                        <Text style={css.orderListItem.row_location}> {this.props.order.metadata.location} </Text>
+                        <Text style={css.orderListItem.row_location}> {this.props.order.id} </Text>
                         <Text style={css.orderListItem.row_name}> {this.props.order.metadata.netID}</Text>
                         <Text style={css.orderListItem.row_time}> {this.getDate(this.props.order.created)}</Text> 
                     </View>
