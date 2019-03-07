@@ -75,13 +75,13 @@ export const text = StyleSheet.create({
 export const view = StyleSheet.create({
     display : {
         width : "100%",
-        textAlign : "left",
-        color: color.background,
+        backgroundColor: color.background,
         flex : 1,
         paddingTop : 20,
         paddingBottom : 20,
         paddingLeft : 10,
         paddingRight : 10,
+        
       }
 });
 

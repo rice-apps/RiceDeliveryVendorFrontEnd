@@ -36,6 +36,7 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
 
     loginHandler = async () => {
         const { rootStore } = this.props
+        console.log("loginHandler")
         const vendor = await rootStore.initializeVendors()
         this.props.navigation.navigate("Tabs")
     }

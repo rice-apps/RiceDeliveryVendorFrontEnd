@@ -2,7 +2,7 @@ import { Button } from 'react-native-elements'
 import React from 'react'
 import * as css from "./style";
 
-export default class PrimaryButton extends React.Component {
+export default class PrimaryButton extends React.Component<any, any> {
     render() {
         const {title, onPress} = this.props;
         return (
