@@ -60,6 +60,7 @@ export const OrderModel = types.model("OrderModel", {
       query: GET_ORDER_STORE, 
       variables
     })) 
+    if (info.data.order.length === 0) {return 0}
     self.pending = pageNum === 1 ? info.data.order : self.pending.toJS().concat(info.data.order);
     console.log("pageNum: " + pageNum)
     console.log(info.data.order)
