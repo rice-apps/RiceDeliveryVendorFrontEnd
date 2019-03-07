@@ -118,6 +118,11 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
 
     };
 
+    addToBatch = () => {
+    }
+    
+    createBatch = () => {
+    }
     render() {
         return (
             <View style={css.orderList.flatList}>
@@ -143,6 +148,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
                 />
               <SecondaryButton
                 title ="Create Batch"
+                onPress={this.createBatch}
               />
             </View>
               )
