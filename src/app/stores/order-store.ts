@@ -34,7 +34,9 @@ export const Order = types.model("Order", {
   items: types.array(OrderItem),
   orderStatus: OrderStatus,
   paymentStatus: types.string, 
-  metadata: types.maybe(metaData),
+  location: Location,
+  netID: types.string,
+  customerName: types.string
 })
 
 export const Batch = types.model('Batch', {
@@ -115,10 +117,12 @@ const GET_ORDER_STORE = gql`
             unfulfilled
         }
       paymentStatus
-      metadata {
-        netID
-        location
+      location {
+        _id
+        name
       }
+      netID
+      customerName
     }
     
   }

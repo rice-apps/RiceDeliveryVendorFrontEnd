@@ -40,12 +40,13 @@ class OrderListItem extends React.Component<any, any> {
     }
     
     render() {
+        console.log(this.props.order)
         return (
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
                     <View style={css.orderListItem.row_cell}>
-                        <Text style={css.orderListItem.row_location}> {this.props.order.id} </Text>
-                        <Text style={css.orderListItem.row_name}> {this.props.order.metadata.netID}</Text>
+                        <Text style={css.orderListItem.row_location}> {this.props.order.location.name} </Text>
+                        <Text style={css.orderListItem.row_name}> {this.props.order.customerName}</Text>
                         <Text style={css.orderListItem.row_time}> {this.getDate(this.props.order.created)}</Text> 
                     </View>
                     <TouchableHighlight onPress={this.addOrderPress}>
