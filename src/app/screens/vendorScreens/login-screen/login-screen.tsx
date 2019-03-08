@@ -51,8 +51,7 @@ class LoginScreen extends React.Component<LoginScreenProps, { modalVisible: bool
 
     loginHandler = async () => {
         const authenticated = await AsyncStorage.getItem("Authenticated");
-        console.log(this.state.rootStore.vendorStore.hasAccount);
-        if (!this.state.rootStore.vendorStore.hasAccount) {
+        if (!authenticated) {
             this.setModalVisible(!this.state.modalVisible);
         } else {
             this.props.navigation.navigate("Tabs");
