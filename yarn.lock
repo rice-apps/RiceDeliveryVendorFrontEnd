@@ -5733,7 +5733,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -9524,6 +9524,13 @@ react-native-compat@^1.0.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-cookies@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-cookies/-/react-native-cookies-3.3.0.tgz#527f65eb2d8a7a000107706bb11beb57f511e701"
+  integrity sha512-GobKo8Kvyuif6ROj6rDAjQJpCSLazcZl6AgZb1z7ldB9FrMtetQzXvIehS0QcwbpnXWyJzXJaY0yrlDjFz+NaA==
+  dependencies:
+    invariant "^2.1.0"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -9569,6 +9576,11 @@ react-native-keychain@3.0.0-rc.3:
   version "3.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-3.0.0-rc.3.tgz#891ea07a564d1bf46b644bc615af21f15a04b12b"
   integrity sha512-ijWfHmxTPKnrHtPJiDbKW3D6lRH8O9wbCNEE3xlxEg1WZT+VhP6iiF+HUansNYuxL7Hh7k41GSFfvr3xumfmXA==
+
+react-native-refresh-list-view@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-refresh-list-view/-/react-native-refresh-list-view-1.0.10.tgz#4f801e8526f9028d4273f04283506f7a1eda8a0b"
+  integrity sha512-n9QSwCThcY/JR2uz5B0+dSy1wAjGWYH7kEzV/lX9JfzSGXWIzKjLlJnOESZ3W65xXT5eh4r17zxTsYHYTmCtUg==
 
 react-native-safe-area-view@0.11.0:
   version "0.11.0"

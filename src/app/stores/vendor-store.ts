@@ -24,6 +24,8 @@ const User = types
 })
 
 export const VendorStoreModel = types.model("VendorStoreModel", {
+    id: types.optional(types.string, ""),
+    phone: types.optional(types.string, ""),
     name: types.optional(types.string, ""),
     hours: types.optional(types.array(types.array(types.number)), []),
     locationOptions: types.optional(Location, {}),  

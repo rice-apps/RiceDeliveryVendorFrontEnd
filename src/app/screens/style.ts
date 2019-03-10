@@ -14,6 +14,10 @@ export const screen = StyleSheet.create({
     defaultScreen: {
         flex: 1, 
         justifyContent: "center", 
+        borderColor: "red", 
+        width:"100%",
+        height: "100%",
+        borderWidth: 1,
         alignItems: "center",
         backgroundColor: LIGHT_GRAY
     }, 
@@ -64,8 +68,23 @@ export const text = StyleSheet.create({
         margin: 10,
         paddingLeft: 15,
         paddingRight: 15,
-    }
+    },
 });
+
+//View
+export const view = StyleSheet.create({
+    display : {
+        width : "100%",
+        backgroundColor: color.background,
+        flex : 1,
+        paddingTop : 20,
+        paddingBottom : 20,
+        paddingLeft : 10,
+        paddingRight : 10,
+        
+      }
+});
+
 
 //FLATLIST
 export const flatlist = StyleSheet.create({
@@ -101,7 +120,6 @@ export const datepickerios = StyleSheet.create({
         alignContent: "center"
     }
 });
-
 
 //IMAGE
 export const image = StyleSheet.create({

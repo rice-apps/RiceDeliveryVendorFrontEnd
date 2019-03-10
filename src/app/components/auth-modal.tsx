@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Modal, Text, TouchableHighlight, View, Alert} from 'react-native';
 import AuthenticationComponent from './authentication'
-import PrimaryButton from './primary-button.js'
+import PrimaryButton from './primary-button'
 
 export interface AuthModalProps {
         visible?: boolean;

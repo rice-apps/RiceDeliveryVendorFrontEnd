@@ -10,6 +10,17 @@ const LIGHT_BLUE = "#5c63d8"
 const ORANGE = "#ffa55e"
 const FONT_FAMILY = "Verdana"
 
+//DATEPICKERIOS
+export const containers = StyleSheet.create({
+  batchContainer : { 
+      display: "flex", 
+      alignContent: "center",
+      justifyContent: "center", 
+      flexDirection:"row",
+      borderColor: "red",
+      borderWidth: 2
+  }
+});
 export const button = StyleSheet.create({
 
 primaryButton: {
@@ -38,7 +49,8 @@ export const orderList = StyleSheet.create({
        },
 
     flatList: {
-         width: "100%"
+         width: "100%",
+         flex: 1
         }
     
 });
@@ -89,5 +101,8 @@ export const orderListItem = StyleSheet.create({
     includeFontPadding: false,
     flex: 0,
     fontSize: 10,
-  },
+  }, 
+  activeItem: {
+    backgroundColor: "orange"
+  }
 })

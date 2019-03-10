@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ScrollView, View, AsyncStorage, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
-import SecondaryButton from '../../../../components/secondary-button.js'
+import SecondaryButton from '../../../../components/secondary-button'
 import * as css from "../../../style";
 import CookieManager from 'react-native-cookies'; 
 
@@ -45,8 +45,6 @@ export class AccountScreen extends React.Component<any, any> {
 
     return (
       <View style = {css.screen.paddedScreen}>
-
-     
         <ScrollView>
           <FlatList
             keyExtractor={this.keyExtractor}
@@ -54,8 +52,6 @@ export class AccountScreen extends React.Component<any, any> {
             renderItem={this.renderItem}
           />
         </ScrollView>
-
-
         <View>
         <SecondaryButton
             title ="Logout"

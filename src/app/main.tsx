@@ -20,7 +20,12 @@ const link = createHttpLink({
 
 export const client = new ApolloClient({
   link: link,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache'
+    }
+  }
 });
 
 // Should we show storybook instead of our app?

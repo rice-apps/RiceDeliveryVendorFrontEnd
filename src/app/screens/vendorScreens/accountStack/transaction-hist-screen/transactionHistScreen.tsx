@@ -2,8 +2,8 @@ import * as React from 'react'
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
-import PrimaryButton from '../../../../components/primary-button.js'
-import SecondaryButton from '../../../../components/secondary-button.js'
+import PrimaryButton from '../../../../components/primary-button'
+import SecondaryButton from '../../../../components/secondary-button'
 
 import * as css from "../../../style"
 

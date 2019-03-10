@@ -128,7 +128,7 @@ export default interface Order {
         fulfilled: string, 
         unfulfilled: boolean,
     }, 
-    location : string,
+    // location : string,
     items : OrderItem[],
 }
  

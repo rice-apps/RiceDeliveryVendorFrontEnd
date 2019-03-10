@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Image, AsyncStorage } from 'react-native'
-import PrimaryButton from '../../../components/primary-button.js'
+import PrimaryButton from '../../../components/primary-button'
 import { RootStore } from '../../../stores/root-store';
 import { NavigationScreenProps } from 'react-navigation'
 import AuthModal from '../../../components/auth-modal'
@@ -32,7 +32,7 @@ class LoginScreen extends React.Component<LoginScreenProps, { modalVisible: bool
         if (!this.state.rootStore.vendorStore.hasAccount) { // user account does not exist
             // Navigate to screen for account information
             console.log("Has Account " + this.state.rootStore.vendorStore.hasAccount);
-            this.props.navigation.replace("CreateAccount");
+            this.props.navigation.replace("Tabs");
         } else { // user account exists
             this.setState({ modalVisible: false }, () => this.props.navigation.navigate("Tabs"));
         }
