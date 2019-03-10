@@ -32,7 +32,7 @@ class LoginScreen extends React.Component<LoginScreenProps, { modalVisible: bool
         if (!this.state.rootStore.vendorStore.hasAccount) { // user account does not exist
             // Navigate to screen for account information
             console.log("Has Account " + this.state.rootStore.vendorStore.hasAccount);
-            this.props.navigation.replace("CreateAccount");
+            this.props.navigation.replace("Tabs");
         } else { // user account exists
             this.setState({ modalVisible: false }, () => this.props.navigation.navigate("Tabs"));
         }
