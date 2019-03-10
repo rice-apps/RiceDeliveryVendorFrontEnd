@@ -1,5 +1,5 @@
 import { types, flow } from "mobx-state-tree"
-import { Vendor } from "./vendor-store"
+import { VendorStoreModel } from "./vendor-store"
 import { OrderModel } from "./order-store"
 import { client } from "../main";
 import gql from "graphql-tag";
@@ -23,10 +23,8 @@ query {
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  vendors: types.optional(types.array(Vendor), []),
-  orders: types.optional(OrderModel, {pending: [], onTheWay: []}),
-  number: types.optional(types.number, 1)
-
+vendorStore: types.optional(VendorStoreModel, {}),
+orders: types.optional(OrderModel, {pending: [], onTheWay: []})
 }).views(self => ({
   get getOrders() {
       return self.orders.pending
@@ -37,14 +35,14 @@ export const RootStoreModel = types.model("RootStore").props({
         query: VENDOR_QUERY
       }))
       const data = info.data.vendor[0]
-      const vendor = Vendor.create({
+      const vendor = VendorStoreModel.create({
         id: data._id,
         name: data.name,
         phone: data.phone,
         hours: data.hours,
         locationOptions: data.locationOptions      
       })
-      self.vendors.push(vendor)
+      self.vendorStore = vendor
       return vendor
     })
 }))
