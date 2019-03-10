@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { Input } from "react-native-elements"
 import { inject, observer } from 'mobx-react';
-import { RootStore } from '../../../stores/root-store';
 import * as css from "../../../style"
+import PrimaryButton from '../../../../components/primary-button';
 
 interface VendorInfoScreenProps {
     // injected props
@@ -20,14 +21,26 @@ export class VendorInfoScreen extends React.Component<VendorInfoScreenProps, any
     }
   }
 
+  saveHandler = () => {
+    
+  }
   render() {
     return (
-      <View style={css.screen.defaultScreen} >
-        <Text>
-          THIS IS THE VENDOR INFO SCREEN.
-        </Text>
+      <View style={[css.screen.defaultScreen, css.screen.padding]} >
+        <Input
+          placeholder="Vendor Name"
+        />
+        <Input
+          placeholder="Vendor Name"
+          
+        />
+
+        <PrimaryButton 
+          title="Save Changes"
+          onPress={this.saveHandler}
+        />
       </View>
-    
+
       )
   }
 }

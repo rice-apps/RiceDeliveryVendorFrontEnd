@@ -55,7 +55,7 @@ export const OrderModel = types.model("OrderModel", {
   },
   queryOrders: flow(function* queryOrders(pageNum) {
     let variables = {
-      vendorName: "The Hoot"
+      vendorName: "East West Tea"
     }
     if (pageNum > 1) { variables.starting_after = self.pending[self.pending.toJS().length - 1].id }
     const info = (yield client.query({

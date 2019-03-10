@@ -25,7 +25,7 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
 
   render() {
     return (
-      <View style={css.screen.defaultScreen} >
+      <View style={css.screen.defaultScreen}>
         <ScrollView>
           <Text>
             View all previous orders!

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as css from "./style";
 import { observer, inject } from 'mobx-react';
 import { Order } from '../stores/order-store';
@@ -49,9 +49,11 @@ class OrderListItem extends React.Component<any, any> {
                         <Text style={css.orderListItem.row_name}> {this.props.order.customerName}</Text>
                         <Text style={css.orderListItem.row_time}> {this.getDate(this.props.order.created)}</Text> 
                     </View>
-                    <TouchableHighlight onPress={this.addOrderPress}>
-                        <Icon name="add" size={50} color="black" />
-                    </TouchableHighlight>
+                    <Icon 
+                        name={this.props.selected ? "add" : "add"} 
+                        size={this.props.selected ? 30 : 50} 
+                        color="black"
+                        onPress={this.addOrderPress} />
                     
                 </View>
             </TouchableHighlight>

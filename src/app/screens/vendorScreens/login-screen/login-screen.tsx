@@ -37,7 +37,7 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
     loginHandler = async () => {
         const { rootStore } = this.props
         console.log("loginHandler")
-        const vendor = await rootStore.initializeVendors()
+        // await rootStore.initializeVendor()
         this.props.navigation.navigate("Tabs")
     }
 
@@ -75,11 +75,6 @@ class LoginScreen extends React.Component<loginScreenProps, any> {
                 <SecondaryButton
                     title ="Create Account"
                 />
-                <Text style={css.text.regularText}>
-                    {this.props.rootStore.vendors.length > 0 ? "Logging in as" + this.props.rootStore.vendors[0].name : ""}
-                </Text>
-                
-
             </View>
         )
     }

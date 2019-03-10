@@ -21,7 +21,13 @@ export const screen = StyleSheet.create({
         alignItems: "center",
         backgroundColor: LIGHT_GRAY
     }, 
-
+    padding: {
+        padding:10
+    },
+    centerContent: {
+        justifyContent: "center", 
+        alignItems: "center",
+    },
     paddedScreen: {
         flex: 1, 
         padding: 10,

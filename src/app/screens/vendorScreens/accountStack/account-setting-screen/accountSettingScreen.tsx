@@ -3,9 +3,13 @@ import { ScrollView, View, StyleSheet, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements'
 import SecondaryButton from '../../../../components/secondary-button'
 import * as css from "../../../style";
+import { NavigationScreenProps, NavigationScreenProp } from 'react-navigation';
 
+interface accountScreenProps {
+  navigation: NavigationScreenProp<any, any>
+}
 
-export class AccountScreen extends React.Component<any, any> {
+export class AccountScreen extends React.Component<accountScreenProps, any> {
 
   list = [
     {
@@ -41,6 +45,9 @@ export class AccountScreen extends React.Component<any, any> {
     />
   )
 
+  logoutHandler = () => {
+    this.props.navigation.navigate("Login")
+  }
   render() {
 
     return (
@@ -55,6 +62,7 @@ export class AccountScreen extends React.Component<any, any> {
         <View>
           <SecondaryButton
             title ="Logout"
+            onPress={this.logoutHandler}
           />
         </View>
 

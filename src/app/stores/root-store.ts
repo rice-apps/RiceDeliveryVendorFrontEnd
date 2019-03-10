@@ -23,7 +23,7 @@ query {
  * An RootStore model.
  */
 export const RootStoreModel = types.model("RootStore").props({
-  vendors: types.optional(types.array(Vendor), []),
+  vendor: types.optional(Vendor, {}),
   orders: types.optional(OrderModel, {pending: [], onTheWay: []}),
   number: types.optional(types.number, 1)
 
@@ -32,7 +32,7 @@ export const RootStoreModel = types.model("RootStore").props({
       return self.orders.pending
   }
 })).actions(self => ({
-  initializeVendors: flow(function* initializeVendors() {
+  initializeVendor: flow(function* initializeVendor() {
       const info = (yield client.query({
         query: VENDOR_QUERY
       }))
@@ -44,7 +44,7 @@ export const RootStoreModel = types.model("RootStore").props({
         hours: data.hours,
         locationOptions: data.locationOptions      
       })
-      self.vendors.push(vendor)
+      self.vendor = vendor
       return vendor
     })
 }))

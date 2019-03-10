@@ -85,7 +85,7 @@ export const orderListItem = StyleSheet.create({
     textAlignVertical: 'top',
     includeFontPadding: false,
     flex: 0,
-    fontSize: 30,
+    fontSize: 24,
   },
   row_name: {
     paddingLeft : 0,
