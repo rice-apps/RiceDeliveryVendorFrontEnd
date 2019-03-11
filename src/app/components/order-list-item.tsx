@@ -40,7 +40,6 @@ class OrderListItem extends React.Component<any, any> {
     }
     
     render() {
-        console.log(this.props.order)
         return (
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>

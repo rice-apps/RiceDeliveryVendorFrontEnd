@@ -1,19 +1,12 @@
 import * as React from 'react'
-import { View, FlatList, StyleSheet, Text, RefreshControl, ActivityIndicator} from 'react-native';
+import { View, Text, ActivityIndicator, Alert} from 'react-native';
 import OrderListItem from './order-list-item';
-import Order from './temporary-mock-order'
 import * as css from "./style";
 import { observer, inject } from 'mobx-react';
 import { RootStore } from '../stores/root-store';
-import { client } from '../main';
-import gql from 'graphql-tag';
-import { string } from 'prop-types';
 import PrimaryButton from '../components/primary-button'
-import SecondaryButton from '../components/secondary-button'
 import * as componentCSS from '..//components/style'
 import RefreshListView, {RefreshState} from "react-native-refresh-list-view"
-// import { Order } from "../stores/order-store"
-// Using temporary Order object instead of order-store Order object
   
 interface OrderListProps {
     orders : any
@@ -24,6 +17,10 @@ interface OrderListState {
   page: any,
   endReached: boolean,
   selected: Map<String, Boolean>,
+  language: string,
+  batches: any,
+  alertOptions: any,
+  orders: any
 }
 
 // const OFlatList = observer(FlatList)
@@ -36,7 +33,11 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             refreshState: RefreshState.Idle,
             page: 1,
             endReached: false,
-            selected: new Map()
+            selected: new Map(),
+            language: "",
+            batches: [],
+            alertOptions: [],
+            orders: []
         }
     }
     
@@ -46,7 +47,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       this.setState({refreshState: RefreshState.Idle})
     }
 
-    onPressItem = (id) => {
+    onPressItem = async (id) => {
       // updater functions are preferred for transactional updates
       this.setState((state) => {
         // copy the map rather than modifying state.
@@ -111,18 +112,50 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           if (num === 0) {
             this.setState({endReached: true})
           }
-          console.log("Setting state")
           this.setState({refreshState: RefreshState.Idle})
   
         }
 
     };
 
-    addToBatch = () => {
+    async componentDidMount() {
+      let batches = await this.props.rootStore.orders.getBatches(); 
+      this.setState({batches: batches});
+    }
+
+    createAlertOptions(batches) {
+      let alertOptions = [];
+      for (let i = 0; i < batches.length; i++) {
+        let text = 'Batch ' + (i+1);
+        let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
+        alertOptions.push({text: text, onPress: () => {this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID), console.log("added to Batch")}});
+      }
+      alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
+      return alertOptions;
     }
     
-    createBatch = () => {
+    addToBatch = async (vendorName, orders, batchID) => {
+      console.log(orders);
+      await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
     }
+
+     // Makes alert box when add to batch is clicked.
+     addToBatchHandler = async () =>{
+      let orders = [];
+      for (let key of this.state.selected.keys()) {
+        if (this.state.selected.get(key) === true)
+          orders.push(key)
+      }
+      await this.setState({orders: orders});
+      await this.setState({alertOptions: this.createAlertOptions(this.state.batches)});
+      Alert.alert(
+        'Add to Batch: ',
+        '',
+        this.state.alertOptions, 
+        {cancelable: true},
+      );
+    }
+
     render() {
         return (
             <View style={css.orderList.flatList}>
@@ -144,12 +177,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
               <View style={componentCSS.containers.batchContainer}>
                 <PrimaryButton
                   title ="Add to Batch"
-                  onPress={this.addToBatch}
+                  onPress={this.addToBatchHandler}
                 />
-              <SecondaryButton
-                title ="Create Batch"
-                onPress={this.createBatch}
-              />
             </View>
               )
             }

@@ -55,7 +55,7 @@ export const OrderModel = types.model("OrderModel", {
   },
   queryOrders: flow(function* queryOrders(pageNum) {
     let variables = {
-      vendorName: "The Hoot"
+      vendorName: "East West Tea"
     }
     if (pageNum > 1) { variables.starting_after = self.pending[self.pending.toJS().length - 1].id }
     const info = (yield client.query({
@@ -87,6 +87,17 @@ export const OrderModel = types.model("OrderModel", {
     });
     return info.data.batch; //Return batches.
   },
+  async addToBatch(vendorName, orders, batchID) {
+    let info = await client.mutate({
+      mutation: ADD_TO_BATCH,
+      variables: {
+        vendorName: vendorName,  
+        orders: orders,
+        batchID: batchID
+      }
+    });
+    return info.data.batch; //Return batches.
+  },
 })).views(self => ({
   numPending() {
     return self.pending.length
@@ -95,6 +106,20 @@ export const OrderModel = types.model("OrderModel", {
 
 export type Batch = typeof Batch.Type;
 
+const ADD_TO_BATCH = gql`
+mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) {
+  addToBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
+    _id
+    orders {
+      id
+      amount
+      charge
+      created
+      customer
+    }
+  }
+}
+`
 
 const GET_BATCHES = gql`
   query queryBatch($batchID: String, $vendorName: String!) {

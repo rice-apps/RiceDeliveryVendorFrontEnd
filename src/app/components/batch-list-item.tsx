@@ -32,8 +32,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     }
     
     render() {
-        console.log("batch-list-item");
-        // console.log(this.props.order);
+      
         var { firstName, lastName } = this.props.order.user;
         var { location } = this.props.order;
         var { pending, onTheWay, fulfilled } = this.props.order.status;
