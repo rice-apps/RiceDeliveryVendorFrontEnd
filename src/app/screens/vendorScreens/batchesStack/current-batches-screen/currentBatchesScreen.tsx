@@ -31,7 +31,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     return this.props.rootStore.orders.getBatches();
   } 
 
-  createBatch = (vendorName, orders) => {
+  createBatch(vendorName, orders) {
     this.props.rootStore.orders.createBatch(vendorName, orders);
   }
   
@@ -59,12 +59,14 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
                 />
   
           </View>
+
+          
           <SecondaryButton 
           title="Create Batch"
-          onPress = {this.createBatch("East West Tea", [])}
+          onPress = {() => this.createBatch("East West Tea", [])}
           />
-  
-        </View>
+
+          </View>
       
         )
     }

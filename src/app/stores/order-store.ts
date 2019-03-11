@@ -77,17 +77,16 @@ export const OrderModel = types.model("OrderModel", {
     return info.data.batch; //Return batches.
 
   }),
-  createBatch: flow(function* getBatches(vendorName, orders) {
-    const info = (yield client.mutate({
+  async createBatch(vendorName, orders) {
+    let info = await client.mutate({
       mutation: CREATE_BATCH,
       variables: {
         vendorName: vendorName,  
         orders: orders
       }
-    })) 
+    });
     return info.data.batch; //Return batches.
-  }),
-
+  },
 })).views(self => ({
   numPending() {
     return self.pending.length

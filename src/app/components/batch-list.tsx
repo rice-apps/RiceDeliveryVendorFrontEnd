@@ -34,7 +34,7 @@ export class BatchList extends React.Component<BatchListProps, any> {
                 <FlatList
                 style={styles.flatList}
                 data= {orders}
-                keyExtractor={(item, index) => item.id.toString()}
+                keyExtractor={(item, index) => item.toString()}
                 renderItem={({item}) => 
                     <BatchListItem order={item}></BatchListItem>
                 }

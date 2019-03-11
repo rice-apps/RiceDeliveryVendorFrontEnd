@@ -32,6 +32,8 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     }
     
     render() {
+        console.log("batch-list-item");
+        // console.log(this.props.order);
         var { firstName, lastName } = this.props.order.user;
         var { location } = this.props.order;
         var { pending, onTheWay, fulfilled } = this.props.order.status;
@@ -42,6 +44,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
             accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
 
         return (
+
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
