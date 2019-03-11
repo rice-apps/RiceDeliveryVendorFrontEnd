@@ -3,26 +3,31 @@ import { View, FlatList, StyleSheet, Text } from 'react-native';
 import BatchListItem from './batch-list-item';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { color } from '../../theme'
+import { inject, observer } from 'mobx-react';
+import { Batch } from '../stores/order-store';
 
-import { Batch } from './temporary-mock-order'
+
 // Using temporary Batch object
   
 interface BatchListProps {
-    batch : Batch
+    batch?: Batch;
+
 }
 
+@inject("rootStore")
+@observer
 export class BatchList extends React.Component<BatchListProps, any> {
     constructor(props) {
         super(props)
     }
     
     render() {
-        let { orders, batchNumber } = this.props.batch;
+        let { _id, orders } = this.props.batch;
         return (
             <View style={styles.flatList}>
                 <View style={styles.bodyText}>
                     <Text style={styles.bodyText}>
-                        Batch {batchNumber}
+                        Batch {_id}
                         <Icon name="navigate-next" size={30} color="black" />
                     </Text>
                 </View>

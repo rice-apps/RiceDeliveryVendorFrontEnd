@@ -1,5 +1,5 @@
-import { types, flow, getSnapshot } from "mobx-state-tree"
 import {toJS } from "mobx"
+import { types, flow, getSnapshot } from "mobx-state-tree"
 import { Location } from "./location-store"
 import gql from 'graphql-tag'
 import { client } from '../../app/main'
@@ -64,11 +64,6 @@ export const OrderModel = types.model("OrderModel", {
     })) 
     if (info.data.order.length === 0) {return 0}
     self.pending = pageNum === 1 ? info.data.order : self.pending.toJS().concat(info.data.order);
-    console.log("pageNum: " + pageNum)
-    console.log(info.data.order)
-    console.log(self.pending.toJS())
-
-
     return self.pending;
   }),
   getBatches: flow(function* getBatches() {
@@ -76,22 +71,43 @@ export const OrderModel = types.model("OrderModel", {
     const info = (yield client.query({
       query: GET_BATCHES,
       variables: {
-        vendorName: "The Hoot"
+        vendorName: "East West Tea"  //Hardcoding East West Tea for now.
       }
     })) 
-    // self.onTheWay = info.data.batch;
-    // return self.pending.length;
+    return info.data.batch; //Return batches.
+
   }),
+  createBatch: flow(function* getBatches(vendorName, orders) {
+    const info = (yield client.mutate({
+      mutation: CREATE_BATCH,
+      variables: {
+        vendorName: vendorName,  
+        orders: orders
+      }
+    })) 
+    return info.data.batch; //Return batches.
+  }),
+
 })).views(self => ({
   numPending() {
     return self.pending.length
   }
-})) //
+})) 
+
+export type Batch = typeof Batch.Type;
+
 
 const GET_BATCHES = gql`
-  query batches($vendorName: String!) {
-    batch(vendorName: $vendorName) {
+  query queryBatch($batchID: String, $vendorName: String!) {
+    batch(batchID: $batchID, vendorName: $vendorName) {
       _id
+      orders {
+        id
+        amount
+        charge
+        created
+        customer
+      }
     }
   }
 `
@@ -128,4 +144,19 @@ const GET_ORDER_STORE = gql`
   }
 `
 
+// Create a new batch.
+const CREATE_BATCH = gql`
+  mutation createBatch($orders: [String], $vendorName: String) {
+    createBatch(orders: $orders, vendorName: $vendorName) {
+      _id
+      orders {
+        id
+        amount
+        charge
+        created
+        customer
+      }
+    }
+  }
+`
 
