@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import { withNavigation } from "react-navigation"
-import Icon from "react-native-vector-icons/FontAwesome"
+import {Icon} from "react-native-elements"
 import * as css from "./style"
 import { observer, inject } from "mobx-react"
 import { Order } from "../stores/order-store"
@@ -45,16 +45,19 @@ class OrderListItem extends React.Component<any, any> {
         <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
           <View style={css.orderListItem.row_cell}>
             <Text style={css.orderListItem.row_location}> {this.props.order.location.name} </Text>
-            <Text style={css.orderListItem.row_name}> {this.props.order.customerName}</Text>
+            <Text style={css.orderListItem.row_name}> {this.props.order.customerName} </Text>
             <Text style={css.orderListItem.row_time}>
               {" "}
-              {this.getDate(this.props.order.created)}
+              Ordered at: {this.getDate(this.props.order.created)}
             </Text>
           </View>
           <Icon
-            name={this.props.selected ? "add" : "add"}
-            size={this.props.selected ? 30 : 50}
-            color="black"
+            name={this.props.selected ? "remove" : "add"}
+            type="material"
+            size={this.props.selected ? 20 : 20}
+            color="grey"
+            reverse={false}
+            raised={true}
             onPress={this.addOrderPress}
           />
         </View>

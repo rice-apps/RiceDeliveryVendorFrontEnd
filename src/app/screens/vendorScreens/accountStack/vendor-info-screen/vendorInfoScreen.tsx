@@ -4,6 +4,7 @@ import { Input } from "react-native-elements"
 import { inject, observer } from "mobx-react"
 import * as css from "../../../style"
 import PrimaryButton from "../../../../components/primary-button"
+import { RootStore } from "../../../../stores/root-store";
 
 interface VendorInfoScreenProps {
   // injected props

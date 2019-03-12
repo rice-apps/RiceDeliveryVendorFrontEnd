@@ -55,24 +55,15 @@ export const OrderModel = types
       return self.pending
     },
     queryOrders: flow(function* queryOrders(pageNum) {
-      let variables = {
-        vendorName: "East West Tea",
-      }
-      if (pageNum > 1) {
-        variables.starting_after = self.pending[self.pending.toJS().length - 1].id
-      }
+      let variables = { vendorName: "East West Tea", status: "created" }
+      // if page number is greater than 1, then start pagination!
+      if (pageNum > 1) variables.starting_after = self.pending[self.pending.toJS().length - 1].id 
       const info = yield client.query({
         query: GET_ORDER_STORE,
         variables,
       })
-      if (info.data.order.length === 0) {
-        return 0
-      }
+      if (info.data.order.length === 0) return 0
       self.pending = pageNum === 1 ? info.data.order : self.pending.toJS().concat(info.data.order)
-      console.log("pageNum: " + pageNum)
-      console.log(info.data.order)
-      console.log(self.pending.toJS())
-
       return self.pending
     }),
     getBatches: flow(function* getBatches() {
@@ -102,8 +93,8 @@ const GET_BATCHES = gql`
 `
 // Query info for the orderStore.
 const GET_ORDER_STORE = gql`
-  query queryOrders($vendorName: String!, $starting_after: String) {
-    order(vendorName: $vendorName, starting_after: $starting_after) {
+  query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
+    order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
       id
       amount
       created
