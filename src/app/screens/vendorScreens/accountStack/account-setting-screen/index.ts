@@ -1,1 +1,1 @@
-export * from './accountSettingScreen'
+export * from "./accountSettingScreen"

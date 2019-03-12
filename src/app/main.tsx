@@ -4,10 +4,10 @@
 
 import { AppRegistry } from "react-native"
 import { RootComponent } from "./root-component"
-import { ApolloProvider } from 'react-apollo'
-import { ApolloClient } from 'apollo-client'
-import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloProvider } from "react-apollo"
+import { ApolloClient } from "apollo-client"
+import { createHttpLink } from "apollo-link-http"
+import { InMemoryCache } from "apollo-cache-inmemory"
 
 /**
  * This needs to match what's found in your app_delegate.m and MainActivity.java.
@@ -15,7 +15,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 const APP_NAME = "testIgniteProject"
 
 const link = createHttpLink({
-  uri: 'http://localhost:3000/graphql'
+  uri: "http://localhost:3000/graphql",
 })
 
 export const client = new ApolloClient({
@@ -23,10 +23,10 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {
-      fetchPolicy: 'no-cache'
-    }
-  }
-});
+      fetchPolicy: "no-cache",
+    },
+  },
+})
 
 // Should we show storybook instead of our app?
 //
@@ -38,4 +38,3 @@ declare global {
 }
 
 AppRegistry.registerComponent(APP_NAME, () => RootComponent)
-

@@ -1,1 +1,1 @@
-export * from './vendorInfoScreen'
+export * from "./vendorInfoScreen"

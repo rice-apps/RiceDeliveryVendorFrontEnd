@@ -1,1 +1,1 @@
-export * from './singleOrderScreen'
+export * from "./singleOrderScreen"
