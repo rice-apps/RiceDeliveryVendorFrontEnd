@@ -35,9 +35,6 @@ export class SingleOrderScreen extends React.Component<any, any> {
         {weekday: "short", hour: "numeric", minute: "numeric"})
   }
 
-  
-  
-
   render() {
     
     let order  = this.props.navigation.state.params.order;

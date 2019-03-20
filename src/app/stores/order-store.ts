@@ -1,4 +1,3 @@
-import {toJS } from "mobx"
 import { types, flow, getSnapshot } from "mobx-state-tree"
 import { Location } from "./location-store"
 import gql from 'graphql-tag'

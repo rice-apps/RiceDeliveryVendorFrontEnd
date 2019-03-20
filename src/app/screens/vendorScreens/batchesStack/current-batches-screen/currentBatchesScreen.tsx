@@ -7,6 +7,7 @@ import { BatchList } from '../../../../components/batch-list';
 import * as css from "../../../style"
 import LoadingScreen from '../../loading-screen';
 import { Batch } from '../../../../stores/order-store'
+import BatchListItem from '../../../../components/batch-list-item';
 
 interface CurrentBatchesScreenProps {
   // injected props
@@ -37,7 +38,6 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
   
   async componentWillMount() {
     let batches = await this.getBatches();      
-    console.log(batches);
     this.setState({isLoading: false, batches: batches})
   }
   
@@ -54,7 +54,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
                   }
                   keyExtractor={(item, index) => item._id.toString()}
                   renderItem={({item, index}) => 
-                      <BatchList batch={item}></BatchList>
+                      <BatchListItem batch={item}></BatchListItem>
                   }
                 />
   

@@ -27,18 +27,18 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     }
 
     render() {
-        let location = this.props.order.location.name;
-        let customerName = this.props.order.customerName;
-        let paymentStatus = this.props.order.paymentStatus;
+        console.log("im batchlistitem");
+        console.log(this.props);
+
         return (
 
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
                         
-                        <Text style={styles.row_location}> {location} </Text>
-                        <Text style={styles.row_name}> {customerName}</Text>
-                        <Text style={styles.row_time}> {paymentStatus}</Text>
+                        <Text style={styles.row_location}> Batch {this.props.batch._id} </Text>  {/*Need to update mobxstore to change this}
+                        {/* <Text style={styles.row_name}> {customerName}</Text>
+                        <Text style={styles.row_time}> {paymentStatus}</Text>  */}
                     </View>
 
                     <TouchableHighlight onPress={this.addOrderPress}>
