@@ -27,7 +27,7 @@ export class BatchList extends React.Component<BatchListProps, any> {
             <View style={styles.flatList}>
                 <View style={styles.bodyText}>
                     <Text style={styles.bodyText}>
-                        Batch {_id}
+                        Batch {1}
                         <Icon name="navigate-next" size={30} color="black" />
                     </Text>
                 </View>

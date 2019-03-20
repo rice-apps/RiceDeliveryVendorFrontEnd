@@ -67,7 +67,6 @@ export const OrderModel = types.model("OrderModel", {
     return self.pending;
   }),
   getBatches: flow(function* getBatches() {
-    //TODO: batch resolvers.
     const info = (yield client.query({
       query: GET_BATCHES,
       variables: {
@@ -120,21 +119,42 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
   }
 }
 `
-
 const GET_BATCHES = gql`
-  query queryBatch($batchID: String, $vendorName: String!) {
-    batch(batchID: $batchID, vendorName: $vendorName) {
-      _id
-      orders {
-        id
+query queryBatch($batchID: String, $vendorName: String!) {
+  batch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    orders {
+      id
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
         amount
-        charge
-        created
-        customer
+        description
+        parent
+        quantity
       }
     }
   }
+}
 `
+
 // Query info for the orderStore.
 const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String ) {

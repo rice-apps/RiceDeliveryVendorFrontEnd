@@ -34,7 +34,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, any>
   }
 
   async componentWillMount() {
-    await this.props.rootStore.orders.queryOrders(1)
+    await this.props.rootStore.orders.queryOrders(1);
     this.setState({
       loading: false 
     })

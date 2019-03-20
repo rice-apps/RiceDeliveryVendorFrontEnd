@@ -26,30 +26,19 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
         }); 
     }
 
-    // Define action when pressing "plus" button
-    addOrderPress() {
-        console.log("Trying to add order");
-    }
-    
     render() {
-      
-        var { firstName, lastName } = this.props.order.user;
-        var { location } = this.props.order;
-        var { pending, onTheWay, fulfilled } = this.props.order.status;
-
-        // Fold all item names and quantities down to single string
-        // actually, don't need to display order items, but still keeping this line
-        var items = this.props.order.items.reduce((accu, curr) => 
-            accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
-
+        let location = this.props.order.location.name;
+        let customerName = this.props.order.customerName;
+        let paymentStatus = this.props.order.paymentStatus;
         return (
 
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
+                        
                         <Text style={styles.row_location}> {location} </Text>
-                        <Text style={styles.row_name}> {firstName + ' ' + lastName}</Text>
-                        <Text style={styles.row_time}> {pending}</Text>
+                        <Text style={styles.row_name}> {customerName}</Text>
+                        <Text style={styles.row_time}> {paymentStatus}</Text>
                     </View>
 
                     <TouchableHighlight onPress={this.addOrderPress}>
