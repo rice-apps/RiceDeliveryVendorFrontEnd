@@ -40,6 +40,7 @@ class LoginScreen extends React.Component<LoginScreenProps, { modalVisible: bool
 
     onFailure() {
         this.setState({ modalVisible: false }, () => {
+            // TODO: Change this to screen indicating they don't have permission
             (() => { this.props.navigation.replace("Login") })();
         }
         );
