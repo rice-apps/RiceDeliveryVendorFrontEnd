@@ -15,6 +15,7 @@ import { VendorInfoScreen } from "../app/screens/vendorScreens/accountStack/vend
 import { HoursOperationScreen } from "../app/screens/vendorScreens/accountStack/hours-operation-screen"
 import { MenuScreen } from "../app/screens/vendorScreens/accountStack/menu-screen"
 import { TransactionHistScreen } from "../app/screens/vendorScreens/accountStack/transaction-hist-screen"
+import SingleDayScreen from "../app/screens/vendorScreens/accountStack/hours-operation-screen/singleDayScreen";
 
 //orderStack
 const OrdersStackNavigator = createStackNavigator({
@@ -58,8 +59,11 @@ const accountStackNavigator = createStackNavigator({
   HoursOperation: {
     screen: HoursOperationScreen,
     navigationOptions: {
-      title: "Hours of Operation Info",
-    },
+      title: "Hours of Operation"
+    }
+  },
+  SingleDay: {
+    screen: SingleDayScreen
   },
   Menu: {
     screen: MenuScreen,
@@ -70,7 +74,7 @@ const accountStackNavigator = createStackNavigator({
   TransactionHist: {
     screen: TransactionHistScreen,
     navigationOptions: {
-      title: "TransactionHist",
+      title: "Transaction History",
     },
   },
 })

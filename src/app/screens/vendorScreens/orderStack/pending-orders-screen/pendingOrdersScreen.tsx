@@ -85,6 +85,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
         displayNetworkError: false,
       })
     } catch {
+      console.log("Caught error")
       this.setState({
         loading: false,
         displayNetworkError: true,

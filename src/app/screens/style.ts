@@ -9,6 +9,13 @@ const LIGHT_GRAY = "#DCDCDC"
 const FONT_FAMILY = "Verdana"
 
 //SCREENS
+
+export const debugScreen = StyleSheet.create({
+  borderColorRed: {
+    borderColor: "red",
+    borderWidth: 1
+    }
+})
 export const screen = StyleSheet.create({
   defaultScreen: {
     flex: 1,
@@ -23,10 +30,18 @@ export const screen = StyleSheet.create({
   padding: {
     padding: 10,
   },
+  startContent: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
   centerContent: {
     justifyContent: "center",
     alignItems: "center",
   },
+  flex: {
+    flex: 1
+  },
+  
   paddedScreen: {
     flex: 1,
     padding: 10,
