@@ -56,7 +56,7 @@ class OrderListItem extends React.Component<any, any> {
             type="material"
             size={this.props.selected ? 20 : 20}
             color="grey"
-            reverse={false}
+          reverse={false}
             raised={true}
             onPress={this.addOrderPress}
           />

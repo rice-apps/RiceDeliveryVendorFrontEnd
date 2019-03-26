@@ -13,7 +13,6 @@ import { client } from "../../../../../app/main"
 
 import gql from "graphql-tag"
 import * as css from "../../../style"
-import * as componentCSS from "../../../../components/style"
 import { OrderList } from "../../../../components/order-list"
 import PrimaryButton from "../../../../components/primary-button"
 import SecondaryButton from "../../../../components/secondary-button"

@@ -38,6 +38,16 @@ export const button = StyleSheet.create({
   },
 })
 
+//PICKER
+export const picker = StyleSheet.create({
+  locationPicker: {
+      height: 1, 
+      width: 100, 
+      padding: 0, 
+      margin: 0,
+  }
+});
+
 export const orderList = StyleSheet.create({
   container: {
     flex: 1,

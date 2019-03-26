@@ -67,30 +67,96 @@ export const OrderModel = types
       return self.pending
     }),
     getBatches: flow(function* getBatches() {
-      //TODO: batch resolvers.
-      const info = yield client.query({
+      const info = (yield client.query({
         query: GET_BATCHES,
         variables: {
-          vendorName: "The Hoot",
-        },
-      })
-      // self.onTheWay = info.data.batch;
-      // return self.pending.length;
+          vendorName: "East West Tea"  //Hardcoding East West Tea for now.
+        }
+      })) 
+      return info.data.batch; //Return batches.
+  
     }),
-  }))
-  .views(self => ({
+    async createBatch(vendorName, orders) {
+      let info = await client.mutate({
+        mutation: CREATE_BATCH,
+        variables: {
+          vendorName: vendorName,  
+          orders: orders
+        }
+      });
+      return info.data.batch; //Return batches.
+    },
+    async addToBatch(vendorName, orders, batchID) {
+      let info = await client.mutate({
+        mutation: ADD_TO_BATCH,
+        variables: {
+          vendorName: vendorName,  
+          orders: orders,
+          batchID: batchID
+        }
+      });
+      return info.data.batch; //Return batches.
+    },
+  })).views(self => ({
     numPending() {
       return self.pending.length
-    },
-  })) //
+    }
+  })) 
 
-const GET_BATCHES = gql`
-  query batches($vendorName: String!) {
-    batch(vendorName: $vendorName) {
-      _id
+
+
+export type Batch = typeof Batch.Type;
+
+const ADD_TO_BATCH = gql`
+mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) {
+  addToBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
+    _id
+    orders {
+      id
+      amount
+      charge
+      created
+      customer
     }
   }
+}
 `
+const GET_BATCHES = gql`
+query queryBatch($batchID: String, $vendorName: String!) {
+  batch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    orders {
+      id
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
+    }
+  }
+}
+`
+
 // Query info for the orderStore.
 const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
@@ -122,3 +188,20 @@ const GET_ORDER_STORE = gql`
     }
   }
 `
+
+// Create a new batch.
+const CREATE_BATCH = gql`
+  mutation createBatch($orders: [String], $vendorName: String) {
+    createBatch(orders: $orders, vendorName: $vendorName) {
+      _id
+      orders {
+        id
+        amount
+        charge
+        created
+        customer
+      }
+    }
+  }
+`
+
