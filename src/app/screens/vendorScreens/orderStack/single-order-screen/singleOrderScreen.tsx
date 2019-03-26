@@ -72,7 +72,6 @@ export class SingleOrderScreen extends React.Component<any, any> {
     let products = order.items
     let allItems = this.getItems()
     let name = order.customerName.split(" ")[0]
-    // console.log(name)
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>

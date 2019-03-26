@@ -4,7 +4,6 @@ import { setupRootStore } from "./setup-root-store"
 import { RootNavigator } from "../navigation/root-navigator"
 import { RootStore } from "./stores/root-store"
 import { Provider } from "mobx-react"
-import { BackButtonHandler } from "../navigation/back-button-handler"
 import { contains } from "ramda"
 import SplashScreen from "react-native-splash-screen"
 import { YellowBox, View, StyleSheet, StatusBar, Platform } from "react-native"
@@ -68,10 +67,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
               <StatusBar />
             </View>
             <Header /> */}
-        <RootNavigator
-          renderLoadingExperimental={() => <LoadingScreen />}
-          persistenceKey={"NavigationStat"}
-        />
+        <RootNavigator/>
         {/* </View> */}
       </Provider>
     )
