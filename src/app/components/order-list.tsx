@@ -141,7 +141,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           <View style={componentCSS.containers.batchContainer}>
             <PrimaryButton title="Add to Batch" onPress={this.addToBatch} />
             <SecondaryButton title="Create Batch" onPress={this.createBatch} />
-          </View>,
+          </View>
         )}
       </View>
     )
