@@ -1,1 +1,1 @@
-export * from './currentBatchesScreen'
+export * from "./currentBatchesScreen"

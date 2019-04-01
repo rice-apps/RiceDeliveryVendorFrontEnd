@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -13,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* testIgniteProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* testIgniteProjectTests.m */; };
 		05F22AC9616F439DA1635DFB /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFDD9336F0124129B39E0B31 /* Montserrat-SemiBoldItalic.ttf */; };
+		084228E077944C1599775F5C /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A9AF5E764143F1A1337F74 /* libRNCookieManagerIOS.a */; };
 		13381310F72B447FA03C70B9 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3B5A7DE0A6481889B1A717 /* FontAwesome.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -75,7 +77,6 @@
 		EA1C383A9ABC4DA79C350909 /* libRNI18n-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413A2FACECEA4653830135EB /* libRNI18n-tvOS.a */; };
 		F53E3527C2A14B84AD8D57B9 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79E924CA6A1345209F390628 /* Montserrat-Black.ttf */; };
 		FDEA42A391CF43A4B8961169 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9E0B74428E24A1D9BA5C6AC /* libRNVectorIcons.a */; };
-		084228E077944C1599775F5C /* libRNCookieManagerIOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A9AF5E764143F1A1337F74 /* libRNCookieManagerIOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -345,6 +346,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		9C82C6C92249DC65006F517A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 91AD8B3486FA490BBD1183FA /* RNCookieManagerIOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1BD725DA1CF77A8B005DBD79;
+			remoteInfo = RNCookieManagerIOS;
+		};
 		9CB011F72177E4610053E58D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C326983337AA4E278546CFEB /* RNI18n.xcodeproj */;
@@ -440,6 +448,7 @@
 		32D16F6D3B3C4A79AC40563A /* libRNKeychain.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNKeychain.a; sourceTree = "<group>"; };
 		3454EC6BDA504EFD892A660B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		361534ADDAF2436F977E446B /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../src/theme/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
+		38A9AF5E764143F1A1337F74 /* libRNCookieManagerIOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCookieManagerIOS.a; sourceTree = "<group>"; };
 		3F902AAC1FBF41188957CB0D /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../src/theme/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
 		413A2FACECEA4653830135EB /* libRNI18n-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNI18n-tvOS.a"; sourceTree = "<group>"; };
 		41D318E89D2E4A67A4328CEC /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../src/theme/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
@@ -454,6 +463,7 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8E1F962C92984FA18D3A4C93 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../src/theme/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
 		90862204541945F4A829F28A /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../src/theme/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
+		91AD8B3486FA490BBD1183FA /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCookieManagerIOS.xcodeproj; path = "../node_modules/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; };
 		9B3F82C41076480FA592E24B /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ThinItalic.ttf"; path = "../src/theme/fonts/Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
 		9DEEB6330CE549E69059F079 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../src/theme/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		AB26C32E6B464823AD917FDA /* libRNI18n.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNI18n.a; sourceTree = "<group>"; };
@@ -472,8 +482,6 @@
 		F3B348D7124B4C84BE241833 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		FFCB910AA14F466A8D318E00 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		FFF92B74575D452596FA78B2 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../src/theme/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
-		91AD8B3486FA490BBD1183FA /* RNCookieManagerIOS.xcodeproj */ = {isa = PBXFileReference; name = "RNCookieManagerIOS.xcodeproj"; path = "../node_modules/react-native-cookies/ios/RNCookieManagerIOS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		38A9AF5E764143F1A1337F74 /* libRNCookieManagerIOS.a */ = {isa = PBXFileReference; name = "libRNCookieManagerIOS.a"; path = "libRNCookieManagerIOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -779,6 +787,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9C82C6C62249DC65006F517A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C82C6CA2249DC65006F517A /* libRNCookieManagerIOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9CB011C92177E45B0053E58D /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,6 +803,7 @@
 				2DC9447299D749F6A5DD1D80 /* libSplashScreen.a */,
 				413A2FACECEA4653830135EB /* libRNI18n-tvOS.a */,
 				B9E0B74428E24A1D9BA5C6AC /* libRNVectorIcons.a */,
+				38A9AF5E764143F1A1337F74 /* libRNCookieManagerIOS.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -998,6 +1015,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 9C82C6C62249DC65006F517A /* Products */;
+					ProjectRef = 91AD8B3486FA490BBD1183FA /* RNCookieManagerIOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 9CB011EF2177E4600053E58D /* Products */;
@@ -1277,6 +1298,13 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C82C6CA2249DC65006F517A /* libRNCookieManagerIOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCookieManagerIOS.a;
+			remoteRef = 9C82C6C92249DC65006F517A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9CB011F82177E4610053E58D /* libRNI18n.a */ = {

@@ -1,1 +1,1 @@
-export * from './menuScreen'
+export * from "./menuScreen"

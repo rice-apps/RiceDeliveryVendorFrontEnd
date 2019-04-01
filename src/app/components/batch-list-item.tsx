@@ -21,38 +21,28 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
 
     // Define action when pressing entire list item
     singleOrderPress() {
-        this.props.navigation.navigate('SingleOrder', {
-            order : this.props.order,
+        this.props.navigation.navigate('SingleBatchList', {
+            batch : this.props.batch,
         }); 
     }
 
-    // Define action when pressing "plus" button
     addOrderPress() {
-        console.log("Trying to add order");
+      console.log("Trying to add order");
     }
-    
-    render() {
-        var { firstName, lastName } = this.props.order.user;
-        var { location } = this.props.order;
-        var { pending, onTheWay, fulfilled } = this.props.order.status;
 
-        // Fold all item names and quantities down to single string
-        // actually, don't need to display order items, but still keeping this line
-        var items = this.props.order.items.reduce((accu, curr) => 
-            accu + curr.item.itemName + " x" + curr.quantity.toString() + "  ", "");
+    render() {
+        console.log("im batchlistitem");
+        console.log(this.props);
 
         return (
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
-                        <Text style={styles.row_location}> {location} </Text>
-                        <Text style={styles.row_name}> {firstName + ' ' + lastName}</Text>
-                        <Text style={styles.row_time}> {pending}</Text>
+                        <Text style={styles.row_time}> Batch {this.props.batch._id} </Text>  {/*Need to update mobxstore to change this}
+                        {/* <Text style={styles.row_name}> {customerName}</Text>
+                        <Text style={styles.row_time}> {paymentStatus}</Text>  */}
                     </View>
-
-                    <TouchableHighlight onPress={this.addOrderPress}>
-                        <Icon name="chevron-right" size={50} color="black" />
-                    </TouchableHighlight>
+                    <Icon name="chevron-right" size={50} color="black" />
                     
                 </View>
             </TouchableHighlight>

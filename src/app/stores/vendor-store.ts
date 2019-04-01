@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree"
-import { Location} from "./location-store"
-import { client } from "../main";
-import gql from "graphql-tag";
+import { Location } from "./location-store"
+import { client } from "../main"
+import gql from "graphql-tag"
 
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
@@ -13,23 +13,23 @@ const AUTHENTICATION = gql`
         }
     }    
 `
-const User = types
-.model('User', {
-    // _id: types.string,
-    netID: types.optional(types.string, ""),
-    firstName: types.optional(types.string, ""),
-    lastName: types.optional(types.string, ""),
-    phone: types.optional(types.string, ""),
-    // defaultLocation: types.optional(Location, {name: ""}),
+const User = types.model("User", {
+  // _id: types.string,
+  netID: types.optional(types.string, ""),
+  firstName: types.optional(types.string, ""),
+  lastName: types.optional(types.string, ""),
+  phone: types.optional(types.string, ""),
+  // defaultLocation: types.optional(Location, {name: ""}),
 })
 
-export const VendorStoreModel = types.model("VendorStoreModel", {
+export const VendorStoreModel = types
+  .model("VendorStoreModel", {
     id: types.optional(types.string, ""),
     phone: types.optional(types.string, ""),
     name: types.optional(types.string, ""),
     hours: types.optional(types.array(types.array(types.number)), []),
-    locationOptions: types.optional(Location, {}),  
-    user : types.optional(User, {}),
+    locationOptions: types.optional(Location, {}),
+    user: types.optional(User, {}),
     authenticated: types.optional(types.boolean, false),
     hasAccount: types.optional(types.boolean, false),
     attemptedLogin: types.optional(types.boolean, false)

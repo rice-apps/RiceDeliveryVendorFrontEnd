@@ -1,51 +1,52 @@
-# Helpful links for general front-end development learning 
-- What is react-native? http://www.reactnativeexpress.com/environment
-- What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
-- Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+# Helpful links for general front-end development learning
+
+* What is react-native? http://www.reactnativeexpress.com/environment
+* What is mobx state tree? https://hackernoon.com/becoming-fully-reactive-an-in-depth-explanation-of-mobservable-55995262a254
+* Don't want to use your typical terminal on your mac? Upgrade to Fish! Fish is a shell with really cool features that you can customize on a web interface: https://lobster1234.github.io/2017/04/08/setting-up-fish-and-iterm2/
+
 # Developer workflow:
 
-
-1. Pull the master branch 
+1.  Pull the master branch
 
     `git pull origin master`
 
-2. Create bug / feature branch: 
+2.  Create bug / feature branch:
 
     `git checkout -b <branch name>`
 
-3. Make changes and make as many commits as need be. Make sure to name commits starting with branch name! e.g. if branch name is FEATURE 1, make the commit message: 'FEATURE 1: blah blah blah'
+3.  Make changes and make as many commits as need be. Make sure to name commits starting with branch name! e.g. if branch name is FEATURE 1, make the commit message: 'FEATURE 1: blah blah blah'
 
-4. squash to 1 commit: 
+4.  squash to 1 commit:
 
     `git rebase -i HEAD~<Number of commits>`
 
-5. checkout the master branch: 
+5.  checkout the master branch:
 
-   `git checkout master`
+    `git checkout master`
 
-6. pull the master branch: 
+6.  pull the master branch:
 
-   `git pull origin master`
+    `git pull origin master`
 
-7. checkout feature branch: 
+7.  checkout feature branch:
 
-   `git checkout <branch name>`
+    `git checkout <branch name>`
 
-8. rebase from master: 
+8.  rebase from master:
 
-   `git rebase master`
+    `git rebase master`
 
-9. push feature branch up: 
+9.  push feature branch up:
 
     `git push origin <branchname> --force`
 
 # Installation instructions
 
-- Install Homebrew, a package manager:
+* Install Homebrew, a package manager:
 
   `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
-- Install react-native: https://facebook.github.io/react-native/docs/getting-started
+* Install react-native: https://facebook.github.io/react-native/docs/getting-started
 
   `brew install node`
 
@@ -55,11 +56,11 @@
 
   `npm install -g react-native-cli`
 
-- Install Ignite: https://github.com/infinitered/ignite
+* Install Ignite: https://github.com/infinitered/ignite
 
   `npm install -g ignite-cli`
 
-- Make sure you have Xcode 9.4.1: https://developer.apple.com/download/more/. Once you have it installed it and unzipped the file, rename it to Xcode9.4.1 and drag it into your application folder. Then run: 
+* Make sure you have Xcode 9.4.1: https://developer.apple.com/download/more/. Once you have it installed it and unzipped the file, rename it to Xcode9.4.1 and drag it into your application folder. Then run:
 
   `sudo xcode-select -s /Applications/Xcode9.4.1.app/Contents/Developer`
 
@@ -68,18 +69,17 @@
   you should see this pop up in your terminal:
   `/Applications/Xcode9b1.app/Contents/Developer`
 
-- start boilerplate by running: 
+* start boilerplate by running:
 
   `yarn install` - this installs all the dependencies needed for the project.
-  - If you don't have yarn installed: run `brew install yarn` 
 
-  `react-native run-ios` - this runs the ios simulator. 
+  * If you don't have yarn installed: run `brew install yarn`
 
-#  testIgniteProject
+  `react-native run-ios` - this runs the ios simulator.
+
+# testIgniteProject
 
 [![Build Status](https://semaphoreci.com/api/v1/ir/ignite-ir-boilerplate-bowser/branches/master/badge.svg)](https://semaphoreci.com/ir/ignite-ir-boilerplate-bowser)
-
-
 
 ## The latest and greatest boilerplate for Infinite Red opinions
 
@@ -149,7 +149,6 @@ For example: A custom `Button` component would have the main component file, and
 
 This is a departure from the previous boilerplate, which grouped files by type (components together, styles together, tests together, images together, etc.). One feature of this new approach is the use of index files which export specific functions from files in the directory to create a public interface for each "thing", or "feature. You'll see that pattern quite a bit in this boilerplate.
 
-
 ## ./src directory
 
 Included in an Ignite boilerplate project is the src directory. This is a directory you would normally have to create when using vanilla React Native.
@@ -170,6 +169,7 @@ src
 
 **app**
 This is where a lot of your app's initialization takes place. Here you'll find:
+
 * root-component.tsx - This is the root component of your app that will render your navigators and other views.
 
 **i18n**
@@ -205,6 +205,7 @@ This directory will hold your Jest configs and mocks, as well as your [storyshot
 The `ignite` directory stores all things Ignite, including CLI and boilerplate items. Here you will find generators, plugins and examples to help you get started with React Native.
 
 ## Running Storybook
+
 From the command line in your generated app's root directory, enter `yarn run storybook`
 This starts up the storybook server.
 

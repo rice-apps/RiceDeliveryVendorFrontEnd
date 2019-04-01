@@ -9,7 +9,7 @@ import { Order } from "../stores/order-store"
 
 @inject("rootStore")
 @observer
-class OrderListItem extends React.Component<any, any> {
+class BatchOrderListItem extends React.Component<any, any> {
   constructor(props) {
     super(props)
     this.singleOrderPress = this.singleOrderPress.bind(this)
@@ -68,4 +68,4 @@ class OrderListItem extends React.Component<any, any> {
 
 // Because this component is not a screen, it is not automatically passed the
 // "navigation" prop, thus, we have to use this wrapper "withNavigation"
-export default withNavigation(OrderListItem)
+export default withNavigation(BatchOrderListItem)
