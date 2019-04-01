@@ -10,6 +10,7 @@ import * as css from "../../../style"
 import { client } from "../../../../main"
 import LoadingScreen from "../../loading-screen"
 import { NavigationEvents } from 'react-navigation';
+import {material} from 'react-native-typography';
 import gql from "graphql-tag";
 
 const GET_SKU = gql`
@@ -108,10 +109,10 @@ export class SingleOrderScreen extends React.Component<any, any> {
     if (item.quantity) {
       return (
         <View>
-          <Text>
+          <Text style={material.body2}>
             {`${item.quantity}x ${item.description}`}
           </Text>
-          <Text>
+          <Text style={material.caption}>
             {item.attributes.join(" ")}
           </Text>
         </View>
@@ -135,26 +136,27 @@ export class SingleOrderScreen extends React.Component<any, any> {
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>
-          <Text style={css.text.headerText}>{name}'s Order</Text>
-          <Text style={css.text.bodyText}>{" " + email}</Text>
-          <Text style={css.text.smallText}>{" Ordered on " + date}</Text>
+          <Text style={[material.display3, {color: "black"}]}>{name}'s Order</Text>
+          <Text style={material.subheading}>{email + " | " + "Ordered on " + date}</Text>
         </View>
+        <Divider />
         <View style={styleLocal.location}>
-          <Text style={css.text.bigBodyText}>Location: {location} </Text>
-          <Text style={css.text.bigBodyText}>Status: {status}</Text>
-
+          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Location: {location} </Text>
+          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Status: {status}</Text>
         </View>
         <View style={styleLocal.details}>
-        <Text style={css.text.bigBodyText}>Order Details</Text>
-        <FlatList 
-          data={this.state.order ? this.state.order.items : []}
-          renderItem={this.renderItems}
-          keyExtractor={(item, index) => index.toString()}
-        />
+          
+          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Order Details</Text>
+          <View style={styleLocal.listContainer}>
+            <FlatList 
+              data={this.state.order ? this.state.order.items : []}
+              renderItem={this.renderItems}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
         </View>
         <View style={styleLocal.buttons}>
           <PrimaryButton title="Cancel Order" />
-
           <SecondaryButton title="Fulfill Order" />
         </View>
       </View>
@@ -167,32 +169,49 @@ const styleLocal = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10
+    padding: 10,
+
+
   }, 
   header: {
-    borderColor: "red",
-    borderWidth: 2,
-    width: "100%"
+    // borderColor: "red",
+    // borderWidth: 2,
+    width: "100%",
+    paddingBottom: 10,
+    paddingTop: 10,
+    borderBottomColor: "grey",
+    borderBottomWidth: StyleSheet.hairlineWidth
   },
   location: {
-    borderColor: "black",
-    borderWidth: 2,
-    width: "100%"
+    // borderColor: "black",
+    // borderWidth: 2,
+    paddingBottom: 10,
+    paddingTop: 10,
+    width: "100%",
+    borderBottomColor: "grey",
+    borderBottomWidth: StyleSheet.hairlineWidth
 
   },
   details: {
-    borderColor: "blue",
-    borderWidth: 2,
-    width: "100%"
+    // borderColor: "blue",
+    // borderWidth: 2,
+    paddingBottom: 10,
+    paddingTop: 10,
+    width: "100%",
+    borderBottomColor: "grey",
+    borderBottomWidth: StyleSheet.hairlineWidth
   }, 
   buttons: {
-    borderColor: "green",
-    borderWidth: 2,
+    // borderColor: "green",
+    // borderWidth: 2,
     width: "100%"
 
   },
   headerText: {
     fontSize: 30
+  },
+  listContainer: {
+    width: "100%",
+    paddingLeft: 5
   }
 })
