@@ -98,16 +98,22 @@ export class AuthenticationComponent extends React.Component<
 
     var equalSignIndex = webViewState.url.indexOf("ticket=") + 1
     if (equalSignIndex > 0) {
-      var ticket = webViewState.url.substring(equalSignIndex + 6)
-      console.log("Parsed Ticket: " + ticket)
-      let badTicket = "28939299239"
-      await this.state.vendorStore.authenticate(ticket)
-      console.log("Authenticated")
-      let authenticated = this.state.vendorStore.authenticated
-      console.log("Post Auth")
-      console.log(authenticated)
+      var ticket = webViewState.url.substring(equalSignIndex + 6);
+      console.log("Parsed Ticket: " + ticket);
+      let badTicket = "28939299239";
+      await this.state.vendorStore.authenticate(ticket);
+      console.log("Authenticated");
+      let authenticated = this.state.vendorStore.authenticated;
+      let attempted = this.state.vendorStore.attemptedLogin;
+      console.log("Post Auth");
+      console.log(authenticated);
       if (authenticated) {
-        this.props.onSuccess()
+        this.props.onSuccess();
+      } else if (attempted) {
+        // User is not part of organization
+        this.props.onFailure();
+        // Clear cookies so they can try again
+        CookieManager.clearAll();
       } else {
         console.log("Auth failed")
         this.props.onFailure()
