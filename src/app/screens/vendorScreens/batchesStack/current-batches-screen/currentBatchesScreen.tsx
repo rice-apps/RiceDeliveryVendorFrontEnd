@@ -56,15 +56,11 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
                       <BatchListItem batch={item}></BatchListItem>
                   }
                 />
-  
           </View>
-
-          
           <SecondaryButton 
           title="Create Batch"
           onPress = {() => this.createBatch("East West Tea", [])}
           />
-
           </View>
       
         )

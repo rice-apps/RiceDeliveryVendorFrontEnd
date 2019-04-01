@@ -64,10 +64,10 @@ class LoginScreen extends React.Component<
 
   render() {
     return (
-      <View style={css.screen.defaultScreen}>
+      <View style={[css.screen.defaultScreen, {backgroundColor: "purple"}]}>
         <View style={{ flex: 1, flexDirection: "column" }}>
           <View style={{ width: "50%", height: 200 }} />
-          <Text style={css.text.logo}>
+          <Text style={[css.text.logo, {color:"white"}]}>
             hedwig.
             <Image source={require("../../../img/hedwig.png")} style={css.image.logo} />
           </Text>

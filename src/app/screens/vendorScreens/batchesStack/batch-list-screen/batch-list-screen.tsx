@@ -25,6 +25,7 @@ import LoadingScreen from "../../loading-screen"
 import { RootStore } from "../../../../stores/root-store"
 import { NavigationScreenProp } from "react-navigation"
 import { BatchList } from "../../../../components/batch-list";
+import { material } from "react-native-typography";
 // import { observable, action } from 'mobx';
 
 // Hide yellow warnings.
@@ -90,11 +91,21 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
         loading: false,
         displayNetworkError: true,
         reloadPending: false,
-      })
+    })
     }
   }
   async componentWillMount() {
     await this.queryOrders()
+  }
+
+  renderIf = (condition, element) => {
+    if (condition) {
+      return element
+    } else {
+      return (
+        <Text style={material.headline}>This batch is empty</Text>
+      )
+    }
   }
 
   render() {
@@ -110,9 +121,10 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           this.state.displayNetworkError
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
-        <View style={{ flex: 1 }}>
+        {this.renderIf(batch.orders.length > 0,(<View style={{ flex: 1 }}>
           <BatchList orders={batch.orders} />
-        </View>
+        </View>) )}
+
       </View>
     )
   }

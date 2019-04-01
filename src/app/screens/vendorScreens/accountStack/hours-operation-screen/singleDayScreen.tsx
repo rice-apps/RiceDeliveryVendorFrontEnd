@@ -59,7 +59,6 @@ class SingleDayScreen extends React.Component<any, any> {
                 "name": "East West Tea"
               }   
         })).data.vendor[0].hours[idx]
-        console.log(data)
         const openingTimes = this.getDisplayTime(data[0]);
         const closingTimes = this.getDisplayTime(data[1]);
         this.setState({
@@ -116,7 +115,6 @@ class SingleDayScreen extends React.Component<any, any> {
         if (minute < 10 && minute != "00") minute = (minute * 10).toString()
         let AMPM = (hour >= 12 && hour < 24) ? "PM" : "AM"
         if (hour > 12) hour = hour - 12
-        console.log([hour.toString(), minute, AMPM])
         return [hour.toString(), minute, AMPM]
     }
 
