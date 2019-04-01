@@ -9,7 +9,23 @@ import { Divider } from "react-native-elements"
 import * as css from "../../../style"
 import { client } from "../../../../main"
 import LoadingScreen from "../../loading-screen"
+import { NavigationEvents } from 'react-navigation';
+import gql from "graphql-tag";
 
+const GET_SKU = gql`
+query skus($sku:String!, $vendorName: String!) {
+  sku(sku:$sku, vendorName:$vendorName) {
+    id
+    image
+    attributes {
+      key
+      value
+    }
+    active
+    
+  }
+}
+`
 const style = require("../../../style")
 
 // interface SingleOrderScreenProps {
@@ -25,6 +41,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     this.state = {
       loading: true,
       refreshing: false,
+      order: []
     }
   }
 
@@ -51,33 +68,76 @@ export class SingleOrderScreen extends React.Component<any, any> {
   }
 
   getItems = () => {
-    let products = this.props.navigation.state.params.order.items
+  }
 
-    // var item = products.reduce((c, {description ,amount}) => {
-    //     c[description] = c[description] || {description, amount: 0};
-    //     c[description]. amount +=  amount;
-    //     return c;
-    //   }, {})
-  
-    // var result = Object.values(item);
-    // console.log(result)
+  jsonCopy(src) {
+    return JSON.parse(JSON.stringify(src));
+  }
+  /**
+   * Function to get order sku informaiton
+   */
+  getOrderData = async() => {
+    let order = this.props.navigation.state.params.order
+    let newOrder = this.jsonCopy(order); // make a copy.
+    for (let i = 0; i < newOrder.items.length; i++) {
+      if (newOrder.items[i].parent &&  newOrder.items[i].parent.split(/_/)[0] == "sku") {
+        let attributes = (await client.query({
+          query: GET_SKU, 
+          variables: {
+            "sku": newOrder.items[i].parent,
+            "vendorName": "East West Tea"
+          }
+        })).data.sku.attributes.map(val => val.value);
+        newOrder.items[i].attributes = attributes
+      }
+    }
+    await this.setState({order: newOrder, loading: false});
+    console.log("FINISHED")
+  }
+
+  componentDidMount() {
+    console.log("Did mount")
+    this.getOrderData();
+  }
+
+  componentWillUnmount() {
+    console.log("Did unmount")
+  }
+
+  renderItems = ({item}) => {
+    if (item.quantity) {
+      return (
+        <View>
+          <Text>
+            {`${item.quantity}x ${item.description}`}
+          </Text>
+          <Text>
+            {item.attributes.join(" ")}
+          </Text>
+        </View>
+
+      )
+    } else {
+      return null
+    }
   }
 
   render() {
+    if (this.state.loading) return <LoadingScreen />
+    console.log("render")
     let order = this.props.navigation.state.params.order
     let status = this.getStatus()
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
-    let products = order.items
-    let allItems = this.getItems()
+    let allItems = this.getItems();
     let name = order.customerName.split(" ")[0]
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>
           <Text style={css.text.headerText}>{name}'s Order</Text>
-          <Text style={css.text.bodyText}>{"Email: " + email}</Text>
-          <Text style={css.text.smallText}>{"Placed at : " + date}</Text>
+          <Text style={css.text.bodyText}>{" " + email}</Text>
+          <Text style={css.text.smallText}>{" Ordered on " + date}</Text>
         </View>
         <View style={styleLocal.location}>
           <Text style={css.text.bigBodyText}>Location: {location} </Text>
@@ -86,7 +146,11 @@ export class SingleOrderScreen extends React.Component<any, any> {
         </View>
         <View style={styleLocal.details}>
         <Text style={css.text.bigBodyText}>Order Details</Text>
-          {allItems}
+        <FlatList 
+          data={this.state.order ? this.state.order.items : []}
+          renderItem={this.renderItems}
+          keyExtractor={(item, index) => index.toString()}
+        />
         </View>
         <View style={styleLocal.buttons}>
           <PrimaryButton title="Cancel Order" />

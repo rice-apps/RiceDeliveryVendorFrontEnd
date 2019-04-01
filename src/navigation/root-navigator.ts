@@ -16,6 +16,7 @@ import { HoursOperationScreen } from "../app/screens/vendorScreens/accountStack/
 import { MenuScreen } from "../app/screens/vendorScreens/accountStack/menu-screen"
 import { TransactionHistScreen } from "../app/screens/vendorScreens/accountStack/transaction-hist-screen"
 import SingleDayScreen from "../app/screens/vendorScreens/accountStack/hours-operation-screen/singleDayScreen";
+import { BatchListScreen } from "../app/screens/vendorScreens/batchesStack/batch-list-screen/batch-list-screen";
 
 //orderStack
 const OrdersStackNavigator = createStackNavigator({
@@ -37,9 +38,15 @@ const batchStackNavigator = createStackNavigator({
   Batches: {
     screen: CurrentBatchesScreen,
     navigationOptions: {
-      title: "Current Batch",
-    },
+      title: "Batches",
+    },  
   },
+  SingleBatchList: {
+    screen: BatchListScreen,
+    navigationOptions: {
+      title: "Single Batch",
+    },  
+  }, 
 })
 
 //accountStack

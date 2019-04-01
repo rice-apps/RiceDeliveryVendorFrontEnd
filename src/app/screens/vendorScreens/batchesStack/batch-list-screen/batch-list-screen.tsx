@@ -20,10 +20,11 @@ import { toJS } from "mobx"
 import { Overlay } from "react-native-elements"
 import { observer, inject } from "mobx-react"
 import { getSnapshot } from "mobx-state-tree"
-import { OverlayScreen } from "../overlayScreen"
+import { OverlayScreen } from "../../orderStack/overlayScreen"
 import LoadingScreen from "../../loading-screen"
 import { RootStore } from "../../../../stores/root-store"
 import { NavigationScreenProp } from "react-navigation"
+import { BatchList } from "../../../../components/batch-list";
 // import { observable, action } from 'mobx';
 
 // Hide yellow warnings.
@@ -42,7 +43,7 @@ interface pendingOrderState {
 
 @inject("rootStore")
 @observer
-export class PendingOrdersScreen extends React.Component<pendingOrderProps, pendingOrderState> {
+export class BatchListScreen extends React.Component<pendingOrderProps, pendingOrderState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -55,6 +56,23 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
 
   addToBatchHandler = () => {
     this.props.navigation.navigate("AddToBatch")
+  }
+
+  // Makes alert box when add to batch is clicked.
+  addToBatch = () => {
+    Alert.alert(
+      "Add all the selected to batch?",
+      "",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ],
+      { cancelable: true },
+    )
   }
 
   queryOrders = async () => {
@@ -80,6 +98,9 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
   }
 
   render() {
+    console.log("In batch list screen")
+    const batch = this.props.navigation.getParam("batch", "NONE");
+    console.log(batch)
     if (this.state.loading) {
       return <LoadingScreen />
     }
@@ -90,7 +111,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         <View style={{ flex: 1 }}>
-          <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)} />
+          <BatchList orders={batch.orders} />
         </View>
       </View>
     )

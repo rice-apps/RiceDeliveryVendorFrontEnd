@@ -15,6 +15,7 @@ import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 
+
 interface OrderListProps {
   orders: any
   rootStore?: RootStore
@@ -47,13 +48,50 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             orders: []
         }
     }
-    
-  onRefresh = async() => {
-      this.setState({refreshState: RefreshState.HeaderRefreshing, page: 1})
-      await this.props.rootStore.orders.queryOrders(this.state.page)
-      this.setState({refreshState: RefreshState.Idle})
+
+  async componentDidMount() {
+    let batches = await this.props.rootStore.orders.getBatches(); 
+    this.setState({batches: batches});
   }
   
+  createAlertOptions(batches) {
+    let alertOptions = [];
+    for (let i = 0; i < batches.length; i++) {
+      let text = 'Batch ' + (i+1);
+      let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
+      alertOptions.push({text: text, onPress: () => {this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID), console.log("added to Batch")}});
+    }
+    alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
+    return alertOptions;
+  }
+  
+  addToBatch = async (vendorName, orders, batchID) => {
+    console.log(orders);
+    await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
+  }
+
+   // Makes alert box when add to batch is clicked.
+   addToBatchHandler = async () =>{
+    let orders = [];
+    for (let key of this.state.selected.keys()) {
+      if (this.state.selected.get(key) === true)
+        orders.push(key)
+    }
+    await this.setState({orders: orders});
+    await this.setState({alertOptions: this.createAlertOptions(this.state.batches)});
+    Alert.alert(
+      'Add to Batch: ',
+      '',
+      this.state.alertOptions, 
+      {cancelable: true},
+    );
+  }
+
+  onRefresh = async () => {
+    this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
+    await this.props.rootStore.orders.queryOrders(this.state.page)
+    this.setState({ refreshState: RefreshState.Idle })
+  }
 
   onPressItem = id => {
     // updater functions are preferred for transactional updates
@@ -96,10 +134,22 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
         >
           <Text>End</Text>
         </View>
-      );
-    };
+      )
+    }
+
+    return (
+      <View
+        style={{
+          paddingVertical: 10,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE",
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    )
   }
-        
+
   loadMore = async () => {
     //make request to add things.
     console.log("load more")
@@ -115,71 +165,32 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     }
   }
 
-    async componentDidMount() {
-      let batches = await this.props.rootStore.orders.getBatches(); 
-      this.setState({batches: batches});
-    }
-
-    createAlertOptions(batches) {
-      let alertOptions = [];
-      for (let i = 0; i < batches.length; i++) {
-        let text = 'Batch ' + (i+1);
-        let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
-        alertOptions.push({text: text, onPress: () => {this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID), console.log("added to Batch")}});
-      }
-      alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
-      return alertOptions;
-    }
-    
-    addToBatch = async (vendorName, orders, batchID) => {
-      console.log(orders);
-      await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
-    }
-
-     // Makes alert box when add to batch is clicked.
-     addToBatchHandler = async () =>{
-      let orders = [];
-      for (let key of this.state.selected.keys()) {
-        if (this.state.selected.get(key) === true)
-          orders.push(key)
-      }
-      await this.setState({orders: orders});
-      await this.setState({alertOptions: this.createAlertOptions(this.state.batches)});
-      Alert.alert(
-        'Add to Batch: ',
-        '',
-        this.state.alertOptions, 
-        {cancelable: true},
-      );
-    }
-
-    render() {
-        return (
-            <View style={css.orderList.flatList}>
-                <RefreshListView
-                style={css.orderList.flatList}
-                extraData={this.state}
-                data= {this.props.orders}
-                keyExtractor={(item, index) => item.id}
-                renderItem={this.renderItem}
-                ListFooterComponent={this.renderFooter}
-                onEndReachedThreshold={0.5}
-                refreshState={this.state.refreshState}
-                onFooterRefresh={this.loadMore}
-                onHeaderRefresh={this.onRefresh}
-
-              />
-            {
-              this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,
-              <View style={componentCSS.containers.batchContainer}>
-                <PrimaryButton
-                  title ="Add to Batch"
-                  onPress={this.addToBatchHandler}
-                />
-            </View>
-              )
-            }
-            </View>
-            )
-    }
+  render() {
+    return (
+      <View style={css.orderList.flatList}>
+        <RefreshListView
+          style={css.orderList.flatList}
+          extraData={this.state}
+          data={this.props.orders}
+          keyExtractor={(item, index) => item.id}
+          renderItem={this.renderItem}
+          ListFooterComponent={this.renderFooter}
+          onEndReachedThreshold={0.5}
+          refreshState={this.state.refreshState}
+          onFooterRefresh={this.loadMore}
+          onHeaderRefresh={this.onRefresh}
+        />
+        {
+          this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,
+          <View style={componentCSS.containers.batchContainer}>
+            <PrimaryButton
+              title ="Add to Batch"
+              onPress={this.addToBatchHandler}
+            />
+          </View>
+          )
+        }
+      </View>
+    )
+  }
 }
