@@ -53,7 +53,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
                   }
                   keyExtractor={(item, index) => item._id.toString()}
                   renderItem={({item, index}) => 
-                      <BatchListItem batch={item}></BatchListItem>
+                      <BatchListItem batch={item} index ={index}></BatchListItem>
                   }
                 />
           </View>

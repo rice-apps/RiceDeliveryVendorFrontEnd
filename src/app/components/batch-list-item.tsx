@@ -22,7 +22,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     // Define action when pressing entire list item
     singleOrderPress() {
         this.props.navigation.navigate('SingleBatchList', {
-            batch : this.props.batch,
+            batch : this.props.batch
         }); 
     }
 
@@ -38,7 +38,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
-                        <Text style={styles.row_time}> Batch {this.props.batch._id} </Text>  {/*Need to update mobxstore to change this}
+                        <Text style={styles.row_time}> Batch {this.props.index} </Text>  {/*Need to update mobxstore to change this}
                         {/* <Text style={styles.row_name}> {customerName}</Text>
                         <Text style={styles.row_time}> {paymentStatus}</Text>  */}
                     </View>
