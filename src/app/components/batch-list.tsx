@@ -1,21 +1,16 @@
 import * as React from "react"
 import { View, FlatList, StyleSheet, Text, RefreshControl, ActivityIndicator, Alert } from "react-native"
-import OrderListItem from "./order-list-item"
-import Order from "./temporary-mock-order"
 import * as css from "./style"
 import { observer, inject } from "mobx-react"
 import { RootStore } from "../stores/root-store"
-import { client } from "../main"
-import gql from "graphql-tag"
-import { string } from "prop-types"
 import PrimaryButton from "../components/primary-button"
-import SecondaryButton from "../components/secondary-button"
 import * as componentCSS from "..//components/style"
 import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 import BatchOrderListItem from "../components/batch-order-item"
 interface OrderListProps {
+  id: any
   orders: any
   rootStore?: RootStore
 }
@@ -27,7 +22,7 @@ interface OrderListState {
   language: string,
   batches: any,
   alertOptions: any,
-  orders: any
+  orders: any,
 }
 
 // const OFlatList = observer(FlatList)
@@ -52,38 +47,41 @@ export class BatchList extends React.Component<OrderListProps, OrderListState> {
     let batches = await this.props.rootStore.orders.getBatches(); 
     this.setState({batches: batches});
   }
-  
-  createAlertOptions(batches) {
-    let alertOptions = [];
-    for (let i = 0; i < batches.length; i++) {
-      let text = 'Batch ' + (i+1);
-      let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
-      alertOptions.push({text: text, onPress: () => {this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID), console.log("added to Batch")}});
-    }
-    alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
-    return alertOptions;
+
+  removeFromBatch = async (vendorName, orders, batchID) => {
+    await this.props.rootStore.orders.removeFromBatch(vendorName, orders, batchID);
   }
   
-  addToBatch = async (vendorName, orders, batchID) => {
-    console.log(orders);
-    await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
+  removeAlert = () => {
+    Alert.alert(
+      "Remove all selected order from this batch?",
+      "",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("canceled deliver all"),
+          style: "cancel",
+        },
+        { text: "Yes", onPress: () => {
+          console.log("removed from batch");
+          this.removeFromBatch("East West Tea", this.state.orders, this.props.id);
+        } },
+      ],
+      { cancelable: true },
+    )
   }
 
+
+
    // Makes alert box when add to batch is clicked.
-   addToBatchHandler = async () =>{
+   removeFromBatchHandler = async () =>{
     let orders = [];
     for (let key of this.state.selected.keys()) {
       if (this.state.selected.get(key) === true)
         orders.push(key)
     }
     await this.setState({orders: orders});
-    await this.setState({alertOptions: this.createAlertOptions(this.state.batches)});
-    Alert.alert(
-      'Add to Batch: ',
-      '',
-      this.state.alertOptions, 
-      {cancelable: true},
-    );
+    this.removeAlert();
   }
 
   onRefresh = async () => {

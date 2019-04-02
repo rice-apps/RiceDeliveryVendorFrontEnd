@@ -152,7 +152,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         {this.renderIf(batch.orders.length > 0,(<View style={{ flex: 1 }}>
-          <BatchList orders={batch.orders} />
+          <BatchList orders={batch.orders} id = {batch._id} />
         </View>) )}
 
       </View>

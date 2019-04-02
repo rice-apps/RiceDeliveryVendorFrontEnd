@@ -98,6 +98,17 @@ export const OrderModel = types
       });
       return info.data.batch; //Return batches.
     },
+    async removeFromBatch(vendorName, orders, batchID) {
+      let info = await client.mutate({
+        mutation: REMOVE_FROM_BATCH,
+        variables: {
+          vendorName: vendorName,  
+          orders: orders,
+          batchID: batchID
+        }
+      });
+      return info.data.batch; //Return batches.
+    },
     async deleteBatch(batchID, vendorName) {
       let info = await client.mutate({
         mutation: DELETE_BATCH,
@@ -133,6 +144,23 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
   }
 }
 `
+
+const REMOVE_FROM_BATCH = gql`
+mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
+  removeFromBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
+    _id
+    orders {
+      id
+      amount
+      charge
+      created
+      customer
+      inBatch
+    }
+  }
+}
+`
+
 const GET_BATCHES = gql`
 query queryBatch($batchID: String, $vendorName: String!) {
   batch(batchID: $batchID, vendorName: $vendorName) {
