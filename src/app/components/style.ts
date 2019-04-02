@@ -81,27 +81,41 @@ export const orderListItem = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fff",
   },
+  badge_cell: {
+    paddingLeft: .5,
+    flex: 0.30,
+    flexDirection: "column",
+  },
+  badge_text: {
+    fontSize: 8,
+    textAlignVertical: "bottom",
+    textAlign: "center",
+    includeFontPadding: false,
+    
+  },
   row_cell: {
+    paddingLeft: 0.0,
     flex: 1,
     flexDirection: "column",
   },
   row_location: {
-    paddingLeft: 0,
+    paddingLeft: 0.0,
     color: color.storybookTextColor,
     textAlignVertical: "top",
     includeFontPadding: false,
     flex: 0,
-    fontSize: 24,
+    fontSize: 16,
+    fontWeight: "bold"
   },
   row_name: {
-    paddingLeft: 0,
+    paddingLeft: 0.0,
     color: color.storybookTextColor,
     includeFontPadding: false,
     flex: 0,
-    fontSize: 18,
+    fontSize: 16
   },
   row_time: {
-    paddingLeft: 0,
+    paddingLeft: 0.0,
     color: color.storybookTextColor,
     textAlignVertical: "bottom",
     includeFontPadding: false,

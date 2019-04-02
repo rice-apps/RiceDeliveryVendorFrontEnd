@@ -38,9 +38,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
-                        <Text style={styles.row_time}> Batch {this.props.index} </Text>  {/*Need to update mobxstore to change this}
-                        {/* <Text style={styles.row_name}> {customerName}</Text>
-                        <Text style={styles.row_time}> {paymentStatus}</Text>  */}
+                        <Text style={styles.row_location}> Batch {this.props.index + 1} </Text>  
                     </View>
                     <Icon name="chevron-right" size={50} color="black" />
                     
