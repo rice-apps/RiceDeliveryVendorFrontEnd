@@ -54,12 +54,12 @@ class LoginScreen extends React.Component<
   }
 
   loginHandler = async () => {
-    const authenticated = await AsyncStorage.getItem("Authenticated")
-    if (!authenticated) {
-      this.setModalVisible(!this.state.modalVisible)
-    } else {
+    // const authenticated = await AsyncStorage.getItem("Authenticated")
+    // if (!authenticated) {
+    //   this.setModalVisible(!this.state.modalVisible)
+    // } else {
       this.props.navigation.navigate("Tabs")
-    }
+    // }
   }
 
   render() {
