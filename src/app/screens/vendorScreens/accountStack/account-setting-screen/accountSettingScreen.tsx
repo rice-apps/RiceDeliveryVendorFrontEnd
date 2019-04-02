@@ -63,7 +63,7 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
             title="Logout"
             onPress={() => {
               CookieManager.get(
-                "https://idp.rice.edu/idp/profile/cas/login?service=https://riceapps.org",
+                "https://idp.rice.edu/idp/profile/cas/login?service=https://www.gizmodo.com",
               ).then(res => {
                 console.log("CookieManager.get =>", res)
               })
