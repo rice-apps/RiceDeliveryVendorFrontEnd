@@ -73,6 +73,9 @@ export const OrderModel = types
           vendorName: "East West Tea"  //Hardcoding East West Tea for now.
         }
       })) 
+      self.onTheWay = info.data.batch;
+      console.log("got batches");
+      console.log(self.onTheWay)
       return info.data.batch; //Return batches.
   
     }),
