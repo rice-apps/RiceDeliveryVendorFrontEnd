@@ -74,8 +74,6 @@ export const OrderModel = types
         }
       })) 
       self.onTheWay = info.data.batch;
-      console.log("got batches");
-      console.log(self.onTheWay)
       return info.data.batch; //Return batches.
   
     }),
@@ -100,6 +98,16 @@ export const OrderModel = types
       });
       return info.data.batch; //Return batches.
     },
+    async deleteBatch(batchID, vendorName) {
+      let info = await client.mutate({
+        mutation: DELETE_BATCH,
+        variables: {
+          batchID: batchID,
+          vendorName: vendorName
+        }
+      });
+      return info.data.batch; //Return batches.
+    },
   })).views(self => ({
     numPending() {
       return self.pending.length
@@ -116,6 +124,7 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
     _id
     orders {
       id
+      inBatch
       amount
       charge
       created
@@ -130,6 +139,7 @@ query queryBatch($batchID: String, $vendorName: String!) {
     _id
     orders {
       id
+      inBatch
       netID
       amount
       charge
@@ -165,6 +175,7 @@ const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
       id
+      inBatch
       amount
       created
       customer
@@ -199,6 +210,7 @@ const CREATE_BATCH = gql`
       _id
       orders {
         id
+        inBatch
         amount
         charge
         created
@@ -207,4 +219,18 @@ const CREATE_BATCH = gql`
     }
   }
 `
-
+const DELETE_BATCH = gql`
+mutation deleteBatch($batchID: String, $vendorName: String!) {
+	deleteBatch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    orders {
+      id
+      inBatch
+      amount
+      charge
+      created
+      customer
+    }
+  }
+}
+`
