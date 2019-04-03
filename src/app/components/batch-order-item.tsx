@@ -1,10 +1,11 @@
 import * as React from "react"
 import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
 import { withNavigation } from "react-navigation"
-import {Icon} from "react-native-elements"
+import {Icon , Badge, withBadge } from "react-native-elements"
 import * as css from "./style"
 import { observer, inject } from "mobx-react"
 import { Order } from "../stores/order-store"
+
 // Using temporary Order object instead of order-store Order object
 
 @inject("rootStore")
@@ -38,11 +39,38 @@ class BatchOrderListItem extends React.Component<any, any> {
     this.props.onPressItem(this.props.order.id)
   }
 
+   badgeHandler =  () => {
+    let fulfilled = this.props.order.orderStatus.fulfilled;
+    let onTheWay = this.props.order.orderStatus.onTheWay;
+    let pending = this.props.order.orderStatus.pending; 
+    let unfulfilled = this.props.order.orderStatus.unfulfilled; 
+    if (unfulfilled != false) {
+      return {badge: "error", text: "Unfulfilled"}
+    }
+    if (onTheWay === null) {
+      return {badge: "warning", text: "Waiting to be delivered..."}    
+    }
+    else {
+      return {badge: "success", text: "On the way!"}  
+    }
+  }
+
   render() {
+    console.log("here");
     console.log(this.props.order)
     return (
       <TouchableHighlight onPress={this.singleOrderPress}>
+        
         <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
+
+          <View style={css.orderListItem.badge_cell}> 
+
+            <Badge status = {this.badgeHandler().badge}>  </Badge>
+            <Text style= {css.orderListItem.badge_text}> {this.badgeHandler().text} </Text>
+
+          </View>
+
+
           <View style={css.orderListItem.row_cell}>
             <Text style={css.orderListItem.row_location}> {this.props.order.location.name} </Text>
             <Text style={css.orderListItem.row_name}> {this.props.order.customerName} </Text>

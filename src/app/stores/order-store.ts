@@ -36,6 +36,7 @@ export const Order = types.model("Order", {
   paymentStatus: types.string,
   location: Location,
   netID: types.string,
+  inBatch: types.maybe(types.boolean),
   customerName: types.string,
 })
 
@@ -64,8 +65,18 @@ export const OrderModel = types
       })
       if (info.data.order.length === 0) return 0
       self.pending = pageNum === 1 ? info.data.order : self.pending.toJS().concat(info.data.order)
+      
+      // filter out orders that are already in a batch.
+      self.pending = self.pending.filter(order => {
+        if (order.inBatch === true) {
+          return false;
+        } else {
+          return true;
+        }
+      })
       return self.pending
     }),
+
     getBatches: flow(function* getBatches() {
       const info = (yield client.query({
         query: GET_BATCHES,
@@ -73,6 +84,9 @@ export const OrderModel = types
           vendorName: "East West Tea"  //Hardcoding East West Tea for now.
         }
       })) 
+      self.onTheWay = info.data.batch;
+      console.log("got batches");
+      console.log(self.onTheWay)
       return info.data.batch; //Return batches.
   
     }),
@@ -166,6 +180,7 @@ const GET_ORDER_STORE = gql`
       created
       customer
       email
+      inBatch
       items {
         parent
         amount

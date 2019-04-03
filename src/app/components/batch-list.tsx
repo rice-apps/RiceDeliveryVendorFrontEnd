@@ -167,7 +167,7 @@ export class BatchList extends React.Component<OrderListProps, OrderListState> {
   render() {
     return (
       <View style={css.orderList.flatList}>
-        <FlatList
+        <RefreshListView
           style={css.orderList.flatList}
           extraData={this.state}
           data={this.props.orders}
@@ -175,6 +175,7 @@ export class BatchList extends React.Component<OrderListProps, OrderListState> {
           renderItem={this.renderItem}
           onEndReachedThreshold={0.5}
           refreshState={this.state.refreshState}
+          onHeaderRefresh={this.onRefresh}
         />
         {
           this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,

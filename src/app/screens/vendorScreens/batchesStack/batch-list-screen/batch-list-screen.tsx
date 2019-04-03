@@ -55,22 +55,24 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
   }
 
-  addToBatchHandler = () => {
-    this.props.navigation.navigate("AddToBatch")
-  }
+  
 
   // Makes alert box when add to batch is clicked.
-  addToBatch = () => {
+  deliverAlert = () => {
+    let batch = this.props.navigation.getParam("batch", "NONE");
     Alert.alert(
-      "Add all the selected to batch?",
+      "Deliver all order in this batch?",
       "",
       [
         {
           text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => console.log("canceled deliver all"),
           style: "cancel",
         },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: "Yes", onPress: () => {
+          this.deliverBatch(batch._id, "East West Tea");
+          console.log("all Order in batch delivered");
+        } },
       ],
       { cancelable: true },
     )
@@ -94,8 +96,21 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     })
     }
   }
+
   async componentWillMount() {
     await this.queryOrders()
+  }
+
+
+  async deliverBatch(batchID, vendorName) {
+    let info = await client.mutate({
+      mutation: DELIVER_BATCH,
+      variables: {
+        batchID: batchID,
+        vendorName: vendorName
+      }
+    });
+    return info.data.deliveryBatch.orders; //Return batches.
   }
 
   renderIf = (condition, element) => {
@@ -109,7 +124,6 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   }
 
   render() {
-    console.log("In batch list screen")
     const batch = this.props.navigation.getParam("batch", "NONE");
     console.log(batch)
     if (this.state.loading) {
@@ -117,6 +131,10 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
     return (
       <View style={css.screen.paddedScreen}>
+        <SecondaryButton
+          title = "Deliver All"
+          onPress = {() => this.deliverAlert()}
+        />
         {
           this.state.displayNetworkError
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
@@ -129,3 +147,21 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     )
   }
 }
+
+const DELIVER_BATCH = gql`
+mutation deliverBatch($batchID: String!, $vendorName: String!){
+	deliverBatch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    orders {
+      id
+      orderStatus {
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+    }
+  }
+}
+`

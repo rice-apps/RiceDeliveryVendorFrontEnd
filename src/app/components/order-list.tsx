@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Text, RefreshControl, ActivityIndicator, Al
 import OrderListItem from "./order-list-item"
 import Order from "./temporary-mock-order"
 import * as css from "./style"
-import { observer, inject } from "mobx-react"
+import { observer, inject, Observer } from "mobx-react"
 import { RootStore } from "../stores/root-store"
 import { client } from "../main"
 import gql from "graphql-tag"
@@ -11,7 +11,11 @@ import { string } from "prop-types"
 import PrimaryButton from "../components/primary-button"
 import SecondaryButton from "../components/secondary-button"
 import * as componentCSS from "..//components/style"
-import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
+import { Overlay } from "react-native-elements";
+import { getSnapshot } from "mobx-state-tree";
+import { toJS } from "mobx";
+import { material } from "react-native-typography";
+import RefreshListView, {RefreshState}from "../components/RefreshListView";
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 
@@ -28,7 +32,8 @@ interface OrderListState {
   language: string,
   batches: any,
   alertOptions: any,
-  orders: any
+  orders: any,
+  overlayVisible: boolean
 }
 
 // const OFlatList = observer(FlatList)
@@ -45,7 +50,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             language: "",
             batches: [],
             alertOptions: [],
-            orders: []
+            orders: [],
+            overlayVisible: false
         }
     }
 
@@ -59,38 +65,49 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     for (let i = 0; i < batches.length; i++) {
       let text = 'Batch ' + (i+1);
       let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
-      alertOptions.push({text: text, onPress: () => {this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID), console.log("added to Batch")}});
+      alertOptions.push(
+        {text: text, 
+          onPress: () => {
+            this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID)
+          }});
     }
     alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
     return alertOptions;
   }
   
-  addToBatch = async (vendorName, orders, batchID) => {
-    console.log(orders);
+  addToBatch = async(vendorName, orders, batchID) => {
+    console.log(`ADDING to batchID ${batchID}`);
+    console.log(`ADDING orders ${orders}`);
+    console.log(`ADDING to vendor ${vendorName}`);
     await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
+    await this.onRefresh();
+    await this.setState({selected: new Map()})
   }
 
    // Makes alert box when add to batch is clicked.
-   addToBatchHandler = async () =>{
+   addToBatchHandler = async () => {
     let orders = [];
     for (let key of this.state.selected.keys()) {
       if (this.state.selected.get(key) === true)
         orders.push(key)
     }
     await this.setState({orders: orders});
-    await this.setState({alertOptions: this.createAlertOptions(this.state.batches)});
-    Alert.alert(
-      'Add to Batch: ',
-      '',
-      this.state.alertOptions, 
-      {cancelable: true},
-    );
+    // get the latest batches:
+    await this.props.rootStore.orders.getBatches();
+    await this.setState({overlayVisible: true})
+    // await this.setState({alertOptions: this.createAlertOptions(batches)});
+    // Alert.alert(
+    //   'Add to Batch: ',
+    //   '',
+    //   this.state.alertOptions, 
+    //   {cancelable: true},
+    // );
   }
 
   onRefresh = async () => {
-    this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
+    await this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
     await this.props.rootStore.orders.queryOrders(this.state.page)
-    this.setState({ refreshState: RefreshState.Idle })
+    await this.setState({ refreshState: RefreshState.Idle })
   }
 
   onPressItem = id => {
@@ -105,11 +122,15 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
 
   renderItem = ({ item }) => {
     return (
-      <OrderListItem
-        order={item}
-        onPressItem={this.onPressItem}
-        selected={!!this.state.selected.get(item.id)}
-      />
+      <Observer>
+      {() =>       
+        <OrderListItem
+          order={item}
+          onPressItem={this.onPressItem}
+          selected={!!this.state.selected.get(item.id)}
+        />}
+      </Observer>
+
     )
   }
 
@@ -165,9 +186,35 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     }
   }
 
+  renderOverlay = ({item, index}) => {
+    return (
+      <SecondaryButton 
+        title={`Batch ${index + 1}`}
+        onPress={() => this.addToBatch("East West Tea", this.state.orders, item._id)}
+      />
+    )
+  }
   render() {
+    console.log("rerender");
+    let orders = getSnapshot(this.props.rootStore.orders.pending);
+    console.log("LENGTH OF ARRAY:" + toJS(orders).length);
     return (
       <View style={css.orderList.flatList}>
+        
+        <Overlay 
+        isVisible={this.state.overlayVisible}
+        onBackdropPress={() =>this.setState({overlayVisible: false})}
+        >
+          <View style={style.overlayContainer}>
+            <Text style={material.headline}>Which Batch would you like to add to?</Text>
+            <FlatList
+              data={getSnapshot(this.props.rootStore.orders.onTheWay)}
+              renderItem={this.renderOverlay}
+              keyExtractor={(item, index)=> item._id}
+             />
+          </View>
+        </Overlay>
+
         <RefreshListView
           style={css.orderList.flatList}
           extraData={this.state}
@@ -182,15 +229,26 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
         />
         {
           this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,
-          <View style={componentCSS.containers.batchContainer}>
             <PrimaryButton
               title ="Add to Batch"
               onPress={this.addToBatchHandler}
             />
-          </View>
           )
         }
       </View>
     )
   }
 }
+
+
+const style = StyleSheet.create({
+  overlayContainer: {
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    height: "100%",
+    borderColor: "red",
+    borderWidth: 2,
+  },
+  
+})
