@@ -88,11 +88,20 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
   }
 
   onRefresh = async () => {
-    this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
+    // this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
     await this.props.rootStore.orders.queryOrders(this.state.page)
     this.setState({ refreshState: RefreshState.Idle })
   }
 
+  // timer
+  // async componentWillMount() {
+  //   this.timer = setInterval(() => this.onRefresh(), 1000);
+  // }
+
+  // async componentWillUnmount() {
+  //   this.timer = null;
+  // }
+  
   onPressItem = id => {
     // updater functions are preferred for transactional updates
     this.setState(state => {
