@@ -35,7 +35,6 @@ interface pendingOrderProps {
 
 interface pendingOrderState {
   loading: boolean
-  refreshing: boolean
   reloadPending: boolean
   displayNetworkError: boolean
 }
@@ -46,8 +45,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
   constructor(props) {
     super(props)
     this.state = {
-      loading: true, // true if waiting for data to arrive.
-      refreshing: false, // true if pulling to refresh
+      loading: true,          // true if waiting for data to arrive.
       reloadPending: false, // true if user actively reloading from overlay.
       displayNetworkError: true, // true if overlay is showing.
     }
@@ -90,7 +88,10 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         <View style={{ flex: 1 }}>
-          <OrderList orders={getSnapshot(this.props.rootStore.orders.pending)} />
+          <OrderList 
+            orders={getSnapshot(this.props.rootStore.orders.pending)} 
+            renderIcon={true}
+            />
         </View>
       </View>
     )

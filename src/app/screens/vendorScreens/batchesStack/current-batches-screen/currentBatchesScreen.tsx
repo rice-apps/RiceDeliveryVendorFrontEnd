@@ -3,6 +3,7 @@ import { View, FlatList} from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 import SecondaryButton from '../../../../components/secondary-button';
+import PrimaryButton from '../../../../components/primary-button';
 import { BatchList } from '../../../../components/batch-list';
 import * as css from "../../../style"
 import LoadingScreen from '../../loading-screen';
@@ -34,7 +35,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
   createBatch(vendorName, orders) {
     this.props.rootStore.orders.createBatch(vendorName, orders);
   }
-  
+
   async componentWillMount() {
     let batches = await this.getBatches();      
     this.setState({isLoading: false, batches: batches})
@@ -57,10 +58,16 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
                   }
                 />
           </View>
-          <SecondaryButton 
-          title="Create Batch"
-          onPress = {() => this.createBatch("East West Tea", [])}
-          />
+          <View> 
+              <SecondaryButton 
+              title="Create Batch"
+              onPress = {() => this.createBatch("East West Tea", [])}
+              />
+
+           
+
+          </View>
+
           </View>
       
         )

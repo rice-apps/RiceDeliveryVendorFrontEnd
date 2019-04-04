@@ -57,6 +57,8 @@ class OrderListItem extends React.Component<any, any> {
     }
   }
 
+  renderIf = (cond, elem) => cond ? elem : null
+
   render() {
     return (
       <TouchableHighlight onPress={this.singleOrderPress}>
@@ -76,15 +78,19 @@ class OrderListItem extends React.Component<any, any> {
               Ordered at: {this.getDate(this.props.order.created)}
             </Text>
           </View>
-          <Icon
-            name={this.props.selected ? "remove" : "add"}
-            type="material"
-            size={this.props.selected ? 20 : 20}
-            color="grey"
-          reverse={false}
-            raised={true}
-            onPress={this.addOrderPress}
-          />
+          {
+            this.renderIf(this.props.renderIcon,
+              <Icon
+              name={this.props.selected ? "remove" : "add"}
+              type="material"
+              size={this.props.selected ? 20 : 20}
+              color="grey"
+            reverse={false}
+              raised={true}
+              onPress={this.addOrderPress}
+            />)
+          }
+
         </View>
       </TouchableHighlight>
     )

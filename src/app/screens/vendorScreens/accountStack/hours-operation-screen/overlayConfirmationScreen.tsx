@@ -14,7 +14,10 @@ export class OverlayConfirmationScreen extends React.Component<any, any> {
     const { queryFunction, loadPending, openingTime, closingTime } = this.props
 
     return (
-      <Overlay isVisible animationType="fade">
+      <Overlay 
+      animationType="fade"
+      onBackdropPress={() => this.props.setVisibility}
+      >
         <View style={[css.screen.paddedScreen, css.screen.centerContent]}>
           <Text>Please confirm changes</Text>
           <Text>New Opening Time: {openingTime.toUpperCase()} </Text>

@@ -34,10 +34,10 @@ class SingleDayScreen extends React.Component<any, any> {
             displayModal: false,
             loadPending: false,
             openingHour: "",
-            openingMinute: "",
+            openingMinute: "00",
             openingAMPM: "",
             closingHour: "",
-            closingMinute: "",
+            closingMinute: "00",
             closingAMPM: "", 
             serverOpenData: "",
             serverCloseData: ""        
@@ -76,23 +76,23 @@ class SingleDayScreen extends React.Component<any, any> {
     }
 
     sendUpdateHandler = () => {
-
+        console.log(this.state)
         const re = /([aAPp][mM])$/
         // Validate hour fields
         if (this.state.openingHour < 1 || this.state.openingHour > 12 || parseInt(this.state.openingHour) == -1 ||
             this.state.closingHour < 1 || this.state.closingHour > 12 || parseInt(this.state.closingHour) == -1 ) {
-                alert("Please Input a valid time!")
+                alert("Please Input a valid time! fail 1")
                 return;
         }
         // Validate minute fields
-        if (this.state.openingMinute < 1 || this.state.openingMinute > 12 || parseInt(this.state.openingMinute) == -1 ||
-            this.state.closingMinute < 1 || this.state.closingMinute > 12 || parseInt(this.state.closingMinute) == -1 ) {
-            alert("Please Input a valid time!")
+        if (this.state.openingMinute < 1 || this.state.openingHour > 12 || parseInt(this.state.openingMinute) == -1 ||
+            this.state.closingMinute < 1 || this.state.closingHour > 12 || parseInt(this.state.closingMinute) == -1 ) {
+            alert("Please Input a valid time! fail 2")
             return;
         }
         // Validate AM/PM fields
         if (!re.test(this.state.openingAMPM) || !re.test(this.state.closingAMPM)) {
-            alert("Please Input a valid time!")
+            alert("Please Input a valid time! fail 3")
             return;
         } else {
             this.setState({displayModal: !this.state.displayModal})
@@ -143,6 +143,10 @@ class SingleDayScreen extends React.Component<any, any> {
         })
     }
 
+    setVisibility = () => {
+        console.log("SETTING")
+        this.setState({displayModal: !this.state.displayModal})
+    }
     render() {
         let day = this.props.navigation.getParam("day", "NO_ID")
         let hours = this.props.navigation.getParam("hours", "NO_ID");
@@ -161,6 +165,7 @@ class SingleDayScreen extends React.Component<any, any> {
                 hours={hours}
                 idx={idx}
                 queryFunction={this.queryFunction}
+                setVisibility={this.setVisibility}
             />
         }
             <View style={[{height: "50%"}, css.screen.flex, css.screen.padding, css.screen.startContent, css.debugScreen.borderColorRed]}>

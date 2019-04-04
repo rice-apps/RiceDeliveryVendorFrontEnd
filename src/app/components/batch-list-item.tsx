@@ -31,8 +31,6 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     }
 
     render() {
-        console.log("im batchlistitem");
-        console.log(this.props);
 
         return (
             <TouchableHighlight onPress={this.singleOrderPress}>

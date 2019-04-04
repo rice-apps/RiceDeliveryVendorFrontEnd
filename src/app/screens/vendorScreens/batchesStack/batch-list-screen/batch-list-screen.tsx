@@ -113,6 +113,12 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     return info.data.deliveryBatch.orders; //Return batches.
   }
 
+  deleteBatch = () => {
+    let batch = this.props.navigation.getParam("batch", "NONE");
+    this.props.rootStore.orders.deleteBatch(batch._id, "East West Tea");
+  }
+
+
   renderIf = (condition, element) => {
     if (condition) {
       return element
@@ -131,6 +137,12 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
     return (
       <View style={css.screen.paddedScreen}>
+
+        <PrimaryButton 
+          title="Delete Batch"
+          onPress = {() => this.deleteBatch()}
+          />
+
         <SecondaryButton
           title = "Deliver All"
           onPress = {() => this.deliverAlert()}
@@ -140,7 +152,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         {this.renderIf(batch.orders.length > 0,(<View style={{ flex: 1 }}>
-          <BatchList orders={batch.orders} />
+          <BatchList orders={batch.orders} id = {batch._id} />
         </View>) )}
 
       </View>

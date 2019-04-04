@@ -12,6 +12,7 @@ import LoadingScreen from "../../loading-screen"
 import { NavigationEvents } from 'react-navigation';
 import {material} from 'react-native-typography';
 import gql from "graphql-tag";
+import { Order } from "../../../../stores/order-store";
 
 const GET_SKU = gql`
 query skus($sku:String!, $vendorName: String!) {
@@ -27,16 +28,18 @@ query skus($sku:String!, $vendorName: String!) {
   }
 }
 `
+
 const style = require("../../../style")
 
-// interface SingleOrderScreenProps {
-//     // injected props
-//     rootStore?: RootStore;
-//   }
+
+interface SingelOrderScreenProps {
+  // injected props
+  rootStore?: RootStore
+}
 
 @inject("rootStore")
 @observer
-export class SingleOrderScreen extends React.Component<any, any> {
+export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, any> {
   constructor(props) {
     super(props)
     this.state = {
@@ -78,7 +81,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
    * Function to get order sku informaiton
    */
   getOrderData = async() => {
-    let order = this.props.navigation.state.params.order
+    let order = await this.props.navigation.state.params.order
     let newOrder = this.jsonCopy(order); // make a copy.
     for (let i = 0; i < newOrder.items.length; i++) {
       if (newOrder.items[i].parent &&  newOrder.items[i].parent.split(/_/)[0] == "sku") {
@@ -93,11 +96,9 @@ export class SingleOrderScreen extends React.Component<any, any> {
       }
     }
     await this.setState({order: newOrder, loading: false});
-    console.log("FINISHED")
   }
 
   componentDidMount() {
-    console.log("Did mount")
     this.getOrderData();
   }
 
@@ -105,6 +106,35 @@ export class SingleOrderScreen extends React.Component<any, any> {
     console.log("Did unmount")
   }
 
+  createUpdateOrderInput(order) {
+    let vendorName = "East West Tea";
+    let netID = order.netID;
+    let orderID = order.id;
+    let data = {"data": {"netID": netID, "vendorName": vendorName, "orderID": orderID}}
+    console.log(data);
+    return data;
+  }
+
+  
+
+  fulfillOrder(order) {
+    let vendorName = "East West Tea";
+    let netID = order.netID;
+    let orderID = order.id;
+    let data = {"data": {"netID": netID, "vendorName": vendorName, "orderID": orderID}};
+    this.props.rootStore.orders.fulfillOrder(data);
+  }
+
+  async cancelWithoutRefund(order) {
+    let UpdateOrderInput = this.createUpdateOrderInput(order);
+    await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput).then(response => console.log(response));
+  }
+
+  cancelWithRefund(order) {
+    let UpdateOrderInput = this.createUpdateOrderInput(order);
+    this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
+  }
+ 
   renderItems = ({item}) => {
     if (item.quantity) {
       return (
@@ -127,7 +157,7 @@ export class SingleOrderScreen extends React.Component<any, any> {
     if (this.state.loading) return <LoadingScreen />
     console.log("render")
     let order = this.props.navigation.state.params.order
-    let status = this.getStatus()
+    let status = this.getStatus();
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
@@ -136,17 +166,17 @@ export class SingleOrderScreen extends React.Component<any, any> {
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>
-          <Text style={[material.display3, {color: "black"}]}>{name}'s Order</Text>
-          <Text style={material.subheading}>{email + " | " + "Ordered on " + date}</Text>
+          <Text style={[material.display3, {color: "black", fontSize: 30} ]}>{name}'s Order</Text>
+          <Text style={[material.subheading, {color: "black", fontSize: 15}]}>{email + " | " + "Ordered on " + date}</Text>
         </View>
         <Divider />
         <View style={styleLocal.location}>
-          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Location: {location} </Text>
-          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Status: {status}</Text>
+          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Location: {location} </Text>
+          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Status: {status}</Text>
         </View>
         <View style={styleLocal.details}>
           
-          <Text style={[material.display1, {paddingBottom: 4, color: "black"}]}>Order Details</Text>
+          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Order Details</Text>
           <View style={styleLocal.listContainer}>
             <FlatList 
               data={this.state.order ? this.state.order.items : []}
@@ -156,8 +186,25 @@ export class SingleOrderScreen extends React.Component<any, any> {
           </View>
         </View>
         <View style={styleLocal.buttons}>
-          <PrimaryButton title="Cancel Order" />
-          <SecondaryButton title="Fulfill Order" />
+          <SecondaryButton title = "Fulfill Order"  
+            onPress = {() => 
+           {
+             console.log("trying to fulfill order");
+             this.fulfillOrder(order);
+          }
+        
+        }/>
+          <PrimaryButton title = "Cancel Without Refund" 
+            onPress = {() => {
+              console.log("cnacle without refund");
+              this.cancelWithoutRefund(order);
+            }}
+            />
+          <PrimaryButton title="Refund The Order" 
+            onPress = {() => {
+              console.log("cnacle with refund");
+              this.cancelWithRefund(order);
+            }}/>
         </View>
       </View>
     )
@@ -178,15 +225,15 @@ const styleLocal = StyleSheet.create({
     // borderWidth: 2,
     width: "100%",
     paddingBottom: 10,
-    paddingTop: 10,
+  
     borderBottomColor: "grey",
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   location: {
     // borderColor: "black",
     // borderWidth: 2,
-    paddingBottom: 10,
-    paddingTop: 10,
+    paddingBottom: 6,
+    paddingTop: 6,
     width: "100%",
     borderBottomColor: "grey",
     borderBottomWidth: StyleSheet.hairlineWidth
@@ -208,7 +255,7 @@ const styleLocal = StyleSheet.create({
 
   },
   headerText: {
-    fontSize: 30
+    fontSize: 16
   },
   listContainer: {
     width: "100%",

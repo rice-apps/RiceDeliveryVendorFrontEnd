@@ -23,6 +23,7 @@ import RefreshListView, {RefreshState}from "../components/RefreshListView";
 interface OrderListProps {
   orders: any
   rootStore?: RootStore
+  renderIcon: boolean
 }
 interface OrderListState {
   refreshState: any,
@@ -110,6 +111,15 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     await this.setState({ refreshState: RefreshState.Idle })
   }
 
+  // timer
+  // async componentWillMount() {
+  //   this.timer = setInterval(() => this.onRefresh(), 1000);
+  // }
+
+  // async componentWillUnmount() {
+  //   this.timer = null;
+  // }
+  
   onPressItem = id => {
     // updater functions are preferred for transactional updates
     this.setState(state => {
@@ -128,6 +138,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           order={item}
           onPressItem={this.onPressItem}
           selected={!!this.state.selected.get(item.id)}
+          renderIcon={this.props.renderIcon}
         />}
       </Observer>
 
