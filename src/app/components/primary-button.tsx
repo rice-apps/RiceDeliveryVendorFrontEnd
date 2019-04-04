@@ -4,7 +4,7 @@ import * as css from "./style"
 
 export default class PrimaryButton extends React.Component<any, any> {
   render() {
-    const { title, onPress, loading } = this.props
+    const { title, onPress, loading, disabled } = this.props
     return (
       <Button
         title={title}
@@ -12,6 +12,7 @@ export default class PrimaryButton extends React.Component<any, any> {
         style={{ margin: 10 }}
         onPress={onPress}
         loading={loading}
+        disabled={disabled}
       />
     )
   }

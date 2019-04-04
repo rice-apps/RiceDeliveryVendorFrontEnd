@@ -6,7 +6,7 @@ import { RootStore } from "./stores/root-store"
 import { Provider } from "mobx-react"
 import { contains } from "ramda"
 import SplashScreen from "react-native-splash-screen"
-import { YellowBox, View, StyleSheet, StatusBar, Platform } from "react-native"
+import { YellowBox, View, StyleSheet, StatusBar, Platform, ActivityIndicator } from "react-native"
 import LoadingScreen from "./screens/vendorScreens/loading-screen"
 YellowBox.ignoreWarnings(["Warning: isMounted(...) is deprecated"])
 YellowBox.ignoreWarnings(["Module RCTImageLoader requires"])
@@ -67,7 +67,7 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
               <StatusBar />
             </View>
             <Header /> */}
-        <RootNavigator/>
+        <RootNavigator persistenceKey={"NavigationState5"} renderLoadingExperimental={() => <ActivityIndicator />}/>
         {/* </View> */}
       </Provider>
     )

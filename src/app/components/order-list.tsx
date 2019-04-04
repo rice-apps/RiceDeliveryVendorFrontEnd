@@ -33,7 +33,9 @@ interface OrderListState {
   batches: any,
   alertOptions: any,
   orders: any,
-  overlayVisible: boolean
+  overlayVisible: boolean,
+  batchOverlayButtonLoad: boolean,
+  addingToBatchesButtonLoad: Array<boolean>
 }
 
 // const OFlatList = observer(FlatList)
@@ -51,7 +53,9 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             batches: [],
             alertOptions: [],
             orders: [],
-            overlayVisible: false
+            overlayVisible: false,
+            batchOverlayButtonLoad: false,
+            addingToBatchesButtonLoad: []
         }
     }
 
@@ -60,28 +64,23 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     this.setState({batches: batches});
   }
   
-  createAlertOptions(batches) {
-    let alertOptions = [];
-    for (let i = 0; i < batches.length; i++) {
-      let text = 'Batch ' + (i+1);
-      let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
-      alertOptions.push(
-        {text: text, 
-          onPress: () => {
-            this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID)
-          }});
-    }
-    alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
-    return alertOptions;
-  }
+
   
-  addToBatch = async(vendorName, orders, batchID) => {
+  addToBatch = async(vendorName, orders, batchID, index) => {
     console.log(`ADDING to batchID ${batchID}`);
     console.log(`ADDING orders ${orders}`);
     console.log(`ADDING to vendor ${vendorName}`);
+    await this.setState((state) => {
+      let arr = state.addingToBatchesButtonLoad.map(item => item)
+      arr[index] = true;
+      return {addingToBatchesButtonLoad: arr };
+    })
     await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
     await this.onRefresh();
-    await this.setState({selected: new Map()})
+    await this.setState((state) => {
+      let arr = state.addingToBatchesButtonLoad.map(item => false)
+      return {addingToBatchesButtonLoad: arr };
+    })
   }
 
    // Makes alert box when add to batch is clicked.
@@ -91,10 +90,10 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       if (this.state.selected.get(key) === true)
         orders.push(key)
     }
-    await this.setState({orders: orders});
+    await this.setState({orders: orders, batchOverlayButtonLoad: true});
     // get the latest batches:
-    await this.props.rootStore.orders.getBatches();
-    await this.setState({overlayVisible: true})
+    let batch = toJS(await this.props.rootStore.orders.getBatches()).map(item => false);
+    await this.setState({overlayVisible: true, batchOverlayButtonLoad: false, addingToBatchesButtonLoad: batch})
     // await this.setState({alertOptions: this.createAlertOptions(batches)});
     // Alert.alert(
     //   'Add to Batch: ',
@@ -105,6 +104,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
   }
 
   onRefresh = async () => {
+    console.log("REFRESHING");
     await this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
     await this.props.rootStore.orders.queryOrders(this.state.page)
     await this.setState({ refreshState: RefreshState.Idle })
@@ -190,7 +190,9 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     return (
       <SecondaryButton 
         title={`Batch ${index + 1}`}
-        onPress={() => this.addToBatch("East West Tea", this.state.orders, item._id)}
+        onPress={() => this.addToBatch("East West Tea", this.state.orders, item._id, index)}
+        loading={this.state.addingToBatchesButtonLoad[index]}
+        disabled={this.state.addingToBatchesButtonLoad[index]}
       />
     )
   }
@@ -208,6 +210,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           <View style={style.overlayContainer}>
             <Text style={material.headline}>Which Batch would you like to add to?</Text>
             <FlatList
+              extraData={this.state}
               data={getSnapshot(this.props.rootStore.orders.onTheWay)}
               renderItem={this.renderOverlay}
               keyExtractor={(item, index)=> item._id}
@@ -232,6 +235,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             <PrimaryButton
               title ="Add to Batch"
               onPress={this.addToBatchHandler}
+              loading={this.state.batchOverlayButtonLoad}
+              disabled={this.state.batchOverlayButtonLoad}
             />
           )
         }
@@ -252,3 +257,18 @@ const style = StyleSheet.create({
   },
   
 })
+
+  // createAlertOptions(batches) {
+  //   let alertOptions = [];
+  //   for (let i = 0; i < batches.length; i++) {
+  //     let text = 'Batch ' + (i+1);
+  //     let addBatchInput = {vendorName: "East West Tea", batchID: batches[i]._id, orders: this.state.orders};
+  //     alertOptions.push(
+  //       {text: text, 
+  //         onPress: () => {
+  //           this.addToBatch(addBatchInput.vendorName, addBatchInput.orders, addBatchInput.batchID)
+  //         }});
+  //   }
+  //   alertOptions.push({text: 'Cancel', onPress: () => console.log('cancel pressed'), style: 'cancel'});
+  //   return alertOptions;
+  // }
