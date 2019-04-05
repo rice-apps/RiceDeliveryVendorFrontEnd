@@ -43,6 +43,8 @@ export const Order = types.model("Order", {
 export const Batch = types.model("Batch", {
   _id: types.string,
   orders: types.array(Order),
+  outForDelivery: types.boolean,
+  batchName: types.string
 })
 
 export const OrderModel = types
@@ -134,20 +136,23 @@ export const OrderModel = types
         }
       })) 
       self.onTheWay = info.data.batch;
+      console.log(toJS(self.onTheWay))
       return info.data.batch; //Return batches.
   
     }),
-    async createBatch(vendorName, orders) {
-      let info = await client.mutate({
+    createBatch: flow(function * createBatch(vendorName, orders, batchName) {
+      let info = yield client.mutate({
         mutation: CREATE_BATCH,
         variables: {
           vendorName: vendorName,  
-          orders: orders
+          orders: orders,
+          batchName: batchName
         }
       });
-      self.onTheWay = info.data.batch
+      console.log(info)
+      self.onTheWay.push(info.data.createBatch)
       return info.data.batch; //Return batches.
-    },
+    }),
     async addToBatch(vendorName, orders, batchID) {
       let info = await client.mutate({
         mutation: ADD_TO_BATCH,
@@ -340,6 +345,8 @@ const GET_BATCHES = gql`
 query queryBatch($batchID: String, $vendorName: String!) {
   batch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
       inBatch
@@ -408,9 +415,11 @@ query queryBatch($batchID: String, $vendorName: String!) {
 
 // Create a new batch.
 const CREATE_BATCH = gql`
-  mutation createBatch($orders: [String], $vendorName: String) {
-    createBatch(orders: $orders, vendorName: $vendorName) {
+  mutation createBatch($orders: [String], $vendorName: String!, $batchName: String!) {
+    createBatch(orders: $orders, vendorName: $vendorName, batchName: $batchName) {
       _id
+      batchName
+      outForDelivery
       orders {
         id
         inBatch

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, FlatList} from 'react-native';
+import { View, FlatList, Text} from 'react-native';
 import { inject, observer, Observer } from 'mobx-react';
 import { RootStore } from '../../../../stores/root-store';
 import SecondaryButton from '../../../../components/secondary-button';
@@ -11,6 +11,8 @@ import { Batch } from '../../../../stores/order-store'
 import BatchListItem from '../../../../components/batch-list-item';
 import RefreshListView, {RefreshState} from 'react-native-refresh-list-view';
 import { getSnapshot } from 'mobx-state-tree';
+import { Overlay, Input } from 'react-native-elements';
+import { material } from 'react-native-typography';
 
 interface CurrentBatchesScreenProps {
   // injected props
@@ -22,6 +24,9 @@ interface CurrentBatchesScreenState {
   batches: any
   isLoading: boolean  
   refreshState: any
+  batchName: string
+  displayOverlay: boolean
+  buttonLoading: boolean
 }
 
 @inject("rootStore")
@@ -33,7 +38,10 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       vendor: "East West Tea",
       batches : [],
       isLoading: true,
-      refreshState: RefreshState.Idle
+      refreshState: RefreshState.Idle,
+      batchName: "",
+      displayOverlay: false,
+      buttonLoading: false
     }
   }
 
@@ -41,8 +49,13 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     return this.props.rootStore.orders.getBatches();
   } 
 
-  async createBatch(vendorName, orders) {
-    await this.props.rootStore.orders.createBatch(vendorName, orders);
+  createBatchHandler = async() => {
+    await this.setState({displayOverlay: true})
+  }
+  async createBatch(vendorName, orders, batchName) {
+    await this.setState({buttonLoading: true})
+    await this.props.rootStore.orders.createBatch(vendorName, orders, batchName);
+    await this.setState({buttonLoading: false, batchName: ""})
   }
 
   async componentWillMount() {
@@ -61,7 +74,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       {() => (
         <BatchListItem 
           batch={item} 
-          index ={index}>
+          name ={item.batchName}>
         </BatchListItem>
       )}
     </Observer>
@@ -74,6 +87,26 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     } else {
       return (
         <View style={css.screen.paddedScreen}>
+        <Overlay
+          isVisible={this.state.displayOverlay}
+          onBackdropPress={() => this.setState({displayOverlay: false})}
+        >
+          <View style={css.screen.defaultScreen}>
+            <Text style={material.display1}>
+              Name your batch
+            </Text>
+            <Input 
+              placeholder="Name"
+              onChangeText={event => {this.setState({batchName: event})}}
+            />
+            <PrimaryButton 
+              loading={this.state.buttonLoading}
+              disabled={this.state.batchName.length === 0}
+              title="Create Batch"
+              onPress={() => this.createBatch("East West Tea", [], this.state.batchName)}
+            />
+          </View>
+        </Overlay>
           <View style={css.flatlist.container}>
             <RefreshListView
                   data={getSnapshot(this.props.rootStore.orders.onTheWay)}
@@ -85,7 +118,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
           <View> 
               <SecondaryButton 
               title="Create Batch"
-              onPress = {() => this.createBatch("East West Tea", [])}
+              onPress = {this.createBatchHandler}
               />
           </View>
         </View>

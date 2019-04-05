@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
 // import { ListItem } from 'react-native-elements';
 import { color, typography } from '../../theme';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Order from './temporary-mock-order';
@@ -10,7 +10,9 @@ import Order from './temporary-mock-order';
 // Using temporary Order object instead of order-store Order object
 
 interface BatchListItemProps {
-    order : Order
+    batch : any,
+    name: String,
+    navigation: NavigationScreenProp<any, any>
 }
 
 class BatchListItem extends React.Component<BatchListItemProps, any> {
@@ -36,7 +38,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
             <TouchableHighlight onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
-                        <Text style={styles.row_location}> Batch {this.props.index + 1} </Text>  
+                        <Text style={styles.row_location}> {`${this.props.name}'s Batch`} </Text>  
                     </View>
                     <Icon name="chevron-right" size={50} color="black" />
                     
