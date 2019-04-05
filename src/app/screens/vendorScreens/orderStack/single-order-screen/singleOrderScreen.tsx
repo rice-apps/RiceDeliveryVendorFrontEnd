@@ -110,27 +110,26 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let vendorName = "East West Tea";
     let netID = order.netID;
     let orderID = order.id;
-    let data = {"data": {"netID": netID, "vendorName": vendorName, "orderID": orderID}}
-    console.log(data);
+    let data = {"netID": netID, "vendorName": vendorName, "orderID": orderID};
     return data;
   }
 
   
 
   fulfillOrder(order) {
-    let vendorName = "East West Tea";
-    let netID = order.netID;
-    let orderID = order.id;
-    let data = {"data": {"netID": netID, "vendorName": vendorName, "orderID": orderID}};
-    this.props.rootStore.orders.fulfillOrder(data);
+    console.log("fulfill order");
+    let UpdateOrderInput = this.createUpdateOrderInput(order);
+    this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
   }
 
-  async cancelWithoutRefund(order) {
+  cancelWithoutRefund(order) {
+    console.log("cacel order without refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput).then(response => console.log(response));
+    this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
   }
 
   cancelWithRefund(order) {
+    console.log("cacel order with refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
   }
@@ -155,7 +154,6 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
 
   render() {
     if (this.state.loading) return <LoadingScreen />
-    console.log("render")
     let order = this.props.navigation.state.params.order
     let status = this.getStatus();
     let location = order.location.name
@@ -186,25 +184,19 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
           </View>
         </View>
         <View style={styleLocal.buttons}>
+
           <SecondaryButton title = "Fulfill Order"  
-            onPress = {() => 
-           {
-             console.log("trying to fulfill order");
-             this.fulfillOrder(order);
-          }
-        
-        }/>
+            onPress = {() => this.fulfillOrder(order)}/>
+
           <PrimaryButton title = "Cancel Without Refund" 
-            onPress = {() => {
-              console.log("cnacle without refund");
-              this.cancelWithoutRefund(order);
-            }}
+            onPress = {() => this.cancelWithoutRefund(order)}
             />
+
           <PrimaryButton title="Refund The Order" 
-            onPress = {() => {
-              console.log("cnacle with refund");
-              this.cancelWithRefund(order);
-            }}/>
+            onPress = {() => this.cancelWithRefund(order)}
+            />
+
+
         </View>
       </View>
     )
