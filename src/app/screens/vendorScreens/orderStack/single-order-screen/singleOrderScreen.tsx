@@ -133,6 +133,16 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
   }
+
+  buttonLogic(order) {
+    if (order.orderStatus.onTheWay === null) {
+        return true;
+    } else if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
  
   renderItems = ({item}) => {
     if (item.quantity) {
@@ -155,12 +165,15 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   render() {
     if (this.state.loading) return <LoadingScreen />
     let order = this.props.navigation.state.params.order
+    console.log("hereeeee");
+    console.log(order);
     let status = this.getStatus();
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
     let allItems = this.getItems();
     let name = order.customerName.split(" ")[0]
+    let clicked = false;
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>
@@ -186,16 +199,19 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         <View style={styleLocal.buttons}>
 
           <SecondaryButton title = "Fulfill Order"  
-            onPress = {() => this.fulfillOrder(order)}/>
+            onPress = {() => this.fulfillOrder(order)}
+            disabled = {this.buttonLogic(order)}
+            />
 
           <PrimaryButton title = "Cancel Without Refund" 
             onPress = {() => this.cancelWithoutRefund(order)}
+            disabled = {this.buttonLogic(order)}
             />
 
-          <PrimaryButton title="Refund The Order" 
+          <PrimaryButton title = "Refund the Order" 
             onPress = {() => this.cancelWithRefund(order)}
+            disabled = {this.buttonLogic(order)}
             />
-
 
         </View>
       </View>
