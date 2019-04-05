@@ -145,6 +145,7 @@ export const OrderModel = types
           orders: orders
         }
       });
+      self.onTheWay = info.data.batch
       return info.data.batch; //Return batches.
     },
     async addToBatch(vendorName, orders, batchID) {
