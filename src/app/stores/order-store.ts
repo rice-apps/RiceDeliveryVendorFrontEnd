@@ -141,17 +141,21 @@ export const OrderModel = types
   
     }),
     createBatch: flow(function * createBatch(vendorName, orders, batchName) {
-      let info = yield client.mutate({
-        mutation: CREATE_BATCH,
-        variables: {
-          vendorName: vendorName,  
-          orders: orders,
-          batchName: batchName
-        }
-      });
-      console.log(info)
-      self.onTheWay.push(info.data.createBatch)
-      return info.data.batch; //Return batches.
+      try {
+        let info = yield client.mutate({
+          mutation: CREATE_BATCH,
+          variables: {
+            vendorName: vendorName,  
+            orders: orders,
+            batchName: batchName
+          }
+        });
+        self.onTheWay.push(info.data.createBatch)
+        return info.data.createBatch; //Return batches.
+      } catch(error) {
+        return [-1, error]
+      }
+
     }),
     async addToBatch(vendorName, orders, batchID) {
       let info = await client.mutate({
@@ -175,16 +179,18 @@ export const OrderModel = types
       });
       return info.data.batch; //Return batches.
     },
-    async deleteBatch(batchID, vendorName) {
-      let info = await client.mutate({
+    deleteBatch: flow(function* deleteBatch(batchID, vendorName) {
+      let info = yield client.mutate({
         mutation: DELETE_BATCH,
         variables: {
           batchID: batchID,
           vendorName: vendorName
         }
       });
-      return info.data.batch; //Return batches.
-    },
+      // update store. 
+      self.onTheWay = self.onTheWay.filter(batch => batch._id !== batchID);
+      return info.data.deleteBatch; //Return batches.
+    }),
   })).views(self => ({
     numPending() {
       return self.pending.length
@@ -435,6 +441,7 @@ const DELETE_BATCH = gql`
 mutation deleteBatch($batchID: String, $vendorName: String!) {
 	deleteBatch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
     orders {
       id
       inBatch

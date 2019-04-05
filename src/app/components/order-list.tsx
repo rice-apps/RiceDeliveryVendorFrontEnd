@@ -67,7 +67,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
   
 
   
-  addToBatch = async(vendorName, orders, batchID, index) => {
+  addToBatch = async(vendorName, orders, batchID, index, batchName) => {
     console.log(`ADDING to batchID ${batchID}`);
     console.log(`ADDING orders ${orders}`);
     console.log(`ADDING to vendor ${vendorName}`);
@@ -80,8 +80,9 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     await this.onRefresh();
     await this.setState((state) => {
       let arr = state.addingToBatchesButtonLoad.map(item => false)
-      return {addingToBatchesButtonLoad: arr };
+      return {addingToBatchesButtonLoad: arr, overlayVisible: false};
     })
+    Alert.alert(`Successfully added to ${batchName}'s Batch`)
   }
 
    // Makes alert box when add to batch is clicked.
@@ -200,8 +201,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
   renderOverlay = ({item, index}) => {
     return (
       <SecondaryButton 
-        title={`Batch ${index + 1}`}
-        onPress={() => this.addToBatch("East West Tea", this.state.orders, item._id, index)}
+        title={`${item.batchName}'s Batch`}
+        onPress={() => this.addToBatch("East West Tea", this.state.orders, item._id, index, item.batchName)}
         loading={this.state.addingToBatchesButtonLoad[index]}
         disabled={this.state.addingToBatchesButtonLoad[index]}
       />

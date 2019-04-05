@@ -13,6 +13,7 @@ import RefreshListView, {RefreshState} from 'react-native-refresh-list-view';
 import { getSnapshot } from 'mobx-state-tree';
 import { Overlay, Input } from 'react-native-elements';
 import { material } from 'react-native-typography';
+import { toJS } from 'mobx';
 
 interface CurrentBatchesScreenProps {
   // injected props
@@ -27,6 +28,7 @@ interface CurrentBatchesScreenState {
   batchName: string
   displayOverlay: boolean
   buttonLoading: boolean
+  errorMessage: string
 }
 
 @inject("rootStore")
@@ -41,7 +43,8 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       refreshState: RefreshState.Idle,
       batchName: "",
       displayOverlay: false,
-      buttonLoading: false
+      buttonLoading: false,
+      errorMessage: null
     }
   }
 
@@ -50,12 +53,18 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
   } 
 
   createBatchHandler = async() => {
-    await this.setState({displayOverlay: true})
+    await this.setState({displayOverlay: true, batchName: "", errorMessage: null})
   }
   async createBatch(vendorName, orders, batchName) {
     await this.setState({buttonLoading: true})
-    await this.props.rootStore.orders.createBatch(vendorName, orders, batchName);
-    await this.setState({buttonLoading: false, batchName: ""})
+    let status = await this.props.rootStore.orders.createBatch(vendorName, orders, batchName);
+    await this.setState({buttonLoading: false})
+    // handle backend error. 
+    if (status[0] === -1) {
+      await this.setState({errorMessage: "This name is already taken"})
+    } else {
+      await this.setState({errorMessage: null, batchName: "", displayOverlay: false})
+    }
   }
 
   async componentWillMount() {
@@ -81,6 +90,9 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
 
     )
   
+  renderIfElse = (cond, ifRender, elseRender) => cond ? ifRender : elseRender
+  
+  
   render() {
     if (this.state.isLoading) {
       return <LoadingScreen />
@@ -90,6 +102,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
         <Overlay
           isVisible={this.state.displayOverlay}
           onBackdropPress={() => this.setState({displayOverlay: false})}
+          animationType="fade"
         >
           <View style={css.screen.defaultScreen}>
             <Text style={material.display1}>
@@ -98,6 +111,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
             <Input 
               placeholder="Name"
               onChangeText={event => {this.setState({batchName: event})}}
+              errorMessage={this.state.errorMessage}
             />
             <PrimaryButton 
               loading={this.state.buttonLoading}
@@ -108,12 +122,21 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
           </View>
         </Overlay>
           <View style={css.flatlist.container}>
-            <RefreshListView
-                  data={getSnapshot(this.props.rootStore.orders.onTheWay)}
-                  refreshState={this.state.refreshState}
-                  onHeaderRefresh={this.onRefresh}
-                  keyExtractor={(item, index) => item._id.toString()}
-                  renderItem={this.renderItem}/>
+            {this.renderIfElse(toJS(this.props.rootStore.orders.onTheWay).length === 0, 
+              <View style={css.screen.defaultScreen}>
+                <Text style={material.display1}>
+                  There are no batches.
+                </Text>
+              </View>
+              , 
+              <RefreshListView
+              data={getSnapshot(this.props.rootStore.orders.onTheWay)}
+              refreshState={this.state.refreshState}
+              onHeaderRefresh={this.onRefresh}
+              keyExtractor={(item, index) => item._id.toString()}
+              renderItem={this.renderItem}/>
+            )}
+            
           </View>
           <View> 
               <SecondaryButton 

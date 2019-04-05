@@ -113,9 +113,12 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     return info.data.deliveryBatch.orders; //Return batches.
   }
 
-  deleteBatch = () => {
+  deleteBatch =  async() => {
     let batch = this.props.navigation.getParam("batch", "NONE");
-    this.props.rootStore.orders.deleteBatch(batch._id, "East West Tea");
+    let deletedBatch = await this.props.rootStore.orders.deleteBatch(batch._id, "East West Tea");
+    await this.props.navigation.navigate("Batches")
+    console.log(deletedBatch)
+    Alert.alert(`${deletedBatch.batchName}'s batch deleted`)
   }
 
 
