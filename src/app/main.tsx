@@ -39,7 +39,7 @@ const serverLink = createHttpLink({
 //   uri: "http://localhost:3000/graphql",
 // })
 
-const link = ApolloLink.from([errorLink, serverLink])
+const link = ApolloLink.from([serverLink])
 export const client = new ApolloClient({
   link: link,
   cache: new InMemoryCache(),

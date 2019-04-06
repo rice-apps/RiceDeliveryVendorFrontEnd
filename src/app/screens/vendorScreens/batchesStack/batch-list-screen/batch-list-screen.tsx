@@ -59,7 +59,9 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
 
   // Makes alert box when add to batch is clicked.
   deliverAlert = () => {
+    console.log("DELIVERYALERT")
     let batchID = this.props.navigation.getParam("batchID", "NONE");
+    console.log(batchID)
     Alert.alert(
       "Deliver all order in this batch?",
       "",
@@ -110,7 +112,9 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
         vendorName: vendorName
       }
     });
-    return info.data.deliveryBatch.orders; //Return batches.
+    console.log("BACKEND UPDATED")
+    // console.log(info.data.deliverBatch.orders)
+    return 1; //Return batches.
   }
 
   deleteBatch =  async() => {
@@ -140,8 +144,10 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   render() {
     console.log("rendering");
     const batchID = this.props.navigation.getParam("batchID", "NONE");
-    const batch = this.props.rootStore.orders.getBatchByID(batchID)
-    console.log("batch:" + batch);
+    console.log("getting batch");
+    const batch = toJS(this.props.rootStore.orders.onTheWay).find(batch => batch._id === batchID)
+    console.log("batch:")
+    console.log(batch);
 
     if (this.state.loading || batch === undefined) {
       return <LoadingScreen />
@@ -175,14 +181,35 @@ const DELIVER_BATCH = gql`
 mutation deliverBatch($batchID: String!, $vendorName: String!){
 	deliverBatch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
-      orderStatus {
+      inBatch
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
         pending
         onTheWay
         fulfilled
         unfulfilled
         refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
       }
     }
   }

@@ -55,7 +55,8 @@ export const OrderModel = types
   })
   .views(self => ({
     getBatchByID(batchID) {
-      return self.onTheWay.find(batch => batch._id === batchID);
+      console.log("GET BACTCH BY ID: " + batchID)
+      return toJS(self.onTheWay.find(batch => batch._id === batchID))
     }
   }))
   .actions(self => ({
