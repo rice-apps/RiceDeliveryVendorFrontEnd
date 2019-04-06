@@ -108,8 +108,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
 
   onRefresh = async () => {
     console.log("REFRESHING");
-    await this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1 })
-    await this.props.rootStore.orders.queryOrders(this.state.page)
+    await this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1, endReached: false })
+    await this.props.rootStore.orders.getNewOrders();
     await this.setState({ refreshState: RefreshState.Idle })
   }
 
@@ -157,20 +157,6 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
 
   renderFooter = () => {
     if (this.state.refreshState === RefreshState.Idle) return null
-    if (this.state.endReached) {
-      return (
-        <View
-          style={{
-            paddingVertical: 10,
-            borderTopWidth: 1,
-            borderColor: "#CED0CE",
-          }}
-        >
-          <Text>End</Text>
-        </View>
-      )
-    }
-
     return (
       <View
         style={{
@@ -190,9 +176,10 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     if (!this.state.endReached) {
       this.setState({ page: this.state.page + 1, refreshState: RefreshState.FooterRefreshing })
       console.log("calling query")
-      const pendingList = await this.props.rootStore.orders.queryOrders(this.state.page)
-      if (pendingList.length < 10) {
-        this.setState({ endReached: true })
+      const pendingList = await this.props.rootStore.orders.getMoreOrders(this.state.page)
+      if (pendingList.length === 0) {
+        console.log("no more data")
+        this.setState({ endReached: false, refreshState: RefreshState.NoMoreData})
       }
       console.log("Setting state")
       this.setState({ refreshState: RefreshState.Idle })
@@ -209,6 +196,18 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       />
     )
   }
+  renderNoMoreData = () => (
+        <View
+          style={{
+            paddingVertical: 10,
+            borderTopWidth: 1,
+            borderColor: "#CED0CE",
+          }}
+        >
+          <Text>End</Text>
+        </View>
+  )
+
   render() {
     console.log("rerender");
     let orders = getSnapshot(this.props.rootStore.orders.pending);
@@ -238,9 +237,9 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           keyExtractor={(item, index) => item.id}
           renderItem={this.renderItem}
           ListFooterComponent={this.renderFooter}
-          onEndReachedThreshold={0.5}
           refreshState={this.state.refreshState}
           onFooterRefresh={this.loadMore}
+          footerNoMoreDataComponent={this.renderNoMoreData}
           onHeaderRefresh={this.onRefresh}
         />
         {

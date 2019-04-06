@@ -59,7 +59,7 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
     try {
       // If the modal is open, set the loading icon on the button to true.
       this.state.displayNetworkError && this.setState({ reloadPending: true })
-      await this.props.rootStore.orders.queryOrders(1)
+      await this.props.rootStore.orders.getNewOrders();
       this.setState({
         loading: false,
         displayNetworkError: false,

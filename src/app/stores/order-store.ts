@@ -64,6 +64,7 @@ export const OrderModel = types
       self.pending = orders
       return self.pending
     },
+
     queryOrders: flow(function* queryOrders(pageNum) {
       let variables = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
       // if page number is greater than 1, then start pagination!
@@ -84,6 +85,55 @@ export const OrderModel = types
       })
       return getSnapshot(self.pending)
     }),
+    getNewOrders: flow(function* getNewOrders() {
+      let variables = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
+      // if page number is greater than 1, then start pagination!
+      const info = yield client.query({
+        query: GET_ORDER_STORE,
+        variables,
+      })
+      console.log("Number queried" + info.data.order.length)
+      console.log("Number in batch" + info.data.order.filter(order => {
+        return order.inBatch === true
+      }).length)
+
+      if (info.data.order.length === 0) return []
+      self.pending = info.data.order.filter(order => {
+        if (order.inBatch === true) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      console.log("Length after refreshing" + toJS(self.pending).length)
+      return getSnapshot(self.pending)
+    }),
+    
+    getMoreOrders: flow(function* getMoreOrders(pageNum) {
+      let variables: any = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
+      let prevLength = toJS(self.pending).length
+      // if page number is greater than 1, then start pagination!
+      variables.starting_after = self.pending[toJS(self.pending).length - 1].id 
+      const info = yield client.query({
+        query: GET_ORDER_STORE,
+        variables,
+      })
+      if (info.data.order.length === 0) return 0
+      self.pending = toJS(self.pending).concat(info.data.order)
+      // filter out orders that are already in a batch.
+      self.pending = self.pending.filter(order => {
+        if (order.inBatch === true || order.orderStatus.onTheWay != null) {
+          return false;
+        } else {
+          return true;
+        }
+      })
+      if (prevLength === toJS(self.pending.length)) {
+        return [];
+      }
+      return getSnapshot(self.pending)
+    }),
+
     queryAllOrders: flow(function* queryOrders(pageNum) {
       let variables = { vendorName: "East West Tea", status: "" } 
       // if page number is greater than 1, then start pagination!
