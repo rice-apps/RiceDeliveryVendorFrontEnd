@@ -1,6 +1,6 @@
 import React from "react"
 import * as css from "../../../style"
-import { View, Text, TextInput} from "react-native"
+import { View, Text, TextInput, Button, TouchableOpacity} from "react-native"
 import { withNavigation } from "react-navigation";
 import PrimaryButton from "../../../../components/primary-button";
 import SecondaryButton from "../../../../components/secondary-button";
@@ -8,6 +8,7 @@ import { OverlayConfirmationScreen } from "./overlayConfirmationScreen";
 import { client } from "../../../../main";
 import gql from "graphql-tag";
 import LoadingScreen from "../../loading-screen";
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const UPDATE_HOURS_MUTATION = gql`
     mutation updateVendorHours($hours: [[Float]], $name: String!) {
@@ -40,7 +41,9 @@ class SingleDayScreen extends React.Component<any, any> {
             closingMinute: "00",
             closingAMPM: "", 
             serverOpenData: "",
-            serverCloseData: ""        
+            serverCloseData: "",
+            startTimePickerVisible: false, 
+            endTimePickerVisible: false
         
         };
     }
@@ -64,7 +67,13 @@ class SingleDayScreen extends React.Component<any, any> {
         this.setState({
             serverOpenData: `${openingTimes[0]}:${openingTimes[1]} ${openingTimes[2]}`,
             serverCloseData: `${closingTimes[0]}:${closingTimes[1]} ${closingTimes[2]}`,
-            loadingInitialData: false
+            loadingInitialData: false,
+            openingHour: `${openingTimes[0]}`,
+            openingMinute: `${openingTimes[1]}`,
+            openingAMPM: `${openingTimes[2]}`,
+            closingHour: `${closingTimes[0]}`,
+            closingMinute: `${closingTimes[1]}`,
+            closingAMPM: `${closingTimes[2]}`,
         })
     }
 
@@ -125,8 +134,6 @@ class SingleDayScreen extends React.Component<any, any> {
         this.state.displayModal && this.setState({loadPending: true})
         const numOpeningTime = this.convertTime(this.state.openingHour, this.state.openingMinute, this.state.openingAMPM);
         const numClosingTime = this.convertTime(this.state.closingHour, this.state.closingMinute, this.state.closingAMPM);
-        hours[idx] = [numOpeningTime, numClosingTime]
-        
         await client.mutate({
             mutation: UPDATE_HOURS_MUTATION, 
             variables: 
@@ -147,10 +154,61 @@ class SingleDayScreen extends React.Component<any, any> {
         console.log("SETTING")
         this.setState({displayModal: !this.state.displayModal})
     }
+
+    showStartTimePicker = () => this.setState({ startTimePickerVisible: true });
+ 
+    showEndTimePicker = () => this.setState({ endTimePickerVisible: true });
+    
+    hideStartTimePicker = () => this.setState({ startTimePickerVisible: false });
+    
+    hideEndTimePicker = () => this.setState({ endTimePickerVisible: false });
+    
+    handleStartPicked = (date) => {
+        let hour24 = date.getHours();
+        let min  = date.getMinutes();
+        let hour12 = (hour24 % 12 == 0) ? 12 : hour24 % 12; 
+        
+        if ((hour24 > 12 && min > 0)) {
+            this.setState({openingAMPM: "PM"})
+        } else if ((hour24 == 12 && min == 0)) {
+            this.setState({openingAMPM: "PM"})
+        } else {
+            this.setState({openingAMPM: "AM"})
+        }
+        this.setState({openingHour: (hour12).toString()})
+        this.setState({openingMinute: date.getMinutes().toString()})
+
+        this.hideStartTimePicker();
+    };
+    
+    handleEndPicked = (date) => {
+        let hour24 = date.getHours();
+        let min  = date.getMinutes();
+        let hour12 = (hour24 % 12 == 0) ? 12 : hour24 % 12; 
+
+        if ((hour24 > 12 && min > 0)) {
+            this.setState({closingAMPM: "PM"})
+        } else if ((hour24 == 12 && min == 0)) {
+            this.setState({closingAMPM: "PM"})
+        } else {
+            this.setState({closingAMPM: "AM"})
+        }
+        this.setState({closingHour: (hour12).toString()})
+        this.setState({closingMinute: date.getMinutes().toString()})
+
+       
+        this.hideEndTimePicker();
+    };
+
+   
+
+    
     render() {
         let day = this.props.navigation.getParam("day", "NO_ID")
         let hours = this.props.navigation.getParam("hours", "NO_ID");
         let idx = this.props.navigation.getParam("idx", "NO_ID");
+
+    
         if (this.state.loadingInitialData) {
             return <LoadingScreen />
         } 
@@ -172,55 +230,57 @@ class SingleDayScreen extends React.Component<any, any> {
                 <Text style={[css.text.headerText, {paddingBottom: 10}]}>{day} hours</Text>
                 <Text style={[css.text.bigBodyText, {paddingBottom: 10}]}>{this.state.serverOpenData} - {this.state.serverCloseData}</Text>
 
-                <Text style={[css.text.bodyText]}>Set Opening Time</Text>
-                <View style={[{flexDirection: "row", display: "flex", height: "10%", justifyContent: "center", alignItems: "center"}]}>
-                    <TextInput 
-                        placeholder="Hour"
-                        onChangeText={event => this.setState({openingHour: event.toString()})}
-                        style={[{height: 40, width: "20%"}]}
-                    />
-                    <TextInput 
-                        placeholder="Minute"
-                        onChangeText={event => this.setState({openingMinute: event.toString() == "0" ? "00" : event.toString()})}
-                        style={[{height: 40, width: "20%"}]}
+                <View style={{width: "100%", alignItems: "center"} } >
+                   
+                    <Button 
+                            title="Set Opening Hours"
+                            onPress = {() => {this.showStartTimePicker()}}
+                        />
+                         <Text style={css.text.timePickerShowText}> {this.state.openingHour} {":"} {this.state.openingMinute}  {this.state.openingAMPM}</Text>
+                    </View>
 
+                    <View>
+                        <TouchableOpacity onPress={() => this.showStartTimePicker}>
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            titleIOS = {"Change opening time"}
+                            isVisible={this.state.startTimePickerVisible}
+                            mode = {"time"}
+                            onConfirm={this.handleStartPicked}
+                            onCancel={this.hideStartTimePicker}
+                        />
+                    
+                    </View>
+             
+                <View style={{width: "100%", alignItems: "center", paddingTop: 20}} >
+                    <Button 
+                        title="Set Closing Hours"
+                        onPress = {() => {this.showEndTimePicker()}}
                     />
-                    <TextInput 
-                        onChangeText={event => this.setState({openingAMPM: event.toString().toUpperCase()})}
-                        placeholder="AM/PM"
-                        style={[{height: 40, width: "20%"}]}
-                    />
-                </View>
-                <Text style={css.text.bodyText}>Set Closing Time</Text>
+                    <Text style={css.text.timePickerShowText}> {this.state.closingHour} {":"} {this.state.closingMinute}  {this.state.closingAMPM}</Text>
+                    <View>
+                        <TouchableOpacity onPress={() => this.showEndTimePicker}>
+                        </TouchableOpacity>
+                        <DateTimePicker
+                            titleIOS = {"Change closing time"}
+                            isVisible={this.state.endTimePickerVisible}
+                            mode = {"time"}
+                            onConfirm={this.handleEndPicked}
+                            onCancel={this.hideEndTimePicker}
+                        />
+                    </View>
 
-                <View style={[{flexDirection: "row", display: "flex", height: "10%"}]}>
-                    <TextInput 
-                        placeholder="Hour"
-                        onChangeText={event => this.setState({closingHour: event.toString()})}
-
-                        style={[{width: "20%", height: 40}]}
-                    />
-                    <TextInput 
-                        placeholder="Minute"
-                        onChangeText={event => this.setState({closingMinute: event.toString() == "0" ? "00" : event.toString()})}
-
-                        style={[{width: "20%", height: 40}]}
-
-                    />
-                    <TextInput 
-                        placeholder="AM/PM"
-                        onChangeText={event => this.setState({closingAMPM: event.toString().toUpperCase()})}
-
-                        style={[{width: "20%", height: 40}]}
-                    />
-                </View>
-                <View style={{width: "100%"}}>
-                    <PrimaryButton 
-                        onPress={this.sendUpdateHandler}
-                        title="Change Hours"
-                    />
                 </View>
             </View>
+
+            <View style={{width: "100%"}}>
+                    <PrimaryButton 
+                        onPress={this.sendUpdateHandler}
+                        title="Confirm"
+                    />
+            </View>
+
+           
         </View>
 
         )

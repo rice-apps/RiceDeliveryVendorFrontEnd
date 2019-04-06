@@ -89,6 +89,11 @@ export const text = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
   },
+  timePickerShowText: {
+    fontSize: 20,
+    flexDirection: "row", 
+    display: "flex",
+  }
 })
 
 //View
