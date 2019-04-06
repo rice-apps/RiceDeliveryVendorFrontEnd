@@ -15,9 +15,7 @@ import { ApolloLink } from "apollo-link";
  */
 const APP_NAME = "testIgniteProject"
 
-// const link = createHttpLink({
-//   uri: "http://localhost:3000/graphql",
-// })
+
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -36,6 +34,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const serverLink = createHttpLink({
   uri: "http://10.122.179.36:3000/graphql",
 })
+
+// const serverLink = createHttpLink({
+//   uri: "http://localhost:3000/graphql",
+// })
 
 const link = ApolloLink.from([errorLink, serverLink])
 export const client = new ApolloClient({

@@ -53,6 +53,11 @@ export const OrderModel = types
     allTransaction: types.array(Order),
     onTheWay: types.array(Batch),
   })
+  .views(self => ({
+    getBatchByID(batchID) {
+      return self.onTheWay.find(batch => batch._id === batchID);
+    }
+  }))
   .actions(self => ({
     addOrders(orders) {
       self.pending = orders
@@ -68,10 +73,9 @@ export const OrderModel = types
       })
       if (info.data.order.length === 0) return 0
       self.pending = pageNum === 1 ? info.data.order : self.pending.toJS().concat(info.data.order)
-      
       // filter out orders that are already in a batch.
       self.pending = self.pending.filter(order => {
-        if (order.inBatch === true) {
+        if (order.inBatch === true || order.orderStatus.onTheWay != null) {
           return false;
         } else {
           return true;
@@ -80,7 +84,7 @@ export const OrderModel = types
       return self.pending
     }),
     queryAllOrders: flow(function* queryOrders(pageNum) {
-      let variables = { vendorName: "East West Tea", status: "" } // SHOULD BE PAID. NOT CREATED.
+      let variables = { vendorName: "East West Tea", status: "" } 
       // if page number is greater than 1, then start pagination!
       if (pageNum > 1) variables.starting_after = self.allTransaction[self.allTransaction.toJS().length - 1].id 
       const info = yield client.query({
@@ -91,15 +95,6 @@ export const OrderModel = types
       self.allTransaction = pageNum === 1 ? info.data.order : self.allTransaction.toJS().concat(info.data.order)
       return self.allTransaction
     }),
-    // fulfillOrder: flow(function* fulfillOrder(UpdateOrderInput) {
-    //   yield client.mutate({
-    //     mutation: FULFILL_ORDER,
-    //     variables: {
-    //       data: UpdateOrderInput
-    //     }
-    //   })
-    // }
-    // ),
     async fulfillOrder(UpdateOrderInput) { //DOESNT WORK
       const info = await client.mutate({
         mutation: FULFILL_ORDER,
@@ -107,8 +102,6 @@ export const OrderModel = types
           data: UpdateOrderInput
         }
       });
-      console.log(info);
-       //Return batches.
     },
     async cancelWithoutRefund(UpdateOrderInput) {
       const info = await client.mutate({
@@ -117,7 +110,6 @@ export const OrderModel = types
           data: UpdateOrderInput
         }
       });
-      // return info.data.batch; //Return batches.
     },
     async cancelWithRefund(UpdateOrderInput) {
       const info = await client.mutate({
@@ -126,7 +118,6 @@ export const OrderModel = types
           data: UpdateOrderInput
         }
       });
-      // return info.data.batch; //Return batches.
     },
     getBatches: flow(function* getBatches() {
       const info = (yield client.query({
@@ -157,8 +148,8 @@ export const OrderModel = types
       }
 
     }),
-    async addToBatch(vendorName, orders, batchID) {
-      let info = await client.mutate({
+    addToBatch: flow(function*  addToBatch(vendorName, orders, batchID) {
+      let info = yield client.mutate({
         mutation: ADD_TO_BATCH,
         variables: {
           vendorName: vendorName,  
@@ -166,8 +157,17 @@ export const OrderModel = types
           batchID: batchID
         }
       });
+      // update the state.
+      self.onTheWay.forEach(batch => {
+        if (batch._id === batchID) {
+          console.log("Adding to batch with ID:" + batch._id)
+          batch.orders = info.data.addToBatch.orders
+        }
+      })
+      console.log("new batch")
+      console.log(toJS(self.onTheWay).find(batch => batch._id === batchID))
       return info.data.batch; //Return batches.
-    },
+    }),
     async removeFromBatch(vendorName, orders, batchID) {
       let info = await client.mutate({
         mutation: REMOVE_FROM_BATCH,
@@ -319,13 +319,36 @@ const ADD_TO_BATCH = gql`
 mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) {
   addToBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
       inBatch
+      netID
       amount
       charge
       created
       customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
     }
   }
 }

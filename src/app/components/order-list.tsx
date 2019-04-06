@@ -80,7 +80,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     await this.props.rootStore.orders.queryOrders(1)
     await this.setState((state) => {
       let arr = state.addingToBatchesButtonLoad.map(item => false)
-      return {addingToBatchesButtonLoad: arr};
+      return {addingToBatchesButtonLoad: arr, selected: new Map()};
     })
 
     Alert.alert(`Successfully added to ${batchName}'s Batch`)

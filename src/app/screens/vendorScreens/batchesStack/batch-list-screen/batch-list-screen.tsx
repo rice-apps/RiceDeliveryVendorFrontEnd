@@ -59,7 +59,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
 
   // Makes alert box when add to batch is clicked.
   deliverAlert = () => {
-    let batch = this.props.navigation.getParam("batch", "NONE");
+    let batchID = this.props.navigation.getParam("batchID", "NONE");
     Alert.alert(
       "Deliver all order in this batch?",
       "",
@@ -70,7 +70,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           style: "cancel",
         },
         { text: "Yes", onPress: () => {
-          this.deliverBatch(batch._id, "East West Tea");
+          this.deliverBatch(batchID, "East West Tea");
           console.log("all Order in batch delivered");
         } },
       ],
@@ -114,10 +114,10 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   }
 
   deleteBatch =  async() => {
-    let batch = this.props.navigation.getParam("batch", "NONE");
-    let deletedBatch = await this.props.rootStore.orders.deleteBatch(batch._id, "East West Tea");
-    await this.props.navigation.navigate("Batches")
-    console.log(deletedBatch)
+    let batchID = this.props.navigation.getParam("batchID", "NONE");
+    let deletedBatch = await this.props.rootStore.orders.deleteBatch(batchID, "East West Tea");
+    await this.props.navigation.popToTop();
+    console.log("Deleted");
     Alert.alert(`${deletedBatch.batchName}'s batch deleted`)
   }
 
@@ -132,10 +132,18 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
   }
 
+  componentWillUnmount() {
+    console.log("unmounting");
+
+  }
+
   render() {
-    const batch = this.props.navigation.getParam("batch", "NONE");
-    console.log(batch)
-    if (this.state.loading) {
+    console.log("rendering");
+    const batchID = this.props.navigation.getParam("batchID", "NONE");
+    const batch = this.props.rootStore.orders.getBatchByID(batchID)
+    console.log("batch:" + batch);
+
+    if (this.state.loading || batch === undefined) {
       return <LoadingScreen />
     }
     return (
@@ -154,8 +162,8 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           this.state.displayNetworkError
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
-        {this.renderIf(batch.orders.length > 0,(<View style={{ flex: 1 }}>
-          <BatchList orders={batch.orders} id = {batch._id} />
+        {this.renderIf(batch !== undefined && batch.orders.length > 0,(<View style={{ flex: 1 }}>
+          <BatchList orders={batch.orders} id = {batchID} />
         </View>) )}
 
       </View>

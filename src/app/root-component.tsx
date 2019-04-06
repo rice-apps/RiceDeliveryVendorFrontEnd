@@ -67,7 +67,9 @@ export class RootComponent extends React.Component<{}, RootComponentState> {
               <StatusBar />
             </View>
             <Header /> */}
-        <RootNavigator persistenceKey={"NavigationState5"} renderLoadingExperimental={() => <ActivityIndicator />}/>
+        <RootNavigator 
+        // persistenceKey={"NavigationState5"} renderLoadingExperimental={() => <ActivityIndicator />}
+        />
         {/* </View> */}
       </Provider>
     )
