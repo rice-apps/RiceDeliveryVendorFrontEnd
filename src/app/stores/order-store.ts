@@ -50,6 +50,8 @@ export const Batch = types.model("Batch", {
 .actions(self => ({
     updateOrders(newBatch) {
     self = newBatch;
+    self.outForDelivery = newBatch.outForDelivery;
+    self.orders = newBatch.orders;
   }}))
 
 export const OrderModel = types
@@ -138,6 +140,14 @@ export const OrderModel = types
   
     }),
     async deliverBatch(batchID, vendorName) {
+      await client.mutate({
+        mutation: DELIVER_BATCH,
+        variables: {
+          batchID: batchID,
+          vendorName: vendorName
+        }});
+
+      // Hacky way. Call deliver batch twice to get new data.
       let info = await client.mutate({
         mutation: DELIVER_BATCH,
         variables: {
@@ -145,6 +155,7 @@ export const OrderModel = types
           vendorName: vendorName
         }
       });
+
       let idx;
       for (let i = 0; i < self.onTheWay.length; i++) {
         if (self.onTheWay[i]._id === batchID) {
@@ -153,7 +164,7 @@ export const OrderModel = types
       }
       console.log(self.onTheWay[idx]);
       console.log(info.data.deliverBatch);
-      await self.onTheWay[idx].updateOrders(info.data.deliverBatch);
+      self.onTheWay[idx] = info.data.deliverBatch;
       console.log(self.onTheWay[idx]);
 
     },  
