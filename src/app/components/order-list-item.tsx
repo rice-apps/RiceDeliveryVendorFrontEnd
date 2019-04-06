@@ -43,8 +43,13 @@ class OrderListItem extends React.Component<any, any> {
     let onTheWay = this.props.order.orderStatus.onTheWay;
     let pending = this.props.order.orderStatus.pending; 
     let unfulfilled = this.props.order.orderStatus.unfulfilled; 
-    if (unfulfilled != false) {
-      return {badge: "error", text: "Unfulfilled"}
+    let refunded = this.props.order.orderStatus.refunded;
+ 
+    if (refunded != null && unfulfilled === false) {
+      return {badge: "error", text: "Refunded"}
+    }
+    else if (unfulfilled != false) {
+      return {badge: "error", text: "Canceled"}
     }
     else if (fulfilled != null) {
       return {badge: "primary", text: "Fulfilled"}  

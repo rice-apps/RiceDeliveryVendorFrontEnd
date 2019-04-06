@@ -18,6 +18,7 @@ export const OrderStatus = types.model("OrderStatus", {
   onTheWay: types.maybe(types.number),
   fulfilled: types.maybe(types.number),
   unfulfilled: types.boolean,
+  refunded: types.maybe(types.number)
 })
 
 export const metaData = types.model("metaData", {
@@ -249,6 +250,7 @@ const GET_ORDER_STORE = gql`
         onTheWay
         fulfilled
         unfulfilled
+        refunded
       }
       paymentStatus
       location {
@@ -471,38 +473,6 @@ query queryBatch($batchID: String, $vendorName: String!) {
 }
 `
 
-// Query info for the orderStore.
-// const GET_ORDER_STORE = gql`
-//   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
-//     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
-//       id
-//       amount
-//       created
-//       customer
-//       email
-//       inBatch
-//       items {
-//         parent
-//         amount
-//         description
-//         quantity
-//       }
-//       orderStatus {
-//         pending
-//         onTheWay
-//         fulfilled
-//         unfulfilled
-//       }
-//       paymentStatus
-//       location {
-//         _id
-//         name
-//       }
-//       netID
-//       customerName
-//     }
-//   }
-// `
 
 // Create a new batch.
 const CREATE_BATCH = gql`
