@@ -46,6 +46,10 @@ export const Batch = types.model("Batch", {
   outForDelivery: types.boolean,
   batchName: types.string
 })
+.actions(self => ({
+    updateOrders(newBatch) {
+    self = newBatch;
+  }}))
 
 export const OrderModel = types
   .model("OrderModel", {
@@ -140,7 +144,17 @@ export const OrderModel = types
           vendorName: vendorName
         }
       });
-      console.log("BACKEND UPDATED")
+      let idx;
+      for (let i = 0; i < self.onTheWay.length; i++) {
+        if (self.onTheWay[i]._id === batchID) {
+          idx = i; 
+        }
+      }
+      console.log(self.onTheWay[idx]);
+      console.log(info.data.deliverBatch);
+      await self.onTheWay[idx].updateOrders(info.data.deliverBatch);
+      console.log(self.onTheWay[idx]);
+
     },  
     createBatch: flow(function * createBatch(vendorName, orders, batchName) {
       try {
