@@ -132,6 +132,16 @@ export const OrderModel = types
       return info.data.batch; //Return batches.
   
     }),
+    async deliverBatch(batchID, vendorName) {
+      let info = await client.mutate({
+        mutation: DELIVER_BATCH,
+        variables: {
+          batchID: batchID,
+          vendorName: vendorName
+        }
+      });
+      console.log("BACKEND UPDATED")
+    },  
     createBatch: flow(function * createBatch(vendorName, orders, batchName) {
       try {
         let info = yield client.mutate({
@@ -354,7 +364,44 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
   }
 }
 `
-
+const DELIVER_BATCH = gql`
+mutation deliverBatch($batchID: String!, $vendorName: String!){
+	deliverBatch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    batchName
+    outForDelivery
+    orders {
+      id
+      inBatch
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
+    }
+  }
+}
+`
 const REMOVE_FROM_BATCH = gql`
 mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
   removeFromBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {

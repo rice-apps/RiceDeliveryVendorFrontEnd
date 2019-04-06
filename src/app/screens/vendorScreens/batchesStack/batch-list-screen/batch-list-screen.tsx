@@ -104,17 +104,8 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   }
 
 
-  async deliverBatch(batchID, vendorName) {
-    let info = await client.mutate({
-      mutation: DELIVER_BATCH,
-      variables: {
-        batchID: batchID,
-        vendorName: vendorName
-      }
-    });
-    console.log("BACKEND UPDATED")
-    // console.log(info.data.deliverBatch.orders)
-    return 1; //Return batches.
+   deliverBatch = async (batchID, vendorName) => {
+    await this.props.rootStore.orders.deliverBatch(batchID, "East West Tea"); 
   }
 
   deleteBatch =  async() => {
@@ -177,41 +168,3 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   }
 }
 
-const DELIVER_BATCH = gql`
-mutation deliverBatch($batchID: String!, $vendorName: String!){
-	deliverBatch(batchID: $batchID, vendorName: $vendorName) {
-    _id
-    batchName
-    outForDelivery
-    orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
-    }
-  }
-}
-`
