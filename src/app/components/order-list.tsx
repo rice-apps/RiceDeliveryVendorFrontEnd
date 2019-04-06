@@ -190,8 +190,8 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     if (!this.state.endReached) {
       this.setState({ page: this.state.page + 1, refreshState: RefreshState.FooterRefreshing })
       console.log("calling query")
-      const num = await this.props.rootStore.orders.queryOrders(this.state.page)
-      if (num === 0) {
+      const pendingList = await this.props.rootStore.orders.queryOrders(this.state.page)
+      if (pendingList.length < 10) {
         this.setState({ endReached: true })
       }
       console.log("Setting state")

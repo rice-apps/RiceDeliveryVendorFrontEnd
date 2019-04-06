@@ -81,7 +81,7 @@ export const OrderModel = types
           return true;
         }
       })
-      return self.pending
+      return getSnapshot(self.pending)
     }),
     queryAllOrders: flow(function* queryOrders(pageNum) {
       let variables = { vendorName: "East West Tea", status: "" } 
