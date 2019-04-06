@@ -43,6 +43,8 @@ export const Order = types.model("Order", {
 export const Batch = types.model("Batch", {
   _id: types.string,
   orders: types.array(Order),
+  outForDelivery: types.boolean,
+  batchName: types.string
 })
 
 export const OrderModel = types
@@ -51,6 +53,11 @@ export const OrderModel = types
     allTransaction: types.array(Order),
     onTheWay: types.array(Batch),
   })
+  .views(self => ({
+    getBatchByID(batchID) {
+      return self.onTheWay.find(batch => batch._id === batchID);
+    }
+  }))
   .actions(self => ({
     addOrders(orders) {
       self.pending = orders
@@ -120,21 +127,29 @@ export const OrderModel = types
         }
       })) 
       self.onTheWay = info.data.batch;
+      console.log(toJS(self.onTheWay))
       return info.data.batch; //Return batches.
   
     }),
-    async createBatch(vendorName, orders) {
-      let info = await client.mutate({
-        mutation: CREATE_BATCH,
-        variables: {
-          vendorName: vendorName,  
-          orders: orders
-        }
-      });
-      return info.data.batch; //Return batches.
-    },
-    async addToBatch(vendorName, orders, batchID) {
-      let info = await client.mutate({
+    createBatch: flow(function * createBatch(vendorName, orders, batchName) {
+      try {
+        let info = yield client.mutate({
+          mutation: CREATE_BATCH,
+          variables: {
+            vendorName: vendorName,  
+            orders: orders,
+            batchName: batchName
+          }
+        });
+        self.onTheWay.push(info.data.createBatch)
+        return info.data.createBatch; //Return batches.
+      } catch(error) {
+        return [-1, error]
+      }
+
+    }),
+    addToBatch: flow(function*  addToBatch(vendorName, orders, batchID) {
+      let info = yield client.mutate({
         mutation: ADD_TO_BATCH,
         variables: {
           vendorName: vendorName,  
@@ -142,8 +157,17 @@ export const OrderModel = types
           batchID: batchID
         }
       });
+      // update the state.
+      self.onTheWay.forEach(batch => {
+        if (batch._id === batchID) {
+          console.log("Adding to batch with ID:" + batch._id)
+          batch.orders = info.data.addToBatch.orders
+        }
+      })
+      console.log("new batch")
+      console.log(toJS(self.onTheWay).find(batch => batch._id === batchID))
       return info.data.batch; //Return batches.
-    },
+    }),
     async removeFromBatch(vendorName, orders, batchID) {
       let info = await client.mutate({
         mutation: REMOVE_FROM_BATCH,
@@ -155,16 +179,18 @@ export const OrderModel = types
       });
       return info.data.batch; //Return batches.
     },
-    async deleteBatch(batchID, vendorName) {
-      let info = await client.mutate({
+    deleteBatch: flow(function* deleteBatch(batchID, vendorName) {
+      let info = yield client.mutate({
         mutation: DELETE_BATCH,
         variables: {
           batchID: batchID,
           vendorName: vendorName
         }
       });
-      return info.data.batch; //Return batches.
-    },
+      // update store. 
+      self.onTheWay = self.onTheWay.filter(batch => batch._id !== batchID);
+      return info.data.deleteBatch; //Return batches.
+    }),
   })).views(self => ({
     numPending() {
       return self.pending.length
@@ -293,13 +319,36 @@ const ADD_TO_BATCH = gql`
 mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) {
   addToBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
       inBatch
+      netID
       amount
       charge
       created
       customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
     }
   }
 }
@@ -325,6 +374,8 @@ const GET_BATCHES = gql`
 query queryBatch($batchID: String, $vendorName: String!) {
   batch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
       inBatch
@@ -393,9 +444,11 @@ query queryBatch($batchID: String, $vendorName: String!) {
 
 // Create a new batch.
 const CREATE_BATCH = gql`
-  mutation createBatch($orders: [String], $vendorName: String) {
-    createBatch(orders: $orders, vendorName: $vendorName) {
+  mutation createBatch($orders: [String], $vendorName: String!, $batchName: String!) {
+    createBatch(orders: $orders, vendorName: $vendorName, batchName: $batchName) {
       _id
+      batchName
+      outForDelivery
       orders {
         id
         inBatch
@@ -411,6 +464,7 @@ const DELETE_BATCH = gql`
 mutation deleteBatch($batchID: String, $vendorName: String!) {
 	deleteBatch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
     orders {
       id
       inBatch
