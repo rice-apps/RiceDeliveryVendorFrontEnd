@@ -26,6 +26,9 @@ const GET_HOURS_QUERY = gql`
         }
     }
 `
+
+// datePicker = 0->23
+// online = 1-> 24
 class SingleDayScreen extends React.Component<any, any> {
 
     constructor(props) {
@@ -85,27 +88,8 @@ class SingleDayScreen extends React.Component<any, any> {
     }
 
     sendUpdateHandler = () => {
-        console.log(this.state)
-        const re = /([aAPp][mM])$/
-        // Validate hour fields
-        if (this.state.openingHour < 1 || this.state.openingHour > 12 || parseInt(this.state.openingHour) == -1 ||
-            this.state.closingHour < 1 || this.state.closingHour > 12 || parseInt(this.state.closingHour) == -1 ) {
-                alert("Please Input a valid time! fail 1")
-                return;
-        }
-        // Validate minute fields
-        if (this.state.openingMinute < 1 || this.state.openingHour > 12 || parseInt(this.state.openingMinute) == -1 ||
-            this.state.closingMinute < 1 || this.state.closingHour > 12 || parseInt(this.state.closingMinute) == -1 ) {
-            alert("Please Input a valid time! fail 2")
-            return;
-        }
-        // Validate AM/PM fields
-        if (!re.test(this.state.openingAMPM) || !re.test(this.state.closingAMPM)) {
-            alert("Please Input a valid time! fail 3")
-            return;
-        } else {
-            this.setState({displayModal: !this.state.displayModal})
-        }
+        console.log()
+        this.setState({displayModal: !this.state.displayModal})
     }
 
     // Function to convert into time to store on backend.
@@ -120,21 +104,24 @@ class SingleDayScreen extends React.Component<any, any> {
     getDisplayTime = (time) => {
         let timeStr = time.toString().split(".")
         let hour = parseInt(timeStr[0])
-        let minute = timeStr[1] ? timeStr[1] : "00"
-        if (minute < 10 && minute != "00") minute = (minute * 10).toString()
+        let minute = timeStr[1] ? (timeStr[1]) : "00"
         let AMPM = (hour >= 12 && hour < 24) ? "PM" : "AM"
         if (hour > 12) hour = hour - 12
         return [hour.toString(), minute, AMPM]
     }
 
     queryFunction = async() => {
-        let day = this.props.navigation.getParam("day", "NO_ID")
         let hours = this.props.navigation.getParam("hours", "NO_ID");
         let idx = this.props.navigation.getParam("idx", "NO_ID");
         this.state.displayModal && this.setState({loadPending: true})
         const numOpeningTime = this.convertTime(this.state.openingHour, this.state.openingMinute, this.state.openingAMPM);
         const numClosingTime = this.convertTime(this.state.closingHour, this.state.closingMinute, this.state.closingAMPM);
-        await client.mutate({
+        console.log(`numOpening time: ${numOpeningTime} numClosingTime: ${numClosingTime}  `)
+        console.log(hours)
+        hours[idx][0] = numOpeningTime;
+        hours[idx][1] = numClosingTime;
+        console.log(hours);
+        let newHours = await client.mutate({
             mutation: UPDATE_HOURS_MUTATION, 
             variables: 
                 {
@@ -166,17 +153,20 @@ class SingleDayScreen extends React.Component<any, any> {
     handleStartPicked = (date) => {
         let hour24 = date.getHours();
         let min  = date.getMinutes();
+        console.log(min);
+        console.log(hour24)
         let hour12 = (hour24 % 12 == 0) ? 12 : hour24 % 12; 
-        
-        if ((hour24 > 12 && min > 0)) {
-            this.setState({openingAMPM: "PM"})
-        } else if ((hour24 == 12 && min == 0)) {
-            this.setState({openingAMPM: "PM"})
-        } else {
+        // 0-> 11 == AM 
+        // 12-> 23 == PM
+        if (hour24 >= 0 && hour24 <=11) {
             this.setState({openingAMPM: "AM"})
+        } else if (hour24 >= 12 && hour24 <= 23) {
+            this.setState({openingAMPM: "PM"})
         }
-        this.setState({openingHour: (hour12).toString()})
-        this.setState({openingMinute: date.getMinutes().toString()})
+
+        let minString = (min < 10) ? `0${min}` : min.toString();
+        this.setState({openingHour: hour12.toString()})
+        this.setState({openingMinute: minString})
 
         this.hideStartTimePicker();
     };
@@ -185,18 +175,17 @@ class SingleDayScreen extends React.Component<any, any> {
         let hour24 = date.getHours();
         let min  = date.getMinutes();
         let hour12 = (hour24 % 12 == 0) ? 12 : hour24 % 12; 
-
-        if ((hour24 > 12 && min > 0)) {
-            this.setState({closingAMPM: "PM"})
-        } else if ((hour24 == 12 && min == 0)) {
-            this.setState({closingAMPM: "PM"})
-        } else {
+        console.log(min);
+        console.log(hour24)
+        if (hour24 >= 0 && hour24 <=11) {
             this.setState({closingAMPM: "AM"})
+        } else if (hour24 >= 12 && hour24 <= 23) {
+            this.setState({closingAMPM: "PM"})
         }
-        this.setState({closingHour: (hour12).toString()})
-        this.setState({closingMinute: date.getMinutes().toString()})
 
-       
+        let minString = (min < 10) ? `0${min}` : min.toString();
+        this.setState({closingHour: (hour12).toString()})
+        this.setState({closingMinute: minString})
         this.hideEndTimePicker();
     };
 
@@ -222,6 +211,7 @@ class SingleDayScreen extends React.Component<any, any> {
                 loadPending={this.state.loadPending}
                 hours={hours}
                 idx={idx}
+                isVisible={this.state.displayModal}
                 queryFunction={this.queryFunction}
                 setVisibility={this.setVisibility}
             />
