@@ -14,6 +14,7 @@ import { getSnapshot } from 'mobx-state-tree';
 import { Overlay, Input } from 'react-native-elements';
 import { material } from 'react-native-typography';
 import { toJS } from 'mobx';
+import { OverlayScreen } from '../../orderStack/overlayScreen';
 
 interface CurrentBatchesScreenProps {
   // injected props
@@ -29,6 +30,8 @@ interface CurrentBatchesScreenState {
   displayOverlay: boolean
   buttonLoading: boolean
   errorMessage: string
+  displayNetworkError: boolean
+  reloadPending:boolean
 }
 
 @inject("rootStore")
@@ -44,12 +47,28 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
       batchName: "",
       displayOverlay: false,
       buttonLoading: false,
-      errorMessage: null
+      errorMessage: null,
+      displayNetworkError: true,
+      reloadPending: false
     }
   }
 
-  getBatches = () => {
-    return this.props.rootStore.orders.getBatches();
+  getBatches = async() => {
+    this.state.displayNetworkError && this.setState({ reloadPending: true })
+    try {
+      await this.props.rootStore.orders.getBatches();
+      await this.setState({
+        isLoading: false,
+        displayNetworkError: false,
+      })
+    } catch {
+      console.log("Caught error")
+      this.setState({
+        isLoading: false,
+        displayNetworkError: true,
+        reloadPending: false,
+      })
+    }
   } 
 
   createBatchHandler = async() => {
@@ -69,7 +88,6 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
 
   async componentWillMount() {
     await this.getBatches();      
-    this.setState({isLoading: false})
   }
 
   onRefresh = async() => {
@@ -99,6 +117,10 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
     } else {
       return (
         <View style={css.screen.paddedScreen}>
+        {
+          this.state.displayNetworkError && 
+          <OverlayScreen queryFunction={this.getBatches} loading={this.state.reloadPending} />
+        }
         <Overlay
           isVisible={this.state.displayOverlay}
           onBackdropPress={() => this.setState({displayOverlay: false})}

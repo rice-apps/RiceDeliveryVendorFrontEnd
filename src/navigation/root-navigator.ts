@@ -50,7 +50,7 @@ const batchStackNavigator = createStackNavigator({
   SingleBatchOrder: {
     screen: SingleOrderScreen,
     navigationOptions: {
-      title: "Single Order Screen",
+      title: "Single Batch Screen",
     },
   },
 })

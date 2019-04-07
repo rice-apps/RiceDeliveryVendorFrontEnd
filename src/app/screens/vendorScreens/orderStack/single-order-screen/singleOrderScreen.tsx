@@ -9,7 +9,7 @@ import { Divider } from "react-native-elements"
 import * as css from "../../../style"
 import { client } from "../../../../main"
 import LoadingScreen from "../../loading-screen"
-import { NavigationEvents } from 'react-navigation';
+import { NavigationScreenProp } from 'react-navigation';
 import {material} from 'react-native-typography';
 import gql from "graphql-tag";
 import { Order } from "../../../../stores/order-store";
@@ -34,7 +34,8 @@ const style = require("../../../style")
 
 interface SingelOrderScreenProps {
   // injected props
-  rootStore?: RootStore
+  rootStore?: RootStore,
+  navigation: NavigationScreenProp<any, any>
 }
 
 @inject("rootStore")

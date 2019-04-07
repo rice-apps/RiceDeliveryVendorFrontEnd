@@ -46,6 +46,7 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
             keyExtractor={this.keyExtractor}
             data={this.list}
             renderItem={this.renderItem}
+            scrollEnabled={false}
           />
         </View>
         <View>

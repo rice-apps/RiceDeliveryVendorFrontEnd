@@ -1,6 +1,6 @@
 import React from "react"
 import * as css from "../../../style"
-import { View, Text, TextInput, Button, TouchableOpacity} from "react-native"
+import { View, Text, TextInput, Button, TouchableOpacity, Alert} from "react-native"
 import { withNavigation } from "react-navigation";
 import PrimaryButton from "../../../../components/primary-button";
 import SecondaryButton from "../../../../components/secondary-button";
@@ -9,6 +9,8 @@ import { client } from "../../../../main";
 import gql from "graphql-tag";
 import LoadingScreen from "../../loading-screen";
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { material } from "react-native-typography";
+import { validate } from "../../../../../lib/validate";
 
 const UPDATE_HOURS_MUTATION = gql`
     mutation updateVendorHours($hours: [[Float]], $name: String!) {
@@ -27,9 +29,26 @@ const GET_HOURS_QUERY = gql`
     }
 `
 
+interface SingleDayScreenState {
+    loadingInitialData: boolean
+    displayModal: boolean
+    loadPending: boolean
+    openingHour: string
+    openingMinute: string
+    openingAMPM: string
+    closingHour: string
+    closingMinute: string
+    closingAMPM: string
+    serverOpenData: string
+    serverCloseData: string
+    startTimePickerVisible: boolean
+    endTimePickerVisible: boolean
+    closedForTheDay:boolean
+}
+
 // datePicker = 0->23
 // online = 1-> 24
-class SingleDayScreen extends React.Component<any, any> {
+class SingleDayScreen extends React.Component<any, SingleDayScreenState> {
 
     constructor(props) {
         super(props);
@@ -37,17 +56,17 @@ class SingleDayScreen extends React.Component<any, any> {
             loadingInitialData: true,
             displayModal: false,
             loadPending: false,
-            openingHour: "",
+            openingHour: "00",
             openingMinute: "00",
             openingAMPM: "",
-            closingHour: "",
+            closingHour: "00",
             closingMinute: "00",
             closingAMPM: "", 
             serverOpenData: "",
             serverCloseData: "",
             startTimePickerVisible: false, 
-            endTimePickerVisible: false
-        
+            endTimePickerVisible: false,
+            closedForTheDay: false
         };
     }
     static navigationOptions = ({ navigation }) => {
@@ -65,31 +84,78 @@ class SingleDayScreen extends React.Component<any, any> {
                 "name": "East West Tea"
               }   
         })).data.vendor[0].hours[idx]
-        const openingTimes = this.getDisplayTime(data[0]);
-        const closingTimes = this.getDisplayTime(data[1]);
-        this.setState({
-            serverOpenData: `${openingTimes[0]}:${openingTimes[1]} ${openingTimes[2]}`,
-            serverCloseData: `${closingTimes[0]}:${closingTimes[1]} ${closingTimes[2]}`,
-            loadingInitialData: false,
-            openingHour: `${openingTimes[0]}`,
-            openingMinute: `${openingTimes[1]}`,
-            openingAMPM: `${openingTimes[2]}`,
-            closingHour: `${closingTimes[0]}`,
-            closingMinute: `${closingTimes[1]}`,
-            closingAMPM: `${closingTimes[2]}`,
-        })
+
+        console.log("DATA")
+        console.log(data)
+        // check if the day has been marked as closed.
+        if (data[0] === -1 || data[1] === -1) {
+            await this.setState({closedForTheDay: true})
+        } else {
+            const openingTimes = this.getDisplayTime(data[0]);
+            const closingTimes = this.getDisplayTime(data[1]);
+            await this.setState({
+                serverOpenData: `${openingTimes[0]}:${openingTimes[1]} ${openingTimes[2]}`,
+                serverCloseData: `${closingTimes[0]}:${closingTimes[1]} ${closingTimes[2]}`,
+                loadingInitialData: false,
+                openingHour: `${openingTimes[0]}`,
+                openingMinute: `${openingTimes[1]}`,
+                openingAMPM: `${openingTimes[2]}`,
+                closingHour: `${closingTimes[0]}`,
+                closingMinute: `${closingTimes[1]}`,
+                closingAMPM: `${closingTimes[2]}`,
+            })
+        }
+        this.setState({loadingInitialData: false})
     }
 
     componentDidMount() {
         this.getInitialData();
     }
-    setDate = (newDate) => {
-        this.setState({chosenDate: newDate})
+
+    validateTimes(hour, minute) {
+        if (hour === NaN || minute === NaN || hour > 12 || hour < 1 || minute > 60 || minute < 0) {
+            return true
+        } 
+        return false
     }
 
     sendUpdateHandler = () => {
-        console.log()
+        // validate opening dates
+        let openingHour = parseInt(this.state.openingHour)
+        let openingMinute = parseInt(this.state.openingMinute)
+        let closingHour = parseInt(this.state.closingHour)
+        let closingMinute = parseInt(this.state.closingMinute)
+
+        if (this.validateTimes(openingHour, openingMinute) || this.validateTimes(closingHour, closingMinute)) {
+            Alert.alert("Please input valid times!")
+        }
         this.setState({displayModal: !this.state.displayModal})
+    }
+
+    closeTheDayHandler = async() => {
+        let hours = this.props.navigation.getParam("hours", "NO_ID");
+        let idx = this.props.navigation.getParam("idx", "NO_ID");
+        hours[idx][0] = -1;
+        hours[idx][1] = -1;
+        let newHours = await client.mutate({
+            mutation: UPDATE_HOURS_MUTATION, 
+            variables: 
+                {
+                "hours": hours,
+                "name": "East West Tea"
+            }
+        })
+        // reset hours
+        this.setState({
+            closedForTheDay: true, 
+            openingHour: "00",
+            openingMinute: "00",
+            openingAMPM: "",
+            closingHour: "00",
+            closingMinute: "00",
+            closingAMPM: "", 
+            serverOpenData: "",
+            serverCloseData: "",})
     }
 
     // Function to convert into time to store on backend.
@@ -190,7 +256,9 @@ class SingleDayScreen extends React.Component<any, any> {
     };
 
    
-
+    setHoursHandler = () => {
+        this.setState({closedForTheDay:false})
+    }
     
     render() {
         let day = this.props.navigation.getParam("day", "NO_ID")
@@ -200,9 +268,22 @@ class SingleDayScreen extends React.Component<any, any> {
     
         if (this.state.loadingInitialData) {
             return <LoadingScreen />
-        } 
+        } else if (this.state.closedForTheDay) {
+            return (
+                <View style={[{height: "50%"}, css.screen.flex, css.screen.padding, css.screen.startContent]}>
+                    <Text style={[css.text.headerText, {paddingBottom: 10}]}>{day} hours</Text>
+                    <Text style={material.headline}>Closed for the day</Text>
+                    <View style={{width: "100%"}}>
+                    <PrimaryButton 
+                        onPress={this.setHoursHandler}
+                        title="Set Hours"
+                    />
+            </View>
+                </View>
+            )
+        }
         return (
-        <View style={[{height: "100%"}, css.debugScreen.borderColorRed, css.screen.padding]}>
+        <View style={[{height: "100%"}, css.screen.padding]}>
         {
             this.state.displayModal && 
             <OverlayConfirmationScreen 
@@ -216,7 +297,7 @@ class SingleDayScreen extends React.Component<any, any> {
                 setVisibility={this.setVisibility}
             />
         }
-            <View style={[{height: "50%"}, css.screen.flex, css.screen.padding, css.screen.startContent, css.debugScreen.borderColorRed]}>
+            <View style={[{height: "50%"}, css.screen.flex, css.screen.padding, css.screen.startContent]}>
                 <Text style={[css.text.headerText, {paddingBottom: 10}]}>{day} hours</Text>
                 <Text style={[css.text.bigBodyText, {paddingBottom: 10}]}>{this.state.serverOpenData} - {this.state.serverCloseData}</Text>
 
@@ -266,7 +347,13 @@ class SingleDayScreen extends React.Component<any, any> {
             <View style={{width: "100%"}}>
                     <PrimaryButton 
                         onPress={this.sendUpdateHandler}
-                        title="Confirm"
+                        title="Confirm Hours"
+                    />
+            </View>
+            <View style={{width: "100%"}}>
+                    <SecondaryButton 
+                        onPress={this.closeTheDayHandler}
+                        title="Close for the day"
                     />
             </View>
 

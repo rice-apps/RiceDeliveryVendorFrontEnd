@@ -48,10 +48,10 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   constructor(props) {
     super(props)
     this.state = {
-      loading: true, // true if waiting for data to arrive.
+      loading: false, // true if waiting for data to arrive.
       refreshing: false, // true if pulling to refresh
       reloadPending: false, // true if user actively reloading from overlay.
-      displayNetworkError: true, // true if overlay is showing.
+      displayNetworkError: false, // true if overlay is showing.
     }
   }
 
@@ -84,25 +84,20 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     try {
       // If the modal is open, set the loading icon on the button to true.
       this.state.displayNetworkError && this.setState({ reloadPending: true })
-      await this.props.rootStore.orders.queryOrders(1)
-      this.setState({
+      await this.props.rootStore.orders.getBatchByID(this.props.navigation.getParam("batchID", "NONE"))
+      await this.setState({
         loading: false,
         displayNetworkError: false,
       })
     } catch {
       console.log("Caught error")
-      this.setState({
+      await this.setState({
         loading: false,
         displayNetworkError: true,
         reloadPending: false,
     })
     }
   }
-
-  async componentWillMount() {
-    await this.queryOrders()
-  }
-
 
    deliverBatch = async (batchID, vendorName) => {
     await this.props.rootStore.orders.deliverBatch(batchID, "East West Tea"); 
@@ -145,7 +140,6 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
     return (
       <View style={css.screen.paddedScreen}>
-
         <PrimaryButton 
           title="Delete Batch"
           onPress = {() => this.deleteBatch()}

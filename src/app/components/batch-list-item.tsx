@@ -23,6 +23,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
 
     // Define action when pressing entire list item
     singleOrderPress() {
+      console.log("navigating")
         this.props.navigation.navigate('SingleBatchList', {
             batchID : this.props.batch._id
         }); 

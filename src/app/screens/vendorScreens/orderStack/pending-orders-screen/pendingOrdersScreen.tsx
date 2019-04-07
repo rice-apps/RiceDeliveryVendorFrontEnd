@@ -84,8 +84,8 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
     return (
       <View style={css.screen.paddedScreen}>
         {
-          this.state.displayNetworkError
-          // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
+          this.state.displayNetworkError && 
+          <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         <View style={{ flex: 1 }}>
           <OrderList 
