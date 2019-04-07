@@ -114,6 +114,7 @@ export class CurrentBatchesScreen extends React.Component<CurrentBatchesScreenPr
               errorMessage={this.state.errorMessage}
             />
             <PrimaryButton 
+              style={{width:"100%"}}
               loading={this.state.buttonLoading}
               disabled={this.state.batchName.length === 0}
               title="Create Batch"
