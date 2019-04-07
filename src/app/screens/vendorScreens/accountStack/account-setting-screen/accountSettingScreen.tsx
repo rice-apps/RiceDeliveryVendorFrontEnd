@@ -34,7 +34,7 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
     },
   ]
 
-  keyExtractor = (item, index) => index
+  keyExtractor = (item, index) => index.toString()
 
   renderItem = ({ item }) => (
     <ListItem
@@ -51,13 +51,13 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
   render() {
     return (
       <View style={css.screen.paddedScreen}>
-        <ScrollView>
+        <View>
           <FlatList
             keyExtractor={this.keyExtractor}
             data={this.list}
             renderItem={this.renderItem}
           />
-        </ScrollView>
+        </View>
         <View>
           <SecondaryButton
             title="Logout"

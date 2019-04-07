@@ -127,6 +127,17 @@ export const OrderModel = types
         }
       });
     },
+    getBatch: flow(function* getBatch(batchID) {
+      const info = (yield client.query({
+        query: GET_BATCH,
+        variables: {
+          vendorName: "East West Tea",  //Hardcoding East West Tea for now.
+          batchID: batchID
+        }
+      })) 
+      self.onTheWay = self.onTheWay.map(batch => batch._id === batchID ? info.data.batch[0] : batch)
+      return info.data.batch; //Return batches.
+    }),
     getBatches: flow(function* getBatches() {
       const info = (yield client.query({
         query: GET_BATCHES,
@@ -139,35 +150,22 @@ export const OrderModel = types
       return info.data.batch; //Return batches.
   
     }),
-    async deliverBatch(batchID, vendorName) {
-      await client.mutate({
+    deliverBatch: flow(function *  deliverBatch(batchID, vendorName) {
+      let info = yield client.mutate({
         mutation: DELIVER_BATCH,
         variables: {
           batchID: batchID,
           vendorName: vendorName
         }});
-
-      // Hacky way. Call deliver batch twice to get new data.
-      let info = await client.mutate({
-        mutation: DELIVER_BATCH,
-        variables: {
-          batchID: batchID,
-          vendorName: vendorName
+      self.onTheWay = self.onTheWay.map(batch => {
+        if (batch._id === batchID) {
+          return info.data.deliverBatch
+        } else {
+          return batch
         }
-      });
-
-      let idx;
-      for (let i = 0; i < self.onTheWay.length; i++) {
-        if (self.onTheWay[i]._id === batchID) {
-          idx = i; 
-        }
-      }
-      console.log(self.onTheWay[idx]);
-      console.log(info.data.deliverBatch);
-      self.onTheWay[idx] = info.data.deliverBatch;
-      console.log(self.onTheWay[idx]);
-
-    },  
+      })
+      return info.data.deliverBatch
+    }),  
     createBatch: flow(function * createBatch(vendorName, orders, batchName) {
       try {
         let info = yield client.mutate({
@@ -205,8 +203,8 @@ export const OrderModel = types
       console.log(toJS(self.onTheWay).find(batch => batch._id === batchID))
       return info.data.batch; //Return batches.
     }),
-    async removeFromBatch(vendorName, orders, batchID) {
-      let info = await client.mutate({
+    removeFromBatch: flow(function * removeFromBatch(vendorName, orders, batchID) {
+      let info = yield client.mutate({
         mutation: REMOVE_FROM_BATCH,
         variables: {
           vendorName: vendorName,  
@@ -214,8 +212,14 @@ export const OrderModel = types
           batchID: batchID
         }
       });
+      // update the state.
+      self.onTheWay.forEach(batch => {
+        if (batch._id === batchID) {
+          batch.orders = info.data.removeFromBatch.orders
+        }
+      })
       return info.data.batch; //Return batches.
-    },
+    }),
     deleteBatch: flow(function* deleteBatch(batchID, vendorName) {
       let info = yield client.mutate({
         mutation: DELETE_BATCH,
@@ -433,13 +437,75 @@ const REMOVE_FROM_BATCH = gql`
 mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
   removeFromBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
+      inBatch
+      netID
       amount
       charge
       created
       customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
+    }
+  }
+}
+`
+
+const GET_BATCH = gql`
+query queryBatch($batchID: String, $vendorName: String!) {
+  batch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    batchName
+    outForDelivery
+    orders {
+      id
       inBatch
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
     }
   }
 }

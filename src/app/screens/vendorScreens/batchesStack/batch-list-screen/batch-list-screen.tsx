@@ -136,6 +136,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     console.log("rendering");
     const batchID = this.props.navigation.getParam("batchID", "NONE");
     console.log("getting batch");
+    let batches = this.props.rootStore.orders.onTheWay
     const batch = toJS(this.props.rootStore.orders.onTheWay).find(batch => batch._id === batchID)
     console.log("batch:")
     console.log(batch);
