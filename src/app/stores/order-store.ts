@@ -18,6 +18,7 @@ export const OrderStatus = types.model("OrderStatus", {
   onTheWay: types.maybe(types.number),
   fulfilled: types.maybe(types.number),
   unfulfilled: types.boolean,
+  refunded: types.maybe(types.number)
 })
 
 export const metaData = types.model("metaData", {
@@ -46,6 +47,12 @@ export const Batch = types.model("Batch", {
   outForDelivery: types.boolean,
   batchName: types.string
 })
+.actions(self => ({
+    updateOrders(newBatch) {
+    self = newBatch;
+    self.outForDelivery = newBatch.outForDelivery;
+    self.orders = newBatch.orders;
+  }}))
 
 export const OrderModel = types
   .model("OrderModel", {
@@ -170,6 +177,17 @@ export const OrderModel = types
         }
       });
     },
+    getBatch: flow(function* getBatch(batchID) {
+      const info = (yield client.query({
+        query: GET_BATCH,
+        variables: {
+          vendorName: "East West Tea",  //Hardcoding East West Tea for now.
+          batchID: batchID
+        }
+      })) 
+      self.onTheWay = self.onTheWay.map(batch => batch._id === batchID ? info.data.batch[0] : batch)
+      return info.data.batch; //Return batches.
+    }),
     getBatches: flow(function* getBatches() {
       const info = (yield client.query({
         query: GET_BATCHES,
@@ -182,6 +200,22 @@ export const OrderModel = types
       return info.data.batch; //Return batches.
   
     }),
+    deliverBatch: flow(function *  deliverBatch(batchID, vendorName) {
+      let info = yield client.mutate({
+        mutation: DELIVER_BATCH,
+        variables: {
+          batchID: batchID,
+          vendorName: vendorName
+        }});
+      self.onTheWay = self.onTheWay.map(batch => {
+        if (batch._id === batchID) {
+          return info.data.deliverBatch
+        } else {
+          return batch
+        }
+      })
+      return info.data.deliverBatch
+    }),  
     createBatch: flow(function * createBatch(vendorName, orders, batchName) {
       try {
         let info = yield client.mutate({
@@ -219,8 +253,8 @@ export const OrderModel = types
       console.log(toJS(self.onTheWay).find(batch => batch._id === batchID))
       return info.data.batch; //Return batches.
     }),
-    async removeFromBatch(vendorName, orders, batchID) {
-      let info = await client.mutate({
+    removeFromBatch: flow(function * removeFromBatch(vendorName, orders, batchID) {
+      let info = yield client.mutate({
         mutation: REMOVE_FROM_BATCH,
         variables: {
           vendorName: vendorName,  
@@ -228,8 +262,14 @@ export const OrderModel = types
           batchID: batchID
         }
       });
+      // update the state.
+      self.onTheWay.forEach(batch => {
+        if (batch._id === batchID) {
+          batch.orders = info.data.removeFromBatch.orders
+        }
+      })
       return info.data.batch; //Return batches.
-    },
+    }),
     deleteBatch: flow(function* deleteBatch(batchID, vendorName) {
       let info = yield client.mutate({
         mutation: DELETE_BATCH,
@@ -275,6 +315,7 @@ const GET_ORDER_STORE = gql`
         onTheWay
         fulfilled
         unfulfilled
+        refunded
       }
       paymentStatus
       location {
@@ -404,18 +445,117 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
   }
 }
 `
-
-const REMOVE_FROM_BATCH = gql`
-mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
-  removeFromBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
+const DELIVER_BATCH = gql`
+mutation deliverBatch($batchID: String!, $vendorName: String!){
+	deliverBatch(batchID: $batchID, vendorName: $vendorName) {
     _id
+    batchName
+    outForDelivery
     orders {
       id
+      inBatch
+      netID
       amount
       charge
       created
       customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
+    }
+  }
+}
+`
+const REMOVE_FROM_BATCH = gql`
+mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
+  removeFromBatch(orders: $orders, vendorName: $vendorName, batchID: $batchID) {
+    _id
+    batchName
+    outForDelivery
+    orders {
+      id
       inBatch
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
+    }
+  }
+}
+`
+
+const GET_BATCH = gql`
+query queryBatch($batchID: String, $vendorName: String!) {
+  batch(batchID: $batchID, vendorName: $vendorName) {
+    _id
+    batchName
+    outForDelivery
+    orders {
+      id
+      inBatch
+      netID
+      amount
+      charge
+      created
+      customer
+      customerName
+      orderStatus{
+        _id
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+      }
+      location {
+        _id
+        name
+      }
+      paymentStatus
+      items{
+        amount
+        description
+        parent
+        quantity
+      }
     }
   }
 }
@@ -460,38 +600,6 @@ query queryBatch($batchID: String, $vendorName: String!) {
 }
 `
 
-// Query info for the orderStore.
-// const GET_ORDER_STORE = gql`
-//   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
-//     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
-//       id
-//       amount
-//       created
-//       customer
-//       email
-//       inBatch
-//       items {
-//         parent
-//         amount
-//         description
-//         quantity
-//       }
-//       orderStatus {
-//         pending
-//         onTheWay
-//         fulfilled
-//         unfulfilled
-//       }
-//       paymentStatus
-//       location {
-//         _id
-//         name
-//       }
-//       netID
-//       customerName
-//     }
-//   }
-// `
 
 // Create a new batch.
 const CREATE_BATCH = gql`

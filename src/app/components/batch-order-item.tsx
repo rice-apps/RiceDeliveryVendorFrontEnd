@@ -39,19 +39,28 @@ class BatchOrderListItem extends React.Component<any, any> {
     this.props.onPressItem(this.props.order.id)
   }
 
-   badgeHandler =  () => {
+  badgeHandler =  () => {
+    console.log(this.props.order.orderStatus);
     let fulfilled = this.props.order.orderStatus.fulfilled;
     let onTheWay = this.props.order.orderStatus.onTheWay;
     let pending = this.props.order.orderStatus.pending; 
-    let unfulfilled = this.props.order.orderStatus.unfulfilled; 
-    if (unfulfilled != false) {
-      return {badge: "error", text: "Unfulfilled"}
+    let unfulfilled = this.props.order.orderStatus.unfulfilled;
+    let refunded = this.props.order.orderStatus.refunded;
+
+    if (refunded != null && unfulfilled === false) {
+      return {badge: "error", text: "Refunded"}
     }
-    if (onTheWay === null) {
-      return {badge: "warning", text: "Waiting to be delivered..."}    
+    else if (unfulfilled != false) {
+      return {badge: "error", text: "Canceled"}
+    }
+    else if (fulfilled != null) {
+      return {badge: "primary", text: "Fulfilled"}  
+    }
+    else if (onTheWay != null) {
+      return {badge: "success", text: "On The Way!"}    
     }
     else {
-      return {badge: "success", text: "On the way!"}  
+      return {badge: "warning", text: "Waiting to be delivered..."}    
     }
   }
 
