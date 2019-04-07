@@ -47,6 +47,12 @@ const batchStackNavigator = createStackNavigator({
       title: "Single Batch",
     },  
   }, 
+  SingleBatchOrder: {
+    screen: SingleOrderScreen,
+    navigationOptions: {
+      title: "Single Order Screen",
+    },
+  },
 })
 
 //accountStack

@@ -6,6 +6,42 @@ import { client } from "../../app/main"
 
 // Notes: types.maybe allows the type to be nullable and optional.
 
+const fragments = {
+  allOrderData : gql`
+    fragment orders on Order {
+      id
+      inBatch
+      amount
+      created
+      customer
+      email
+      netID
+      items {
+        parent
+        amount
+        description
+        quantity
+      }
+      orderStatus {
+        pending
+        onTheWay
+        fulfilled
+        unfulfilled
+        refunded
+        arrived
+      }
+      paymentStatus
+      location {
+        _id
+        name
+      }
+      netID
+      customerName
+    }
+
+  `
+}
+
 export const OrderItem = types.model("OrderItem", {
   amount: types.number,
   description: types.string,
@@ -18,7 +54,8 @@ export const OrderStatus = types.model("OrderStatus", {
   onTheWay: types.maybe(types.number),
   fulfilled: types.maybe(types.number),
   unfulfilled: types.boolean,
-  refunded: types.maybe(types.number)
+  refunded: types.maybe(types.number),
+  arrived: types.maybe(types.number)
 })
 
 export const metaData = types.model("metaData", {
@@ -297,35 +334,10 @@ export type Batch = typeof Batch.Type;
 const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
-      id
-      inBatch
-      amount
-      created
-      customer
-      email
-      netID
-      items {
-        parent
-        amount
-        description
-        quantity
-      }
-      orderStatus {
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      paymentStatus
-      location {
-        _id
-        name
-      }
-      netID
-      customerName
+      ...orders
     }
   }
+  ${fragments.allOrderData}
 `
 
 const FULFILL_ORDER = gql`
@@ -334,25 +346,10 @@ mutation completeOrder ($data: UpdateOrderInput!) {
    	data: $data, 
   ) 
     {
-    id
-    amount
-    charge
-    created
-    netID
-    items {
-      parent
-      amount
-    }
-    orderStatus{
-      _id
-      pending
-      onTheWay
-      fulfilled
-      unfulfilled
-      refunded
-    }
+      ...orders
   }
  }
+ ${fragments.allOrderData}
  `
  
 const CANCEL_WITHOUT_REFUND = gql`
@@ -361,49 +358,20 @@ mutation cancelWithoutRefund ($data: UpdateOrderInput!) {
    	data: $data, 
   ) 
     {
-    id
-    amount
-    charge
-    created
-    items {
-      parent
-      amount
-    }
-    orderStatus{
-      _id
-      pending
-      onTheWay
-      fulfilled
-      unfulfilled
-      refunded
-    }
+      ...orders
   }
+  ${fragments.allOrderData}
  }
  `
  const CANCEL_WITH_REFUND = gql`
  mutation cancelWithRefund ($data: UpdateOrderInput!) {
 	cancelWithRefund(
    	data: $data, 
-  ) 
-    {
-    id
-    amount
-    charge
-    created
-    items {
-      parent
-      amount
-    }
-    orderStatus{
-      _id
-      pending
-      onTheWay
-      fulfilled
-      unfulfilled
-      refunded
-    }
+  ) {
+    ...orders
   }
  }
+ ${fragments.allOrderData}
  `
 
 // ------------------------- BATCH QUERIES -------------------------------
@@ -414,36 +382,11 @@ mutation addToBatch($orders: [String], $vendorName: String!, $batchID: String!) 
     batchName
     outForDelivery
     orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `
 const DELIVER_BATCH = gql`
 mutation deliverBatch($batchID: String!, $vendorName: String!){
@@ -452,36 +395,11 @@ mutation deliverBatch($batchID: String!, $vendorName: String!){
     batchName
     outForDelivery
     orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `
 const REMOVE_FROM_BATCH = gql`
 mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: String!) {
@@ -490,36 +408,11 @@ mutation removeFromBatch($orders: [String], $vendorName: String!, $batchID: Stri
     batchName
     outForDelivery
     orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `
 
 const GET_BATCH = gql`
@@ -529,36 +422,11 @@ query queryBatch($batchID: String, $vendorName: String!) {
     batchName
     outForDelivery
     orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `
 
 const GET_BATCHES = gql`
@@ -568,36 +436,11 @@ query queryBatch($batchID: String, $vendorName: String!) {
     batchName
     outForDelivery
     orders {
-      id
-      inBatch
-      netID
-      amount
-      charge
-      created
-      customer
-      customerName
-      orderStatus{
-        _id
-        pending
-        onTheWay
-        fulfilled
-        unfulfilled
-        refunded
-      }
-      location {
-        _id
-        name
-      }
-      paymentStatus
-      items{
-        amount
-        description
-        parent
-        quantity
-      }
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `
 
 
@@ -609,15 +452,11 @@ const CREATE_BATCH = gql`
       batchName
       outForDelivery
       orders {
-        id
-        inBatch
-        amount
-        charge
-        created
-        customer
+        ...orders
       }
     }
   }
+  ${fragments.allOrderData}
 `
 const DELETE_BATCH = gql`
 mutation deleteBatch($batchID: String, $vendorName: String!) {
@@ -625,13 +464,9 @@ mutation deleteBatch($batchID: String, $vendorName: String!) {
     _id
     batchName
     orders {
-      id
-      inBatch
-      amount
-      charge
-      created
-      customer
+      ...orders
     }
   }
 }
+${fragments.allOrderData}
 `

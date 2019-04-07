@@ -13,19 +13,9 @@ interface accountScreenProps {
 export class AccountScreen extends React.Component<accountScreenProps, any> {
   list = [
     {
-      name: "Vendor Name",
-      subtitle: "Change vendor information",
-      navigateTo: "VendorInfo",
-    },
-    {
       name: "Hours of Operation",
       subtitle: "Change hours of operation",
       navigateTo: "HoursOperation",
-    },
-    {
-      name: "Menu",
-      subtitle: "Change the menu for the night",
-      navigateTo: "Menu",
     },
     {
       name: "Transaction History",

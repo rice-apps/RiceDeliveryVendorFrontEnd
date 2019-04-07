@@ -19,7 +19,7 @@ class BatchOrderListItem extends React.Component<any, any> {
   componentWillMount() {}
   // Define action when pressing entire list item
   singleOrderPress = () => {
-    this.props.navigation.navigate("SingleOrder", {
+    this.props.navigation.navigate("SingleBatchOrder", {
       // order : this.props.order,
       order: this.props.order,
     })
