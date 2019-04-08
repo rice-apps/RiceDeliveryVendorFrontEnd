@@ -105,12 +105,39 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
 
   deleteBatch =  async() => {
     let batchID = this.props.navigation.getParam("batchID", "NONE");
-    let deletedBatch = await this.props.rootStore.orders.deleteBatch(batchID, "East West Tea");
-    await this.props.navigation.popToTop();
-    console.log("Deleted");
-    Alert.alert(`${deletedBatch.batchName}'s batch deleted`)
+    if (await this.deleteBatchCheck()) {
+      let deletedBatch = await this.props.rootStore.orders.deleteBatch(batchID, "East West Tea");
+      await this.props.navigation.popToTop();
+      console.log("Deleted");
+      Alert.alert(`${deletedBatch.batchName}'s batch deleted`)
+    }
+    else {
+      Alert.alert(`The batch cannot be deleted. There are unfulfilled items left.`)
+    }
   }
 
+  deleteBatchCheck = async () => {
+    const batchID = this.props.navigation.getParam("batchID", "NONE");
+    const batch = toJS(this.props.rootStore.orders.onTheWay).find(batch => batch._id === batchID)
+    const orders = batch.orders;
+    
+    for (let i = 0; i < orders.length; i++) {
+        let order = orders[i];
+        if (order.orderStatus.refunded != null && order.orderStatus.unfulfilled === false) {  
+          continue;
+        }
+        else if (order.orderStatus.unfulfilled != false) {
+          continue;
+        }
+        else if (order.orderStatus.fulfilled != null) {
+          continue;
+        }
+        else {
+          return false;
+        }
+    }
+    return true;
+  }
 
   renderIf = (condition, element) => {
     if (condition) {

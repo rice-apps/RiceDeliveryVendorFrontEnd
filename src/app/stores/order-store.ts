@@ -198,9 +198,9 @@ export const OrderModel = types
         }
       });
     },
-    async cancelWithoutRefund(UpdateOrderInput) {
+    async orderArrived(UpdateOrderInput) {
       const info = await client.mutate({
-        mutation: CANCEL_WITHOUT_REFUND,
+        mutation: ORDER_ARRIVED,
         variables: {
           data: UpdateOrderInput
         }
@@ -209,6 +209,14 @@ export const OrderModel = types
     async cancelWithRefund(UpdateOrderInput) {
       const info = await client.mutate({
         mutation: CANCEL_WITH_REFUND,
+        variables: {
+          data: UpdateOrderInput
+        }
+      });
+    },  
+    async cancelWithoutRefund(UpdateOrderInput) {
+      const info = await client.mutate({
+        mutation: CANCEL_WITHOUT_REFUND,
         variables: {
           data: UpdateOrderInput
         }
@@ -363,6 +371,7 @@ mutation cancelWithoutRefund ($data: UpdateOrderInput!) {
   ${fragments.allOrderData}
  }
  `
+ 
  const CANCEL_WITH_REFUND = gql`
  mutation cancelWithRefund ($data: UpdateOrderInput!) {
 	cancelWithRefund(
@@ -373,6 +382,17 @@ mutation cancelWithoutRefund ($data: UpdateOrderInput!) {
  }
  ${fragments.allOrderData}
  `
+
+const ORDER_ARRIVED = gql`
+mutation orderArrived ($data: UpdateOrderInput!) {
+  orderArrived(
+    data: $data, 
+ ) {
+   ...orders
+ }
+}
+ ${fragments.allOrderData}
+`
 
 // ------------------------- BATCH QUERIES -------------------------------
 const ADD_TO_BATCH = gql`

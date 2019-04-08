@@ -44,33 +44,38 @@ class OrderListItem extends React.Component<any, any> {
     let pending = this.props.order.orderStatus.pending; 
     let unfulfilled = this.props.order.orderStatus.unfulfilled; 
     let refunded = this.props.order.orderStatus.refunded;
- 
+    let arrived = this.props.order.orderStatus.arrived;
+
     if (refunded != null && unfulfilled === false) {
-      return {badge: "error", text: "Refunded"}
+      return {color: "red", text: "Refunded"}
     }
     else if (unfulfilled != false) {
-      return {badge: "error", text: "Canceled"}
+      return {color: "red", text: "Canceled"}
     }
     else if (fulfilled != null) {
-      return {badge: "primary", text: "Fulfilled"}  
+      return {color: "gray", text: "Fulfilled"}  
+    }
+    else if (arrived != null) {
+      return {color: "lightblue", text: "Arrived"}
     }
     else if (onTheWay != null) {
-      return {badge: "success", text: "On The Way!"}    
+      return {color: "green", text: "On The Way!"}    
     }
     else {
-      return {badge: "warning", text: "Waiting to be delivered..."}    
+      return {color: "orange", text: "Waiting to be delivered..."}    
     }
+
   }
 
   renderIf = (cond, elem) => cond ? elem : null
 
   render() {
-    return (
+    return ( 
       <TouchableHighlight onPress={this.singleOrderPress}>
         <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
 
         <View style={css.orderListItem.badge_cell}> 
-          <Badge status = {this.badgeHandler().badge}>  </Badge>
+          <Badge badgeStyle = {{backgroundColor: this.badgeHandler().color}}>  </Badge>
           <Text style= {css.orderListItem.badge_text}> {this.badgeHandler().text} </Text>
 
         </View>

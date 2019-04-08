@@ -1,18 +1,15 @@
 import * as React from "react"
-import { View, Text, Button, StyleSheet, FlatList } from "react-native"
+import { View, Text, StyleSheet, FlatList, Alert } from "react-native"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../../stores/root-store"
 import PrimaryButton from "../../../../components/primary-button"
 import SecondaryButton from "../../../../components/secondary-button"
-import { color } from "../../../../../theme"
 import { Divider } from "react-native-elements"
-import * as css from "../../../style"
 import { client } from "../../../../main"
 import LoadingScreen from "../../loading-screen"
 import { NavigationScreenProp } from 'react-navigation';
 import {material} from 'react-native-typography';
 import gql from "graphql-tag";
-import { Order } from "../../../../stores/order-store";
 
 const GET_SKU = gql`
 query skus($sku:String!, $vendorName: String!) {
@@ -115,7 +112,6 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     return data;
   }
 
-  
 
   fulfillOrder(order) {
     console.log("fulfill order");
@@ -124,7 +120,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   }
 
   cancelWithoutRefund(order) {
-    console.log("cacel order without refund");
+    console.log("cancel without order")
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
   }
@@ -135,6 +131,13 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
   }
 
+  orderArrived(order) {
+    console.log("orderArrived");
+    let UpdateOrderInput = this.createUpdateOrderInput(order);
+    this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+  }
+
+
   buttonLogic(order) {
     if (order.orderStatus.onTheWay === null) {
         return true;
@@ -144,6 +147,47 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       return false;
     }
   }
+
+  arrivedButtonLogic(order) {
+    let status = order.orderStatus;
+    if (status.arrived != null) { 
+      this.functionAlert("Fulfill", order);
+    }
+    else {
+      this.functionAlert("Arrive", order);
+    }
+  }
+
+  // Makes alert box when add to batch is clicked.
+  functionAlert = (functype, order) => {
+      Alert.alert(
+        "Are you sure?",
+        "",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("canceled function"),
+            style: "cancel",
+          },
+          { text: "Yes", onPress: () => {
+
+            if (functype === 'NoRefund') {
+              this.cancelWithoutRefund(order);
+            } 
+            else if (functype === "Refund") {
+              this.cancelWithRefund(order);
+            } 
+            else if (functype === "Arrive") {
+              this.orderArrived(order);
+            } 
+            else if (functype === "Fulfill") {
+              this.fulfillOrder(order);
+            }
+          } },
+        ],
+        { cancelable: true },
+      )
+    }
  
   renderItems = ({item}) => {
     if (item.quantity) {
@@ -172,9 +216,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
-    let allItems = this.getItems();
     let name = order.customerName.split(" ")[0]
-    let clicked = false;
     return (
       <View style={styleLocal.mainView}>
         <View style={styleLocal.header}>
@@ -199,18 +241,19 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         </View>
         <View style={styleLocal.buttons}>
 
-          <SecondaryButton title = "Fulfill Order"  
-            onPress = {() => this.fulfillOrder(order)}
+
+          <SecondaryButton title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
+            onPress = {() => this.arrivedButtonLogic(order)}
             disabled = {this.buttonLogic(order)}
             />
 
           <PrimaryButton title = "Cancel Without Refund" 
-            onPress = {() => this.cancelWithoutRefund(order)}
+              onPress = {() => this.functionAlert('NoRefund', order)}
             disabled = {this.buttonLogic(order)}
             />
 
           <PrimaryButton title = "Refund the Order" 
-            onPress = {() => this.cancelWithRefund(order)}
+            onPress = {() => this.functionAlert('Refund', order)}
             disabled = {this.buttonLogic(order)}
             />
 
