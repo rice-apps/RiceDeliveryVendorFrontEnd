@@ -50,6 +50,7 @@ export class BatchList extends React.Component<OrderListProps, OrderListState> {
 
   removeFromBatch = async (vendorName, orders, batchID) => {
     await this.props.rootStore.orders.removeFromBatch(vendorName, orders, batchID);
+    this.props.rootStore.orders.getNewOrders();
     await this.setState({selected: new Map()})
   }
   

@@ -130,48 +130,28 @@ export const OrderModel = types
       return getSnapshot(self.pending)
     }),
     getNewOrders: flow(function* getNewOrders() {
-      let variables = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
-      // if page number is greater than 1, then start pagination!
+      let variables = {vendorName: "East West Tea"} 
       const info = yield client.query({
-        query: GET_ORDER_STORE,
+        query: GET_PENDING_ORDERS,
         variables,
       })
-      console.log("Number queried" + info.data.order.length)
-      console.log("Number in batch" + info.data.order.filter(order => {
-        return order.inBatch === true
-      }).length)
-
-      if (info.data.order.length === 0) return []
-      self.pending = info.data.order.filter(order => {
-        if (order.inBatch === true) {
-          return false;
-        } else {
-          return true;
-        }
-      })
+      if (info.data.pendingOrders.length === 0) return []
+      self.pending = info.data.pendingOrders
       console.log("Length after refreshing" + toJS(self.pending).length)
       return getSnapshot(self.pending)
     }),
     
     getMoreOrders: flow(function* getMoreOrders(pageNum) {
-      let variables: any = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
+      let variables: any = { vendorName: "East West Tea"} // SHOULD BE PAID. NOT CREATED.
       let prevLength = toJS(self.pending).length
       // if page number is greater than 1, then start pagination!
       variables.starting_after = self.pending[toJS(self.pending).length - 1].id 
       const info = yield client.query({
-        query: GET_ORDER_STORE,
+        query: GET_PENDING_ORDERS,
         variables,
       })
-      if (info.data.order.length === 0) return 0
-      self.pending = toJS(self.pending).concat(info.data.order)
-      // filter out orders that are already in a batch.
-      self.pending = self.pending.filter(order => {
-        if (order.inBatch === true || order.orderStatus.onTheWay != null) {
-          return false;
-        } else {
-          return true;
-        }
-      })
+      if (info.data.pendingOrders.length === 0) return []
+      self.pending = toJS(self.pending).concat(info.data.pendingOrders)
       if (prevLength === toJS(self.pending.length)) {
         return [];
       }
@@ -339,6 +319,16 @@ export type Batch = typeof Batch.Type;
 
 
 // ------------------------- ORDER QUERIES -------------------------------
+
+const GET_PENDING_ORDERS = gql`
+  query queryPendingOrders($vendorName: String!, $starting_after: String) {
+    pendingOrders(vendorName: $vendorName, starting_after: $starting_after) {
+      ...orders
+    }
+  }
+  ${fragments.allOrderData}
+`
+
 const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {

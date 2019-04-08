@@ -31,13 +31,13 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     // return networkError
   }
 });// link for real device
-// const serverLink = createHttpLink({
-//   uri: "http://10.122.179.36:3000/graphql",
-// })
-
 const serverLink = createHttpLink({
-  uri: "http://localhost:3000/graphql",
+  uri: "http://10.122.179.36:3000/graphql",
 })
+
+// const serverLink = createHttpLink({
+//   uri: "http://localhost:3000/graphql",
+// })
 
 const link = ApolloLink.from([serverLink])
 export const client = new ApolloClient({

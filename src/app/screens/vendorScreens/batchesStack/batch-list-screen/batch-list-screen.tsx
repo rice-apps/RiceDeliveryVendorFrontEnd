@@ -61,23 +61,28 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
   deliverAlert = () => {
     console.log("DELIVERYALERT")
     let batchID = this.props.navigation.getParam("batchID", "NONE");
-    console.log(batchID)
-    Alert.alert(
-      "Deliver all order in this batch?",
-      "",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("canceled deliver all"),
-          style: "cancel",
-        },
-        { text: "Yes", onPress: () => {
-          this.deliverBatch(batchID, "East West Tea");
-          console.log("all Order in batch delivered");
-        } },
-      ],
-      { cancelable: true },
-    )
+    const batch = toJS(this.props.rootStore.orders.onTheWay).find(batch => batch._id === batchID)
+    if (batch.orders.length === 0) {
+      Alert.alert("You need to add orders into this batch first!")
+    } else {
+      Alert.alert(
+        "Deliver all order in this batch?",
+        "",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("canceled deliver all"),
+            style: "cancel",
+          },
+          { text: "Yes", onPress: () => {
+            this.deliverBatch(batchID, "East West Tea");
+            console.log("all Order in batch delivered");
+          } },
+        ],
+        { cancelable: true },
+      )
+    }
+ 
   }
 
   queryOrders = async () => {
