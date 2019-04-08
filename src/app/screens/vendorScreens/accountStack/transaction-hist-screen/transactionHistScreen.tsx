@@ -11,6 +11,7 @@ import { OrderList } from "../../../../components/order-list"
 import * as css from "../../../style"
 import { TransactionOrderList } from "../../../../components/transaction-order-list";
 import { ButtonGroup } from "react-native-elements";
+import { TransactionRefundedList } from "../../../../components/transaction-refunded-list";
 
 interface TransactionHistScreenProps {
   // injected props
@@ -45,6 +46,8 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
       // If the modal is open, set the loading icon on the button to true.
       this.state.displayNetworkError && this.setState({ reloadPending: true })
       await this.props.rootStore.orders.queryAllOrders(1, "fulfilled")
+      await this.props.rootStore.orders.queryRefundedOrders(1, "canceled")
+
       this.setState({
         loading: false,
         displayNetworkError: false,
@@ -92,8 +95,8 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
         {
           this.state.selectedIndex === 1 &&
           <View style={{ flex: 1 }}>
-          <TransactionOrderList
-            orders={getSnapshot(this.props.rootStore.orders.allTransaction)}
+          <TransactionRefundedList
+            orders={getSnapshot(this.props.rootStore.orders.refunded)}
             orderStatus={"canceled"}
             renderIcon={false}
            />

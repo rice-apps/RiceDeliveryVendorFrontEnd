@@ -95,6 +95,7 @@ export const OrderModel = types
   .model("OrderModel", {
     pending: types.array(Order),
     allTransaction: types.array(Order),
+    refunded: types.array(Order),
     onTheWay: types.array(Batch),
   })
   .views(self => ({
@@ -158,6 +159,20 @@ export const OrderModel = types
       return getSnapshot(self.pending)
     }),
 
+    queryRefundedOrders: flow(function* queryRefundedOrders(pageNum, status) {
+      let variables = { vendorName: "East West Tea", status: "canceled" } 
+      // if page number is greater than 1, then start pagination!
+      if (pageNum > 1) variables.starting_after = self.allTransaction[toJS(self.allTransaction).length - 1].id 
+      const info = yield client.query({
+        query: GET_FINISHED_ORDERS,
+        variables,
+      })
+      console.log(info.data)
+      if (info.data.finishedOrders.length === 0) return 0
+      self.refunded = pageNum === 1 ? info.data.finishedOrders : toJS(self.refunded).concat(info.data.finishedOrders)
+      return self.refunded
+    }),
+    
     queryAllOrders: flow(function* queryOrders(pageNum, status) {
       let variables = { vendorName: "East West Tea", status: status } 
       // if page number is greater than 1, then start pagination!

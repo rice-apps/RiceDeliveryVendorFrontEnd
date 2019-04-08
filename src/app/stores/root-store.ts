@@ -26,7 +26,7 @@ export const RootStoreModel = types
   .model("RootStore")
   .props({
     vendorStore: types.optional(VendorStoreModel, {}),
-    orders: types.optional(OrderModel, { pending: [], onTheWay: [], allTransaction: [] }),
+    orders: types.optional(OrderModel, { pending: [], onTheWay: [], allTransaction: [], refunded: [] }),
   })
   .views(self => ({
     get getOrders() {
