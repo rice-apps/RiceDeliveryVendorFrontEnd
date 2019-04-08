@@ -140,6 +140,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
     }
     return (
       <View style={css.screen.paddedScreen}>
+
         <PrimaryButton 
           title="Delete Batch"
           onPress = {() => this.deleteBatch()}
@@ -149,6 +150,15 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
           title = "Deliver All"
           onPress = {() => this.deliverAlert()}
         />
+        {
+        batch.outForDelivery === true &&
+        <View style={{justifyContent:"center", alignContent: "center", textAlign:"center"}}>
+          <Text style={[material.subheading, {color: "green"}]}>
+            This batch is out for delivery
+          </Text>
+        </View>
+
+        }
         {
           this.state.displayNetworkError
           // <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />

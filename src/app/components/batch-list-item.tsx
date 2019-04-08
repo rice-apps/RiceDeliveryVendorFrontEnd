@@ -6,11 +6,12 @@ import { withNavigation, NavigationScreenProp } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Order from './temporary-mock-order';
+import { Batch } from '../stores/order-store';
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 
 interface BatchListItemProps {
-    batch : any,
+    batch : Batch,
     name: String,
     navigation: NavigationScreenProp<any, any>
 }
@@ -40,7 +41,11 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
                         <Text style={styles.row_location}> {`${this.props.name}'s Batch`} </Text>  
+                        {this.props.batch.outForDelivery &&
+                        <Text style={[styles.row_time,, {color: "green"}]}> Out for delivery </Text>  
+                    }
                     </View>
+                    
                     <Icon name="chevron-right" size={50} color="black" />
                     
                 </View>

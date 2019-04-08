@@ -463,6 +463,7 @@ mutation deleteBatch($batchID: String, $vendorName: String!) {
 	deleteBatch(batchID: $batchID, vendorName: $vendorName) {
     _id
     batchName
+    outForDelivery
     orders {
       ...orders
     }
@@ -470,3 +471,4 @@ mutation deleteBatch($batchID: String, $vendorName: String!) {
 }
 ${fragments.allOrderData}
 `
+
