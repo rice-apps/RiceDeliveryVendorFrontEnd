@@ -48,20 +48,19 @@ class BatchOrderListItem extends React.Component<any, any> {
     let arrived = this.props.order.orderStatus.arrived;
 
  
-    
-    if (refunded != null && unfulfilled === false) {
+    if (refunded !== null && unfulfilled === false) {
       return {color: "red", text: "Refunded"}
     }
-    else if (unfulfilled != false) {
+    else if (unfulfilled !== false) {
       return {color: "red", text: "Canceled"}
     }
-    else if (fulfilled != null) {
+    else if (fulfilled !== null) {
       return {color: "gray", text: "Fulfilled"}  
     }
-    else if (arrived != null) {
+    else if (arrived !== null) {
       return {color: "lightblue", text: "Arrived"}
     }
-    else if (onTheWay != null) {
+    else if (onTheWay !== null) {
       return {color: "green", text: "On The Way!"}    
     }
     else {

@@ -41,7 +41,7 @@ const serverLink = createHttpLink({
 
 const link = ApolloLink.from([serverLink])
 export const client = new ApolloClient({
-  link: link,
+  link: serverLink,
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {

@@ -158,18 +158,20 @@ export const OrderModel = types
       return getSnapshot(self.pending)
     }),
 
-    queryAllOrders: flow(function* queryOrders(pageNum) {
-      let variables = { vendorName: "East West Tea", status: "" } 
+    queryAllOrders: flow(function* queryOrders(pageNum, status) {
+      let variables = { vendorName: "East West Tea", status: status } 
       // if page number is greater than 1, then start pagination!
-      if (pageNum > 1) variables.starting_after = self.allTransaction[self.allTransaction.toJS().length - 1].id 
+      if (pageNum > 1) variables.starting_after = self.allTransaction[toJS(self.allTransaction).length - 1].id 
       const info = yield client.query({
-        query: GET_ORDER_STORE,
+        query: GET_FINISHED_ORDERS,
         variables,
       })
-      if (info.data.order.length === 0) return 0
-      self.allTransaction = pageNum === 1 ? info.data.order : self.allTransaction.toJS().concat(info.data.order)
+      console.log(info.data)
+      if (info.data.finishedOrders.length === 0) return 0
+      self.allTransaction = pageNum === 1 ? info.data.finishedOrders : toJS(self.allTransaction).concat(info.data.finishedOrders)
       return self.allTransaction
     }),
+
     async fulfillOrder(UpdateOrderInput) { //DOESNT WORK
       const info = await client.mutate({
         mutation: FULFILL_ORDER,
@@ -187,6 +189,7 @@ export const OrderModel = types
       });
     },
     async cancelWithRefund(UpdateOrderInput) {
+      console.log(UpdateOrderInput)
       const info = await client.mutate({
         mutation: CANCEL_WITH_REFUND,
         variables: {
@@ -195,12 +198,14 @@ export const OrderModel = types
       });
     },  
     async cancelWithoutRefund(UpdateOrderInput) {
+      console.log(UpdateOrderInput)
       const info = await client.mutate({
-        mutation: CANCEL_WITHOUT_REFUND,
+        mutation: CANCEL_WITHOUT_REFUND, 
         variables: {
           data: UpdateOrderInput
         }
-      });
+      })
+
     },
     getBatch: flow(function* getBatch(batchID) {
       const info = (yield client.query({
@@ -329,6 +334,16 @@ const GET_PENDING_ORDERS = gql`
   ${fragments.allOrderData}
 `
 
+const GET_FINISHED_ORDERS = gql`
+  query queryFinishedOrders($vendorName: String!, $starting_after: String, $status:String) {
+    finishedOrders(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
+      ...orders
+    }
+  }    
+  ${fragments.allOrderData}
+
+`
+
 const GET_ORDER_STORE = gql`
   query queryOrders($vendorName: String!, $starting_after: String, $status: String ) {
     order(vendorName: $vendorName, starting_after: $starting_after, status: $status) {
@@ -351,15 +366,15 @@ mutation completeOrder ($data: UpdateOrderInput!) {
  `
  
 const CANCEL_WITHOUT_REFUND = gql`
-mutation cancelWithoutRefund ($data: UpdateOrderInput!) {
+mutation cancelWithoutRefund($data: UpdateOrderInput!) {
 	cancelWithoutRefund(
    	data: $data, 
   ) 
     {
       ...orders
   }
-  ${fragments.allOrderData}
  }
+ ${fragments.allOrderData}
  `
  
  const CANCEL_WITH_REFUND = gql`

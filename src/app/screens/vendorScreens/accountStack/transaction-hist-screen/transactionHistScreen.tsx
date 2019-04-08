@@ -9,6 +9,8 @@ import { getSnapshot } from "mobx-state-tree"
 import { OrderList } from "../../../../components/order-list"
  
 import * as css from "../../../style"
+import { TransactionOrderList } from "../../../../components/transaction-order-list";
+import { ButtonGroup } from "react-native-elements";
 
 interface TransactionHistScreenProps {
   // injected props
@@ -20,6 +22,7 @@ interface TransactionHistScreenState {
   transaction: string,
   loading: boolean,
   reloadPending: boolean,
+  selectedIndex: number,
   displayNetworkError: boolean
 }
 
@@ -32,21 +35,22 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
       transaction: "haven't fetched yet",
       loading: true,
       reloadPending: true,
-      displayNetworkError: false
+      displayNetworkError: false,
+      selectedIndex: 0
     }
   } 
 
-  queryOrders = async () => {
+  queryAllOrders = async () => {
     try {
       // If the modal is open, set the loading icon on the button to true.
       this.state.displayNetworkError && this.setState({ reloadPending: true })
-      await this.props.rootStore.orders.queryAllOrders(1)
+      await this.props.rootStore.orders.queryAllOrders(1, "fulfilled")
       this.setState({
         loading: false,
         displayNetworkError: false,
       })
-    } catch {
-      console.log("Caught error")
+    } catch (error){
+      console.log("Caught error" + error)
       this.setState({
         loading: false,
         displayNetworkError: true,
@@ -55,18 +59,46 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
     }
   }
   async componentWillMount() {
-    await this.queryOrders()
+    await this.queryAllOrders()
   }
 
+  updateIndex = (selectedIndex) => {
+    this.setState({selectedIndex})
+  }
+  
   render() {
     if (this.state.loading) {
       return <LoadingScreen />
     }
     return (
       <View style={css.screen.paddedScreen}>
-        <View style={{ flex: 1 }}>
-          <OrderList orders={getSnapshot(this.props.rootStore.orders.allTransaction)} />
+          <ButtonGroup
+          onPress={this.updateIndex}
+          selectedIndex={this.state.selectedIndex}
+          buttons={["Fulfilled/Cancelled", "Refunded"]}
+          containerStyle={{height: 40}}
+        />
+
+        {
+          this.state.selectedIndex === 0 &&
+          <View style={{ flex: 1 }}>
+          <TransactionOrderList 
+          orders={getSnapshot(this.props.rootStore.orders.allTransaction)}
+          orderStatus={"fulfilled"}
+          renderIcon={false}
+           />
         </View>
+        }
+        {
+          this.state.selectedIndex === 1 &&
+          <View style={{ flex: 1 }}>
+          <TransactionOrderList
+            orders={getSnapshot(this.props.rootStore.orders.allTransaction)}
+            orderStatus={"canceled"}
+            renderIcon={false}
+           />
+        </View>
+        }
       </View>
     )
     

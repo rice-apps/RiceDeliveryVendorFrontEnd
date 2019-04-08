@@ -24,6 +24,7 @@ interface OrderListProps {
   orders: any
   rootStore?: RootStore
   renderIcon: boolean
+  orderStatus: string
 }
 interface OrderListState {
   refreshState: any,
@@ -42,7 +43,7 @@ interface OrderListState {
 // const OFlatList = observer(FlatList)
 @inject("rootStore")
 @observer
-export class OrderList extends React.Component<OrderListProps, OrderListState> {
+export class TransactionOrderList extends React.Component<OrderListProps, OrderListState> {
     constructor(props) {
         super(props)
         this.state = {
@@ -64,82 +65,14 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     let batches = await this.props.rootStore.orders.getBatches(); 
     this.setState({batches: batches});
   }
-  
-
-  
-  addToBatch = async(vendorName, orders, batchID, index, batchName) => {
-    console.log(`ADDING to batchID ${batchID}`);
-    console.log(`ADDING orders ${orders}`);
-    console.log(`ADDING to vendor ${vendorName}`);
-    await this.setState((state) => {
-      let arr = state.addingToBatchesButtonLoad.map(item => item)
-      arr[index] = true;
-      return {addingToBatchesButtonLoad: arr };
-    })
-    await this.props.rootStore.orders.addToBatch(vendorName, orders, batchID);
-    await this.props.rootStore.orders.getNewOrders()
-    await this.setState((state) => {
-      let arr = state.addingToBatchesButtonLoad.map(item => false)
-      return {addingToBatchesButtonLoad: arr, selected: new Map()};
-    })
-    Alert.alert(
-      `Successfully added to ${batchName}'s Batch`,
-      "",
-      [
-        { text: "Close", onPress: () => {
-          this.setState({overlayVisible: false})
-        }
-      },
-      ],
-      { cancelable: false },
-    )
-  }
-
-   // Makes alert box when add to batch is clicked.
-   addToBatchHandler = async () => {
-    let orders = [];
-    for (let key of this.state.selected.keys()) {
-      if (this.state.selected.get(key) === true)
-        orders.push(key)
-    }
-    await this.setState({orders: orders, batchOverlayButtonLoad: true});
-    // get the latest batches:
-    let batch = toJS(await this.props.rootStore.orders.getBatches()).map(item => false);
-    await this.setState({overlayVisible: true, batchOverlayButtonLoad: false, addingToBatchesButtonLoad: batch})
-    // await this.setState({alertOptions: this.createAlertOptions(batches)});
-    // Alert.alert(
-    //   'Add to Batch: ',
-    //   '',
-    //   this.state.alertOptions, 
-    //   {cancelable: true},
-    // );
-  }
 
   onRefresh = async () => {
     console.log("REFRESHING");
     await this.setState({ refreshState: RefreshState.HeaderRefreshing, page: 1, endReached: false })
-    await this.props.rootStore.orders.getNewOrders();
+    await this.props.rootStore.orders.queryAllOrders(1, this.props.orderStatus);
     await this.setState({ refreshState: RefreshState.Idle })
   }
 
-  // timer
-  // async componentWillMount() {
-  //   this.timer = setInterval(() => this.onRefresh(), 1000);
-  // }
-
-  // async componentWillUnmount() {
-  //   this.timer = null;
-  // }
-  
-  onPressItem = id => {
-    // updater functions are preferred for transactional updates
-    this.setState(state => {
-      // copy the map rather than modifying state.
-      const selected = new Map(state.selected)
-      selected.set(id, !selected.get(id)) // toggle
-      return { selected }
-    })
-  }
 
   renderItem = ({ item }) => {
     return (
@@ -147,7 +80,6 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       {() =>       
         <OrderListItem
           order={item}
-          onPressItem={this.onPressItem}
           selected={!!this.state.selected.get(item.id)}
           renderIcon={this.props.renderIcon}
         />}
@@ -185,7 +117,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
     if (!this.state.endReached) {
       this.setState({ page: this.state.page + 1, refreshState: RefreshState.FooterRefreshing })
       console.log("calling query")
-      const pendingList = await this.props.rootStore.orders.getMoreOrders(this.state.page)
+      const pendingList = await this.props.rootStore.orders.queryAllOrders(this.state.page, this.props.orderStatus);
       if (pendingList.length === 0) {
         console.log("no more data")
         this.setState({ endReached: false, refreshState: RefreshState.NoMoreData})
@@ -218,9 +150,6 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
   )
 
   render() {
-    console.log("rerender");
-    let orders = getSnapshot(this.props.rootStore.orders.pending);
-    console.log("LENGTH OF ARRAY:" + toJS(orders).length);
     return (
       <View style={css.orderList.flatList}>
         
@@ -232,13 +161,12 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
             <Text style={material.headline}>Which Batch would you like to add to?</Text>
             <FlatList
               extraData={this.state}
-              data={getSnapshot(this.props.rootStore.orders.onTheWay)}
+              data={getSnapshot(this.props.rootStore.orders.allTransaction)}
               renderItem={this.renderOverlay}
               keyExtractor={(item, index)=> item._id}
              />
           </View>
         </Overlay>
-
         <RefreshListView
           style={css.orderList.flatList}
           extraData={this.state}
@@ -251,16 +179,6 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
           footerNoMoreDataComponent={this.renderNoMoreData}
           onHeaderRefresh={this.onRefresh}
         />
-        {
-          this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,
-            <PrimaryButton
-              title ="Add to Batch"
-              onPress={this.addToBatchHandler}
-              loading={this.state.batchOverlayButtonLoad}
-              disabled={this.state.batchOverlayButtonLoad}
-            />
-          )
-        }
       </View>
     )
   }
