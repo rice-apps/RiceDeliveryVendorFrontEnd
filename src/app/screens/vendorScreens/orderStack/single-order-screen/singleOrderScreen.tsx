@@ -194,10 +194,18 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     this.props.rootStore.orders.orderArrived(UpdateOrderInput);
   }
 
-  buttonLogic(order) {
+  fulfillButtonLogic(order) {
     if (order.orderStatus.onTheWay === null) {
         return true;
     } else if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  cancelButtonLogic(order) {
+    if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
       return true;
     } else {
       return false;
@@ -275,17 +283,17 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
 
           <SecondaryButton title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
             onPress = {() => this.arrivedButtonLogic(order)}
-            disabled = {this.buttonLogic(order)}
+            disabled = {this.fulfillButtonLogic(order)}
             />
 
           <PrimaryButton title = "Cancel Without Refund" 
               onPress = {() => this.functionAlert('NoRefund', order)}
-            disabled = {this.buttonLogic(order)}
+            disabled = {this.cancelButtonLogic(order)}
             />
 
           <PrimaryButton title = "Refund the Order" 
             onPress = {() => this.functionAlert('Refund', order)}
-            disabled = {this.buttonLogic(order)}
+            disabled = {this.cancelButtonLogic(order)}
             />
 
         </View>
