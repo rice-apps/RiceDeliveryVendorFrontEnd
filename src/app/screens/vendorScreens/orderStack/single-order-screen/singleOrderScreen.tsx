@@ -192,7 +192,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("orderArrived");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
-    await this.fulfillButtonLogic();
+    this.fulfillButtonLogic();
+    this.cancelButtonLogic();
     await this.getStatus();
     Alert.alert("Notified the user.")
   }
