@@ -1,19 +1,15 @@
 import * as React from "react"
-import { View, Text, Button, StyleSheet, FlatList, Alert, ScrollView, ViewPagerAndroidComponent } from "react-native"
+import { View, Text, StyleSheet, FlatList, Alert, ScrollView } from "react-native"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../../stores/root-store"
 import PrimaryButton from "../../../../components/primary-button"
 import SecondaryButton from "../../../../components/secondary-button"
-import { color } from "../../../../../theme"
 import { Divider } from "react-native-elements"
-import * as css from "../../../style"
 import { client } from "../../../../main"
 import LoadingScreen from "../../loading-screen"
 import { NavigationScreenProp } from 'react-navigation';
 import {material} from 'react-native-typography';
 import gql from "graphql-tag";
-import { Order } from "../../../../stores/order-store";
-import { toJS } from "mobx";
 
 const GET_SKU = gql`
 query skus($sku:String!, $vendorName: String!) {
@@ -29,10 +25,6 @@ query skus($sku:String!, $vendorName: String!) {
   }
 }
 `
-
-const style = require("../../../style")
-
-
 interface SingelOrderScreenProps {
   // injected props
   rootStore?: RootStore,
@@ -49,9 +41,34 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       refreshing: false,
       order: [],
       status: "",
+      fulfillButton: true,
+      fulfillButtonTitle: "Notify customer order has arrived",
+      cancelButton: false
     }
   }
 
+
+  /* ------------------------------- Initialize original states. ---------------------------------- */
+  async componentDidMount() {
+
+    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
+    if (order.orderStatus.arrived != null) { 
+      this.setState({fulfillButtonTitle: "Fulfill Order"});
+    }
+
+    this.cancelButtonLogic();
+    this.fulfillButtonLogic();
+    this.getStatus();
+    this.getOrderData();
+  }
+
+  componentWillUnmount() {
+    console.log("Did unmount")
+  }
+
+
+  /* ---------------------- Used to display order data on the screen. ------------------------------- */
   getDate = dateInSecondsSinceUnixEpoch => {
     let date = new Date(dateInSecondsSinceUnixEpoch * 1000)
     return date.toLocaleDateString("en-US", {
@@ -59,42 +76,6 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       hour: "numeric",
       minute: "numeric",
     })
-  }
-
-  // Calls backend to get the latest order status.
-  getOrderStatus = async() => {
-    let order = this.props.navigation.state.params.order
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
-    return newOrder.orderStatus;
-  }
-
-  getStatus = async () => {
-    let status = await this.getOrderStatus();
-    if (status.refunded != null && status.unfulfilled === false) {
-      this.setState({status: "Refunded"});    
-    }
-    else if (status.unfulfilled != false) {
-      this.setState({status: "Canceled"});    
-    }
-    else if (status.fulfilled != null) {
-      this.setState({status: "Fulfilled"});    
-    }
-    else if (status.arrived != null) {
-      this.setState({status: "Arrived"});    
-    }
-    else if (status.onTheWay != null) {
-      this.setState({status: "On The Way!"});    
-    }
-    else {
-      this.setState({status: "Waiting to be delivered..."});    
-    }
-  }
-
-  getItems = () => {
-  }
-
-  jsonCopy(src) {
-    return JSON.parse(JSON.stringify(src));
   }
 
   /**
@@ -122,59 +103,56 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     }
     await this.setState({order: newOrder, loading: false});
   }
+  
+ renderItems = ({item}) => {
+  if (item.quantity) {
+    return (
+      <View>
+        <Text style={material.body2}>
+          {`${item.quantity}x ${item.description}`}
+        </Text>
+        <Text style={material.caption}>
+          {item.attributes.join(" ")}
+        </Text>
+      </View>
 
-  arrivedButtonLogic(order) {
-    let status = order.orderStatus;
-    if (status.arrived != null) { 
-      this.functionAlert("Fulfill", order);
+    )
+  } else {
+    return null
+  }
+}
+
+  jsonCopy(src) {
+    return JSON.parse(JSON.stringify(src));
+  }
+
+  getStatus = async () => {
+    let order = this.props.navigation.state.params.order
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    let status = newOrder.orderStatus;
+    if (status.refunded != null && status.unfulfilled === false) {
+      this.setState({status: "Refunded"});    
+    }
+    else if (status.unfulfilled != false) {
+      this.setState({status: "Canceled"});    
+    }
+    else if (status.fulfilled != null) {
+      this.setState({status: "Fulfilled"});    
+    }
+    else if (status.arrived != null) {
+      this.setState({status: "Arrived"});    
+      this.setState({fulfillButtonTitle: "Fulfill Order"});
+    }
+    else if (status.onTheWay != null) {
+      this.setState({status: "On The Way!"});    
     }
     else {
-      this.functionAlert("Arrive", order);
+      this.setState({status: "Waiting to be delivered..."});    
     }
   }
-
   
-  // Makes alert box when add to batch is clicked.
-  functionAlert = (functype, order) => {
-      Alert.alert(
-        "Are you sure?",
-        "",
-        [
-          {
-            text: "Cancel",
-            onPress: () => console.log("canceled function"),
-            style: "cancel",
-          },
-          { text: "Yes", onPress: () => {
 
-            if (functype === 'NoRefund') {
-              this.cancelWithoutRefund(order);
-            } 
-            else if (functype === "Refund") {
-              this.cancelWithRefund(order);
-            } 
-            else if (functype === "Arrive") {
-              this.orderArrived(order);
-            } 
-            else if (functype === "Fulfill") {
-              this.fulfillOrder(order);
-            }
-          } },
-        ],
-        { cancelable: true },
-      )
-    }
-
-
-  componentDidMount() {
-    this.getStatus();
-    this.getOrderData();
-  }
-
-  componentWillUnmount() {
-    console.log("Did unmount")
-  }
-
+  /* ------------------------- Functions used for the buttons to change backend.------------------------------- */
   createUpdateOrderInput(order) {
     let vendorName = "East West Tea";
     let netID = order.netID;
@@ -186,8 +164,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   async fulfillOrder(order) {
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
+    await this.fulfillButtonLogic();
     await this.getStatus();
-    await this.props.rootStore.orders.getNewOrders();
     Alert.alert("Order fulfilled")
   }
 
@@ -196,6 +174,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
     await this.getStatus();
+    await this.cancelButtonLogic();
     Alert.alert("Order canceled without refund")
 
   }
@@ -204,6 +183,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("cacel order with refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
+    await this.cancelButtonLogic();
     await this.getStatus();
     Alert.alert("Order canceled with refund")
   }
@@ -212,71 +192,92 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("orderArrived");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+    await this.fulfillButtonLogic();
     await this.getStatus();
     Alert.alert("Notified the user.")
   }
 
-  fulfillButtonLogic(order) {
+  functionAlert = (functype, order) => {
+    Alert.alert(
+      "Are you sure?",
+      "",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("canceled function"),
+          style: "cancel",
+        },
+        { text: "Yes", onPress: () => {
+
+          if (functype === 'NoRefund') {
+            this.cancelWithoutRefund(order);
+          } 
+          else if (functype === "Refund") {
+            this.cancelWithRefund(order);
+          } 
+          else if (functype === "Arrive") {
+            this.orderArrived(order);
+          } 
+          else if (functype === "Fulfill") {
+            this.fulfillOrder(order);
+          }
+        } },
+      ],
+      { cancelable: true },
+    )
+  }
+
+  /* ------------------------ Handles button's reactiveness on the screen. ------------------------------- */
+  async arrivedButtonLogic() {
+    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
+    if (order.orderStatus.arrived != null) { 
+      await this.functionAlert("Fulfill", order);
+    }
+    else {
+      await this.functionAlert("Arrive", order);
+    }
+  }
+
+  async fulfillButtonLogic() {
+    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if (order.orderStatus.onTheWay === null) {
+        this.setState({fulfillButton: true});
         return true;
-    } else if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
+    } 
+    else if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
+      this.setState({fulfillButton: true});
       return true;
-    } else {
+    } 
+    else {
+      this.setState({fulfillButton: false});
       return false;
     }
   }
 
-  cancelButtonLogic(order) {
+  async cancelButtonLogic() {
+    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
+      this.setState({cancelButton: true});
       return true;
-    } else {
+    } 
+    else {
+      this.setState({cancelButton: false});
       return false;
     }
   }
- 
-  renderItems = ({item}) => {
-    if (item.quantity) {
-      return (
-        <View>
-          <Text style={material.body2}>
-            {`${item.quantity}x ${item.description}`}
-          </Text>
-          <Text style={material.caption}>
-            {item.attributes.join(" ")}
-          </Text>
-        </View>
 
-      )
-    } else {
-      return null
-    }
-  }
 
-  // getOrderFromStore = (order) => {
-  //   console.log(order)
-  //   if (order.orderStatus.fulfilled !== null) {
-  //     return this.props.rootStore.orders.allTransaction.find(store_order => store_order.id === order.id)
-  //   } else if (order.orderStatus.unfulfilled !== false) {
-  //     return this.props.rootStore.orders.refunded.find(store_order => store_order.id === order.id)
-  //   } else if (order.inBatch === true) {
-  //     let orders =  toJS(this.props.rootStore.orders.onTheWay).map(batch => batch.orders).reduce((x, y) => x.concat(y), []);
-  //     return orders.find(store_order => store_order.id === order.id)
-  //   } else {
-  //     return this.props.rootStore.orders.pending.find(store_order => store_order.id === order.id)
-
-  //   }
-  // }
+   /* ------------------------------------ Render the screen. --------------------------------------------- */
   render() {
     if (this.state.loading) return <LoadingScreen />
     let order = (this.props.navigation.getParam("order", "NO_ID"));
-    console.log("singele order screen rendering");
-    console.log(this.state.status);
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
-    let allItems = this.getItems();
     let name = order.customerName.split(" ")[0]
-    let clicked = false;
     return (
       <ScrollView contentContainerStyle={styleLocal.mainView}>
         <View style={styleLocal.header}>
@@ -302,19 +303,21 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         <View style={styleLocal.buttons}>
 
 
-          <SecondaryButton title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
-            onPress = {() => this.arrivedButtonLogic(order)}
-            disabled = {this.fulfillButtonLogic(order)}
+          <SecondaryButton 
+            title = {this.state.fulfillButtonTitle}
+            // title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
+            onPress = {async() => await this.arrivedButtonLogic()}
+            disabled = {this.state.fulfillButton}
             />
 
           <PrimaryButton title = "Cancel Without Refund" 
-              onPress = {() => this.functionAlert('NoRefund', order)}
-            disabled = {this.cancelButtonLogic(order)}
+              onPress = {async() => await this.functionAlert('NoRefund', order)}
+              disabled = {this.state.cancelButton}
             />
 
           <PrimaryButton title = "Refund the Order" 
-            onPress = {() => this.functionAlert('Refund', order)}
-            disabled = {this.cancelButtonLogic(order)}
+            onPress = {async() => await this.functionAlert('Refund', order)}
+            disabled = {this.state.cancelButton}
             />
 
         </View>
