@@ -47,7 +47,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     this.state = {
       loading: true,
       refreshing: false,
-      order: []
+      order: [],
+      status: "",
     }
   }
 
@@ -60,16 +61,32 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     })
   }
 
-  getStatus = () => {
-    let status = this.props.navigation.state.params.order.orderStatus
-    if (status.unfulfilled) {
-      return "Unfulfilled"
-    } else if (status.fulfilled != null) {
-      return "Fulfilled"
-    } else if (status.onTheWay != null) {
-      return "On The Way"
-    } else {
-      return "Pending"
+  // Calls backend to get the latest order status.
+  getOrderStatus = async() => {
+    let order = this.props.navigation.state.params.order
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    return newOrder.orderStatus;
+  }
+
+  getStatus = async () => {
+    let status = await this.getOrderStatus();
+    if (status.refunded != null && status.unfulfilled === false) {
+      this.setState({status: "Refunded"});    
+    }
+    else if (status.unfulfilled != false) {
+      this.setState({status: "Canceled"});    
+    }
+    else if (status.fulfilled != null) {
+      this.setState({status: "Fulfilled"});    
+    }
+    else if (status.arrived != null) {
+      this.setState({status: "Arrived"});    
+    }
+    else if (status.onTheWay != null) {
+      this.setState({status: "On The Way!"});    
+    }
+    else {
+      this.setState({status: "Waiting to be delivered..."});    
     }
   }
 
@@ -79,6 +96,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   jsonCopy(src) {
     return JSON.parse(JSON.stringify(src));
   }
+
   /**
    * Function to get order sku informaiton
    */
@@ -149,6 +167,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
 
 
   componentDidMount() {
+    this.getStatus();
     this.getOrderData();
   }
 
@@ -164,12 +183,11 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     return data;
   }
 
-  
-
   async fulfillOrder(order) {
-    console.log("fulfill order");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
+    await this.getStatus();
+    await this.props.rootStore.orders.getNewOrders();
     Alert.alert("Order fulfilled")
   }
 
@@ -177,6 +195,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("cacel order without refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
+    await this.getStatus();
     Alert.alert("Order canceled without refund")
 
   }
@@ -185,13 +204,16 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("cacel order with refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
+    await this.getStatus();
     Alert.alert("Order canceled with refund")
   }
 
-  orderArrived(order) {
+   async orderArrived(order) {
     console.log("orderArrived");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+    await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+    await this.getStatus();
+    Alert.alert("Notified the user.")
   }
 
   fulfillButtonLogic(order) {
@@ -247,9 +269,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   render() {
     if (this.state.loading) return <LoadingScreen />
     let order = (this.props.navigation.getParam("order", "NO_ID"));
-    console.log("Rendering single order screen")
-    console.log(order);
-    let status = this.getStatus();
+    console.log("singele order screen rendering");
+    console.log(this.state.status);
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
@@ -265,7 +286,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         <Divider />
         <View style={styleLocal.location}>
           <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Location: {location} </Text>
-          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Status: {status}</Text>
+          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Status: {this.state.status}</Text>
         </View>
         <View style={styleLocal.details}>
           

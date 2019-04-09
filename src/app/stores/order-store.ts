@@ -109,7 +109,7 @@ export const OrderModel = types
       self.pending = orders
       return self.pending
     },
-
+    
     queryOrders: flow(function* queryOrders(pageNum) {
       let variables = { vendorName: "East West Tea", status: "paid" } // SHOULD BE PAID. NOT CREATED.
       // if page number is greater than 1, then start pagination!
@@ -188,7 +188,16 @@ export const OrderModel = types
       self.allTransaction = pageNum === 1 ? info.data.finishedOrders : toJS(self.allTransaction).concat(info.data.finishedOrders)
       return self.allTransaction
     }),
-
+    querySingleOrder: flow(function* querySingleOrder(id) {
+      const info = yield client.query({
+        query: GET_SINGLE_ORDER,
+        variables: {
+          vendorName: "East West Tea",
+          orderID: id
+        }
+      });
+      return info.data.order[0];
+    }),
     async fulfillOrder(UpdateOrderInput) { //DOESNT WORK
       const info = await client.mutate({
         mutation: FULFILL_ORDER,
@@ -342,6 +351,15 @@ export type Batch = typeof Batch.Type;
 
 
 // ------------------------- ORDER QUERIES -------------------------------
+
+const GET_SINGLE_ORDER = gql`
+  query queryOrders($vendorName: String!, $orderID: String!)  {
+    order(vendorName: $vendorName, orderID: $orderID)  {
+        ...orders
+      }
+  }
+  ${fragments.allOrderData}
+`
 
 const GET_PENDING_ORDERS = gql`
   query queryPendingOrders($vendorName: String!, $starting_after: String) {
