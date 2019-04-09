@@ -52,13 +52,14 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   async componentDidMount() {
 
     let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    
     let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if (order.orderStatus.arrived != null) { 
       this.setState({fulfillButtonTitle: "Fulfill Order"});
     }
 
-    this.cancelButtonLogic();
-    this.fulfillButtonLogic();
+    await this.cancelButtonLogic(order);
+    await this.fulfillButtonLogic(order);
     this.getStatus();
     this.getOrderData();
   }
@@ -164,7 +165,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   async fulfillOrder(order) {
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
-    await this.fulfillButtonLogic();
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    await this.fulfillButtonLogic(newOrder);
     await this.getStatus();
     Alert.alert("Order fulfilled")
   }
@@ -174,7 +176,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
     await this.getStatus();
-    await this.cancelButtonLogic();
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    await this.cancelButtonLogic(newOrder);
     Alert.alert("Order canceled without refund")
 
   }
@@ -183,7 +186,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("cacel order with refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
-    await this.cancelButtonLogic();
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    await this.cancelButtonLogic(newOrder);
     await this.getStatus();
     Alert.alert("Order canceled with refund")
   }
@@ -192,8 +196,9 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     console.log("orderArrived");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
     await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
-    this.fulfillButtonLogic();
-    this.cancelButtonLogic();
+    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    this.fulfillButtonLogic(newOrder);
+    this.cancelButtonLogic(newOrder);
     await this.getStatus();
     Alert.alert("Notified the user.")
   }
@@ -211,8 +216,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         {
           text: "Cancel",
           onPress: () => {
-            this.cancelButtonLogic();
-            this.fulfillButtonLogic();
+            this.cancelButtonLogic(order);
+            this.fulfillButtonLogic(order);
             this.getStatus();
             console.log("canceled function")},
           style: "cancel",
@@ -249,9 +254,9 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     }
   }
 
-  async fulfillButtonLogic() {
-    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
-    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
+  async fulfillButtonLogic(order) {
+    // let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    // let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if (order.orderStatus.onTheWay === null) {
         this.setState({fulfillButton: true});
         return true;
@@ -266,9 +271,9 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     }
   }
 
-  async cancelButtonLogic() {
-    let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
-    let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
+  async cancelButtonLogic(order) {
+    // let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
+    // let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if ((order.orderStatus.fulfilled != null) || (order.orderStatus.refunded != null)) {
       this.setState({cancelButton: true});
       return true;

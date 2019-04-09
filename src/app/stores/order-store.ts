@@ -205,6 +205,7 @@ export const OrderModel = types
           data: UpdateOrderInput
         }
       });
+      
     },
     async orderArrived(UpdateOrderInput) {
       const info = await client.mutate({
