@@ -45,9 +45,8 @@ export class TransactionHistScreen extends React.Component<TransactionHistScreen
     try {
       // If the modal is open, set the loading icon on the button to true.
       this.state.displayNetworkError && this.setState({ reloadPending: true })
-      await this.props.rootStore.orders.queryAllOrders(1, "fulfilled")
-      await this.props.rootStore.orders.queryRefundedOrders(1, "canceled")
-
+      let wait = [this.props.rootStore.orders.queryAllOrders(1, "fulfilled"), this.props.rootStore.orders.queryRefundedOrders(1, "canceled")]
+      await Promise.all(wait)
       this.setState({
         loading: false,
         displayNetworkError: false,

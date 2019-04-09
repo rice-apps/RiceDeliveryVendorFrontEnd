@@ -188,7 +188,7 @@ export class OrderList extends React.Component<OrderListProps, OrderListState> {
       const pendingList = await this.props.rootStore.orders.getMoreOrders(this.state.page)
       if (pendingList.length === 0) {
         console.log("no more data")
-        this.setState({ endReached: false, refreshState: RefreshState.NoMoreData})
+        this.setState({ endReached: true, refreshState: RefreshState.NoMoreData})
       }
       console.log("Setting state")
       this.setState({ refreshState: RefreshState.Idle })

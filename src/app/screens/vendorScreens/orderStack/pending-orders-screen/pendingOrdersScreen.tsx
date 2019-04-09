@@ -24,6 +24,7 @@ import { OverlayScreen } from "../overlayScreen"
 import LoadingScreen from "../../loading-screen"
 import { RootStore } from "../../../../stores/root-store"
 import { NavigationScreenProp } from "react-navigation"
+import { material } from "react-native-typography";
 // import { observable, action } from 'mobx';
 
 // Hide yellow warnings.
@@ -88,6 +89,12 @@ export class PendingOrdersScreen extends React.Component<pendingOrderProps, pend
           <OverlayScreen queryFunction={this.queryOrders} loading={this.state.reloadPending} />
         }
         <View style={{ flex: 1 }}>
+        {
+          this.props.rootStore.orders.pending.length === 0 &&
+          <Text style={material.headline}>
+            There are no pending orders.
+          </Text>
+        }
           <OrderList 
             orders={getSnapshot(this.props.rootStore.orders.pending)} 
             renderIcon={true}

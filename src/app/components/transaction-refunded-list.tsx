@@ -113,14 +113,14 @@ export class TransactionRefundedList extends React.Component<OrderListProps, Ord
 
   loadMore = async () => {
     //make request to add things.
-    console.log("load more")
+    console.log("Loading more data")
     if (!this.state.endReached) {
       this.setState({ page: this.state.page + 1, refreshState: RefreshState.FooterRefreshing })
       console.log("calling query")
       const pendingList = await this.props.rootStore.orders.queryRefundedOrders(this.state.page, this.props.orderStatus);
       if (pendingList.length === 0) {
         console.log("no more data")
-        this.setState({ endReached: false, refreshState: RefreshState.NoMoreData})
+        this.setState({ endReached: true, refreshState: RefreshState.NoMoreData})
       }
       console.log("Setting state")
       this.setState({ refreshState: RefreshState.Idle })
@@ -140,7 +140,9 @@ export class TransactionRefundedList extends React.Component<OrderListProps, Ord
   )
 
   render() {
+      console.log("LIST LENGTH: " + toJS(this.props.rootStore.orders.refunded).length)
     return (
+        
       <View style={css.orderList.flatList}>
         <RefreshListView
           style={css.orderList.flatList}

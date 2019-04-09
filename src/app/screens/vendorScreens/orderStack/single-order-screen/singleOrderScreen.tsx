@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Text, Button, StyleSheet, FlatList, Alert } from "react-native"
+import { View, Text, Button, StyleSheet, FlatList, Alert, ScrollView, ViewPagerAndroidComponent } from "react-native"
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../../stores/root-store"
 import PrimaryButton from "../../../../components/primary-button"
@@ -13,6 +13,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import {material} from 'react-native-typography';
 import gql from "graphql-tag";
 import { Order } from "../../../../stores/order-store";
+import { toJS } from "mobx";
 
 const GET_SKU = gql`
 query skus($sku:String!, $vendorName: String!) {
@@ -86,18 +87,66 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let newOrder = this.jsonCopy(order); // make a copy.
     for (let i = 0; i < newOrder.items.length; i++) {
       if (newOrder.items[i].parent &&  newOrder.items[i].parent.split(/_/)[0] == "sku") {
-        let attributes = (await client.query({
+        let attributes = (client.query({
           query: GET_SKU, 
           variables: {
             "sku": newOrder.items[i].parent,
             "vendorName": "East West Tea"
           }
-        })).data.sku.attributes.map(val => val.value);
+        }))
         newOrder.items[i].attributes = attributes
       }
     }
+      for (let i = 0; i < newOrder.items.length; i++) {
+        if (newOrder.items[i].parent &&  newOrder.items[i].parent.split(/_/)[0] == "sku") {
+          newOrder.items[i].attributes = (await newOrder.items[i].attributes).data.sku.attributes.map(val => val.value)
+        }
+    }
     await this.setState({order: newOrder, loading: false});
   }
+
+  arrivedButtonLogic(order) {
+    let status = order.orderStatus;
+    if (status.arrived != null) { 
+      this.functionAlert("Fulfill", order);
+    }
+    else {
+      this.functionAlert("Arrive", order);
+    }
+  }
+
+  
+  // Makes alert box when add to batch is clicked.
+  functionAlert = (functype, order) => {
+      Alert.alert(
+        "Are you sure?",
+        "",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("canceled function"),
+            style: "cancel",
+          },
+          { text: "Yes", onPress: () => {
+
+            if (functype === 'NoRefund') {
+              this.cancelWithoutRefund(order);
+            } 
+            else if (functype === "Refund") {
+              this.cancelWithRefund(order);
+            } 
+            else if (functype === "Arrive") {
+              this.orderArrived(order);
+            } 
+            else if (functype === "Fulfill") {
+              this.fulfillOrder(order);
+            }
+          } },
+        ],
+        { cancelable: true },
+      )
+    }
+
 
   componentDidMount() {
     this.getOrderData();
@@ -139,6 +188,12 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     Alert.alert("Order canceled with refund")
   }
 
+  orderArrived(order) {
+    console.log("orderArrived");
+    let UpdateOrderInput = this.createUpdateOrderInput(order);
+    this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+  }
+
   buttonLogic(order) {
     if (order.orderStatus.onTheWay === null) {
         return true;
@@ -167,9 +222,23 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     }
   }
 
+  // getOrderFromStore = (order) => {
+  //   console.log(order)
+  //   if (order.orderStatus.fulfilled !== null) {
+  //     return this.props.rootStore.orders.allTransaction.find(store_order => store_order.id === order.id)
+  //   } else if (order.orderStatus.unfulfilled !== false) {
+  //     return this.props.rootStore.orders.refunded.find(store_order => store_order.id === order.id)
+  //   } else if (order.inBatch === true) {
+  //     let orders =  toJS(this.props.rootStore.orders.onTheWay).map(batch => batch.orders).reduce((x, y) => x.concat(y), []);
+  //     return orders.find(store_order => store_order.id === order.id)
+  //   } else {
+  //     return this.props.rootStore.orders.pending.find(store_order => store_order.id === order.id)
+
+  //   }
+  // }
   render() {
     if (this.state.loading) return <LoadingScreen />
-    let order = this.props.navigation.state.params.order
+    let order = (this.props.navigation.getParam("order", "NO_ID"));
     console.log("Rendering single order screen")
     console.log(order);
     let status = this.getStatus();
@@ -180,7 +249,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let name = order.customerName.split(" ")[0]
     let clicked = false;
     return (
-      <View style={styleLocal.mainView}>
+      <ScrollView contentContainerStyle={styleLocal.mainView}>
         <View style={styleLocal.header}>
           <Text style={[material.display3, {color: "black", fontSize: 30} ]}>{name}'s Order</Text>
           <Text style={[material.subheading, {color: "black", fontSize: 15}]}>{email + " | " + "Ordered on " + date}</Text>
@@ -203,32 +272,33 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
         </View>
         <View style={styleLocal.buttons}>
 
-          <SecondaryButton title = "Fulfill Order"  
-            onPress = {() => this.fulfillOrder(order)}
+
+          <SecondaryButton title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
+            onPress = {() => this.arrivedButtonLogic(order)}
             disabled = {this.buttonLogic(order)}
             />
 
           <PrimaryButton title = "Cancel Without Refund" 
-            onPress = {() => this.cancelWithoutRefund(order)}
+              onPress = {() => this.functionAlert('NoRefund', order)}
             disabled = {this.buttonLogic(order)}
             />
 
           <PrimaryButton title = "Refund the Order" 
-            onPress = {() => this.cancelWithRefund(order)}
+            onPress = {() => this.functionAlert('Refund', order)}
             disabled = {this.buttonLogic(order)}
             />
 
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
 
 const styleLocal = StyleSheet.create({
   mainView: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    flex: 1,
+    // justifyContent: "flex-start",
+    // alignItems: "center",
+    // flex: 1,
     padding: 10,
 
 
@@ -272,6 +342,7 @@ const styleLocal = StyleSheet.create({
   },
   listContainer: {
     width: "100%",
-    paddingLeft: 5
+    paddingLeft: 5,
+    height: 200
   }
 })

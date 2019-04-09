@@ -136,6 +136,7 @@ export const OrderModel = types
         query: GET_PENDING_ORDERS,
         variables,
       })
+      console.log(info.data.pendingOrders)
       if (info.data.pendingOrders.length === 0) return []
       self.pending = info.data.pendingOrders
       console.log("Length after refreshing" + toJS(self.pending).length)
@@ -162,14 +163,15 @@ export const OrderModel = types
     queryRefundedOrders: flow(function* queryRefundedOrders(pageNum, status) {
       let variables = { vendorName: "East West Tea", status: "canceled" } 
       // if page number is greater than 1, then start pagination!
-      if (pageNum > 1) variables.starting_after = self.allTransaction[toJS(self.allTransaction).length - 1].id 
+      if (pageNum > 1) variables.starting_after = self.refunded[toJS(self.refunded).length - 1].id 
       const info = yield client.query({
         query: GET_FINISHED_ORDERS,
         variables,
       })
       console.log(info.data)
-      if (info.data.finishedOrders.length === 0) return 0
+      if (info.data.finishedOrders.length === 0) return []
       self.refunded = pageNum === 1 ? info.data.finishedOrders : toJS(self.refunded).concat(info.data.finishedOrders)
+      console.log("added to rootstore. length is now: " + toJS(self.refunded).length)
       return self.refunded
     }),
     
@@ -182,7 +184,7 @@ export const OrderModel = types
         variables,
       })
       console.log(info.data)
-      if (info.data.finishedOrders.length === 0) return 0
+      if (info.data.finishedOrders.length === 0) return []
       self.allTransaction = pageNum === 1 ? info.data.finishedOrders : toJS(self.allTransaction).concat(info.data.finishedOrders)
       return self.allTransaction
     }),
@@ -252,6 +254,7 @@ export const OrderModel = types
           batchID: batchID,
           vendorName: vendorName
         }});
+      console.log("HERE");
       self.onTheWay = self.onTheWay.map(batch => {
         if (batch._id === batchID) {
           return info.data.deliverBatch
