@@ -92,7 +92,7 @@ class BatchOrderListItem extends React.Component<any, any> {
           <Icon
             name={this.props.selected ? "remove" : "add"}
             type="material"
-            size={this.props.selected ? 20 : 20}
+            size={this.props.selected ? 23 : 28}
             color="grey"
           reverse={false}
             raised={true}
