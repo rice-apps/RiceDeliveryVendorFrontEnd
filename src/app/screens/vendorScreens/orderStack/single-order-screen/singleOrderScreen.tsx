@@ -42,8 +42,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       order: [],
       status: "",
       fulfillButton: true,
-      fulfillButtonTitle: "Notify customer order has arrived",
-      cancelButton: false
+      cancelButton: false,
+      fulfillButtonTitle: "Notify customer order has arrived"
     }
   }
 
@@ -197,6 +197,11 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     Alert.alert("Notified the user.")
   }
 
+  disableAll = () => {
+    this.setState({cancelButton: true});
+    this.setState({fulfillButton: true});
+  }
+
   functionAlert = (functype, order) => {
     Alert.alert(
       "Are you sure?",
@@ -204,7 +209,11 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       [
         {
           text: "Cancel",
-          onPress: () => console.log("canceled function"),
+          onPress: () => {
+            this.cancelButtonLogic();
+            this.fulfillButtonLogic();
+            this.getStatus();
+            console.log("canceled function")},
           style: "cancel",
         },
         { text: "Yes", onPress: () => {
@@ -306,17 +315,26 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
           <SecondaryButton 
             title = {this.state.fulfillButtonTitle}
             // title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
-            onPress = {async() => await this.arrivedButtonLogic()}
+            onPress = {async() => {
+              this.disableAll();
+              await this.arrivedButtonLogic();
+            }}
             disabled = {this.state.fulfillButton}
             />
 
           <PrimaryButton title = "Cancel Without Refund" 
-              onPress = {async() => await this.functionAlert('NoRefund', order)}
+              onPress = {async() => {
+                this.disableAll();
+                await this.functionAlert('NoRefund', order)}
+              } 
               disabled = {this.state.cancelButton}
             />
 
           <PrimaryButton title = "Refund the Order" 
-            onPress = {async() => await this.functionAlert('Refund', order)}
+            onPress = {async() => {
+            this.disableAll();
+            await this.functionAlert('Refund', order)}
+            } 
             disabled = {this.state.cancelButton}
             />
 
