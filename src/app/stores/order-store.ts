@@ -84,12 +84,6 @@ export const Batch = types.model("Batch", {
   outForDelivery: types.boolean,
   batchName: types.string
 })
-.actions(self => ({
-    updateOrders(newBatch) {
-    self = newBatch;
-    self.outForDelivery = newBatch.outForDelivery;
-    self.orders = newBatch.orders;
-  }}))
 
 export const OrderModel = types
   .model("OrderModel", {
@@ -198,14 +192,14 @@ export const OrderModel = types
       });
       return info.data.order[0];
     }),
-    async fulfillOrder(UpdateOrderInput) { //DOESNT WORK
+    async fulfillOrder(UpdateOrderInput) { 
       const info = await client.mutate({
         mutation: FULFILL_ORDER,
         variables: {
           data: UpdateOrderInput
         }
       });
-      
+      return info.data.completeOrder;
     },
     async orderArrived(UpdateOrderInput) {
       const info = await client.mutate({
@@ -214,25 +208,25 @@ export const OrderModel = types
           data: UpdateOrderInput
         }
       });
+      return info.data.orderArrived;
     },
     async cancelWithRefund(UpdateOrderInput) {
-      console.log(UpdateOrderInput)
       const info = await client.mutate({
         mutation: CANCEL_WITH_REFUND,
         variables: {
           data: UpdateOrderInput
         }
       });
+      return info.data.cancelWithRefund;
     },  
     async cancelWithoutRefund(UpdateOrderInput) {
-      console.log(UpdateOrderInput)
       const info = await client.mutate({
         mutation: CANCEL_WITHOUT_REFUND, 
         variables: {
           data: UpdateOrderInput
         }
       })
-
+      return info.data.cancelWithoutRefund;
     },
     getBatch: flow(function* getBatch(batchID) {
       const info = (yield client.query({
@@ -255,7 +249,6 @@ export const OrderModel = types
       self.onTheWay = info.data.batch;
       console.log(toJS(self.onTheWay))
       return info.data.batch; //Return batches.
-  
     }),
     deliverBatch: flow(function *  deliverBatch(batchID, vendorName) {
       let info = yield client.mutate({
@@ -264,7 +257,6 @@ export const OrderModel = types
           batchID: batchID,
           vendorName: vendorName
         }});
-      console.log("HERE");
       self.onTheWay = self.onTheWay.map(batch => {
         if (batch._id === batchID) {
           return info.data.deliverBatch

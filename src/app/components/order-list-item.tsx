@@ -4,7 +4,6 @@ import { withNavigation } from "react-navigation"
 import {Icon, Badge} from "react-native-elements"
 import * as css from "./style"
 import { observer, inject } from "mobx-react"
-import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 
 @inject("rootStore")
@@ -21,7 +20,6 @@ class OrderListItem extends React.Component<any, any> {
     console.log("hereee");
     console.log(this.props.order)
     this.props.navigation.navigate("SingleOrder", {
-      // order : this.props.order,
       order: this.props.order,
     })
   }
@@ -43,7 +41,6 @@ class OrderListItem extends React.Component<any, any> {
   badgeHandler =  () => {
     let fulfilled = this.props.order.orderStatus.fulfilled;
     let onTheWay = this.props.order.orderStatus.onTheWay;
-    let pending = this.props.order.orderStatus.pending; 
     let unfulfilled = this.props.order.orderStatus.unfulfilled; 
     let refunded = this.props.order.orderStatus.refunded;
     let arrived = this.props.order.orderStatus.arrived;
@@ -90,19 +87,21 @@ class OrderListItem extends React.Component<any, any> {
               Ordered at: {this.getDate(this.props.order.created)}
             </Text>
           </View>
+              
+          <View style = {{margin: 0}} >
           {
             this.renderIf(this.props.renderIcon,
               <Icon
               name={this.props.selected ? "remove" : "add"}
               type="material"
-              size={this.props.selected ? 23 : 28}
+              size={this.props.selected ? 28 : 28}
               color="grey"
-            reverse={false}
+              reverse={false}
               raised={true}
               onPress={this.addOrderPress}
             />)
           }
-
+        </View>
         </View>
       </TouchableHighlight>
     )

@@ -69,10 +69,10 @@ export const orderListItem = StyleSheet.create({
     flexDirection: "row", // main axis
     justifyContent: "flex-start", // main axis
     alignItems: "center", // cross axis
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 14,
-    paddingRight: 16,
+    paddingTop: 2,
+    paddingBottom: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
     marginLeft: 6,
     marginRight: 6,
     marginTop: 5,

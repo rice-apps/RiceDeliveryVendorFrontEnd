@@ -16,7 +16,16 @@ class BatchOrderListItem extends React.Component<any, any> {
     this.singleOrderPress = this.singleOrderPress.bind(this)
   }
 
-  componentWillMount() {}
+  componentDidMount() {
+    console.log("mounting");
+  }
+  componentWillMount() {
+    console.log("refresh again");
+  }
+
+  componentWillUnmount() {
+    console.log("comp umounted");
+  }
   // Define action when pressing entire list item
   singleOrderPress = () => {
     this.props.navigation.navigate("SingleBatchOrder", {
@@ -34,19 +43,18 @@ class BatchOrderListItem extends React.Component<any, any> {
     })
   }
 
+
   // Define action when pressing "plus" button
   addOrderPress = () => {
     this.props.onPressItem(this.props.order.id)
   }
 
   badgeHandler =  () => {
-    console.log(this.props.order.orderStatus);
     let fulfilled = this.props.order.orderStatus.fulfilled;
     let onTheWay = this.props.order.orderStatus.onTheWay;
     let unfulfilled = this.props.order.orderStatus.unfulfilled;
     let refunded = this.props.order.orderStatus.refunded;
     let arrived = this.props.order.orderStatus.arrived;
-
  
     if (refunded !== null && unfulfilled === false) {
       return {color: "red", text: "Refunded"}
@@ -92,7 +100,7 @@ class BatchOrderListItem extends React.Component<any, any> {
           <Icon
             name={this.props.selected ? "remove" : "add"}
             type="material"
-            size={this.props.selected ? 23 : 28}
+            size={this.props.selected ? 28 : 28}
             color="grey"
           reverse={false}
             raised={true}

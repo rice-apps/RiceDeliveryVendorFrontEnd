@@ -48,19 +48,18 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   }
 
 
+
   /* ------------------------------- Initialize original states. ---------------------------------- */
   async componentDidMount() {
 
     let oldOrder = (this.props.navigation.getParam("order", "NO_ID"));
-    
     let order = await this.props.rootStore.orders.querySingleOrder(oldOrder.id);
     if (order.orderStatus.arrived != null) { 
       this.setState({fulfillButtonTitle: "Fulfill Order"});
     }
-
-    await this.cancelButtonLogic(order);
-    await this.fulfillButtonLogic(order);
-    this.getStatus();
+    this.cancelButtonLogic(order);
+    this.fulfillButtonLogic(order);
+    this.getStatus(order);
     this.getOrderData();
   }
 
@@ -127,10 +126,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     return JSON.parse(JSON.stringify(src));
   }
 
-  getStatus = async () => {
-    let order = this.props.navigation.state.params.order
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
-    let status = newOrder.orderStatus;
+  getStatus = async (order) => {
+    let status = order.orderStatus;
     if (status.refunded != null && status.unfulfilled === false) {
       this.setState({status: "Refunded"});    
     }
@@ -163,21 +160,20 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   }
 
   async fulfillOrder(order) {
+    console.log("fulfilling order");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    await this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    let newOrder = await this.props.rootStore.orders.fulfillOrder(UpdateOrderInput);
     await this.fulfillButtonLogic(newOrder);
-    await this.getStatus();
+    await this.getStatus(newOrder);
     Alert.alert("Order fulfilled")
   }
 
   async cancelWithoutRefund(order) {
     console.log("cacel order without refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
-    await this.getStatus();
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    let newOrder = await this.props.rootStore.orders.cancelWithoutRefund(UpdateOrderInput);
     await this.cancelButtonLogic(newOrder);
+    await this.getStatus(newOrder);
     Alert.alert("Order canceled without refund")
 
   }
@@ -185,21 +181,19 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   async cancelWithRefund(order) {
     console.log("cacel order with refund");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    await this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
+    let newOrder = await this.props.rootStore.orders.cancelWithRefund(UpdateOrderInput);
     await this.cancelButtonLogic(newOrder);
-    await this.getStatus();
+    await this.getStatus(newOrder);
     Alert.alert("Order canceled with refund")
   }
 
    async orderArrived(order) {
     console.log("orderArrived");
     let UpdateOrderInput = this.createUpdateOrderInput(order);
-    await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
-    let newOrder = await this.props.rootStore.orders.querySingleOrder(order.id);
-    this.fulfillButtonLogic(newOrder);
-    this.cancelButtonLogic(newOrder);
-    await this.getStatus();
+    let newOrder = await this.props.rootStore.orders.orderArrived(UpdateOrderInput);
+    await this.fulfillButtonLogic(newOrder);
+    await this.cancelButtonLogic(newOrder);
+    await this.getStatus(newOrder);
     Alert.alert("Notified the user.")
   }
 
@@ -218,7 +212,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
           onPress: () => {
             this.cancelButtonLogic(order);
             this.fulfillButtonLogic(order);
-            this.getStatus();
+            this.getStatus(order);
             console.log("canceled function")},
           style: "cancel",
         },

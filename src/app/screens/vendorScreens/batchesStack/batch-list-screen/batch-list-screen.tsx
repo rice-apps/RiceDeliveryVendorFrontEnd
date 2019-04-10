@@ -153,6 +153,7 @@ export class BatchListScreen extends React.Component<pendingOrderProps, pendingO
       )
     }
   }
+  
 
   componentWillUnmount() {
     console.log("unmounting");
