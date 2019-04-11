@@ -76,12 +76,11 @@ class OrderListItem extends React.Component<any, any> {
         <View style={css.orderListItem.badge_cell}> 
           <Badge badgeStyle = {{backgroundColor: this.badgeHandler().color}}>  </Badge>
           <Text style= {css.orderListItem.badge_text}> {this.badgeHandler().text} </Text>
-
         </View>
 
           <View style={css.orderListItem.row_cell}>
             <Text style={css.orderListItem.row_location}> {this.props.order.location.name} </Text>
-            <Text style={css.orderListItem.row_name}> {this.props.order.customerName} </Text>
+          <Text style={css.orderListItem.row_name}> {this.props.order.customerName} </Text>
             <Text style={css.orderListItem.row_time}>
               {" "}
               Ordered at: {this.getDate(this.props.order.created)}

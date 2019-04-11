@@ -9,6 +9,7 @@ import RefreshListView, { RefreshState } from "react-native-refresh-list-view"
 // import { Order } from "../stores/order-store"
 // Using temporary Order object instead of order-store Order object
 import BatchOrderListItem from "../components/batch-order-item"
+import SecondaryButton from "./secondary-button";
 interface OrderListProps {
   id: any
   orders: any
@@ -179,12 +180,10 @@ export class BatchList extends React.Component<OrderListProps, OrderListState> {
         />
         {
           this.renderIf(Array.from(this.state.selected.values()).filter(value => value === true).length > 0,
-          <View style={componentCSS.containers.batchContainer}>
-            <PrimaryButton
+            <SecondaryButton
               title ="Remove from Batch"
               onPress={this.removeFromBatchHandler}
             />
-          </View>
           )
         }
       </View>

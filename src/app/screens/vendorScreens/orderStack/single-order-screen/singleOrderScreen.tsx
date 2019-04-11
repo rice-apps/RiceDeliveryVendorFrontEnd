@@ -309,8 +309,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
               keyExtractor={(item, index) => index.toString()}
             />
           </View>
-          
-          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 15}]}> Description: {detail} </Text>
+          <Text style={[material.caption]}> {detail} </Text>
         </View>
         
   

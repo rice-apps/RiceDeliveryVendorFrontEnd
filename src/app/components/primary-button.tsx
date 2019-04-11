@@ -9,7 +9,7 @@ export default class PrimaryButton extends React.Component<any, any> {
       <Button
         title={title}
         buttonStyle={css.button.primaryButton}
-        style={{ margin: 10 }}
+        style={{ marginTop: 2, marginBottom: 2 }}
         onPress={onPress}
         loading={loading}
         disabled={disabled}

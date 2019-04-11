@@ -41,7 +41,7 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
   render() {
     return (
       <View style={css.screen.paddedScreen}>
-        <View>
+        <View style={{flex: 1}}>
           <FlatList
             keyExtractor={this.keyExtractor}
             data={this.list}
@@ -51,7 +51,7 @@ export class AccountScreen extends React.Component<accountScreenProps, any> {
         </View>
         <View>
           <SecondaryButton
-            title="Logout"
+          title="Logout"
             onPress={() => {
               CookieManager.get(
                 "https://idp.rice.edu/idp/profile/cas/login?service=https://www.gizmodo.com",

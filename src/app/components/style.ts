@@ -16,8 +16,6 @@ export const containers = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     flexDirection: "row",
-    borderColor: "red",
-    borderWidth: 2,
   },
 })
 export const button = StyleSheet.create({
@@ -64,6 +62,7 @@ export const orderList = StyleSheet.create({
 export const orderListItem = StyleSheet.create({
   row: {
     elevation: 1,
+    height: 80,
     backgroundColor: color.background,
     flex: 1,
     flexDirection: "row", // main axis
@@ -94,6 +93,7 @@ export const orderListItem = StyleSheet.create({
     
   },
   row_cell: {
+    
     paddingLeft: 0.0,
     flex: 1,
     flexDirection: "column",
