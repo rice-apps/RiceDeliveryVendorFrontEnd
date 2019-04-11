@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Text, View, StyleSheet, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 // import { ListItem } from 'react-native-elements';
 import { color, typography } from '../../theme';
 import { withNavigation, NavigationScreenProp } from 'react-navigation';
@@ -36,7 +36,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
     render() {
 
         return (
-            <TouchableHighlight onPress={this.singleOrderPress}>
+            <TouchableOpacity onPress={this.singleOrderPress}>
                 <View style={styles.row}>
                     <View style={styles.row_cell}>
                         <Text style={styles.row_location}> {`${this.props.name}'s Batch`} </Text>  
@@ -44,7 +44,7 @@ class BatchListItem extends React.Component<BatchListItemProps, any> {
                     <Icon name="chevron-right" size={50} color="black" />
                     
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         )
     }
 }

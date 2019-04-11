@@ -1,10 +1,9 @@
 import * as React from "react"
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import { Text, View, TouchableOpacity } from "react-native"
 import { withNavigation } from "react-navigation"
 import {Icon , Badge, withBadge } from "react-native-elements"
 import * as css from "./style"
 import { observer, inject } from "mobx-react"
-import { Order } from "../stores/order-store"
 
 // Using temporary Order object instead of order-store Order object
 
@@ -79,7 +78,7 @@ class BatchOrderListItem extends React.Component<any, any> {
 
   render() {
     return (
-      <TouchableHighlight onPress={this.singleOrderPress}>
+      <TouchableOpacity onPress={this.singleOrderPress}>
         
         <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
 
@@ -107,7 +106,7 @@ class BatchOrderListItem extends React.Component<any, any> {
             onPress={this.addOrderPress}
           />
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }

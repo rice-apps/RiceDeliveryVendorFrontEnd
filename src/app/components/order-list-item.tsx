@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Text, View, StyleSheet, TouchableHighlight } from "react-native"
+import { Text, View, TouchableOpacity } from "react-native"
 import { withNavigation } from "react-navigation"
 import {Icon, Badge} from "react-native-elements"
 import * as css from "./style"
@@ -70,7 +70,7 @@ class OrderListItem extends React.Component<any, any> {
 
   render() {
     return ( 
-      <TouchableHighlight onPress={this.singleOrderPress}>
+      <TouchableOpacity onPress={this.singleOrderPress}>
         <View style={[css.orderListItem.row, this.props.selected && css.orderListItem.activeItem]}>
 
         <View style={css.orderListItem.badge_cell}> 
@@ -103,7 +103,7 @@ class OrderListItem extends React.Component<any, any> {
           }
         </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 }
