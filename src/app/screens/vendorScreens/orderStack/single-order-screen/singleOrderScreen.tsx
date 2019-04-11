@@ -283,6 +283,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
   render() {
     if (this.state.loading) return <LoadingScreen />
     let order = (this.props.navigation.getParam("order", "NO_ID"));
+    let detail = order.items[0].detail;
     let location = order.location.name
     let date = this.getDate(order.created)
     let email = order.email
@@ -290,13 +291,13 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     return (
       <ScrollView contentContainerStyle={styleLocal.mainView}>
         <View style={styleLocal.header}>
-          <Text style={[material.display3, {color: "black", fontSize: 30} ]}>{name}'s Order</Text>
+          <Text style={[material.display3, {color: "black", fontSize: 20} ]}>{name}'s Order</Text>
           <Text style={[material.subheading, {color: "black", fontSize: 15}]}>{email + " | " + "Ordered on " + date}</Text>
         </View>
         <Divider />
         <View style={styleLocal.location}>
-          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Location: {location} </Text>
-          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 20}]}>Status: {this.state.status}</Text>
+          <Text style={[material.display1, {flex: 1,  color: "black", fontSize: 20}]}>Location: {location} </Text>
+          <Text style={[material.display1, {flex: 1, color: "black", fontSize: 20}]}>Status: {this.state.status}</Text>
         </View>
         <View style={styleLocal.details}>
           
@@ -308,13 +309,17 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
               keyExtractor={(item, index) => index.toString()}
             />
           </View>
+          
+          <Text style={[material.display1, {paddingBottom: 4, color: "black", fontSize: 15}]}> Description: {detail} </Text>
         </View>
+        
+  
+
         <View style={styleLocal.buttons}>
 
 
           <SecondaryButton 
             title = {this.state.fulfillButtonTitle}
-            // title = {order.orderStatus.arrived != null ? "Fulfill Order" : "Notify customer order has arrived" }
             onPress = {async() => {
               this.disableAll();
               await this.arrivedButtonLogic();
@@ -350,23 +355,22 @@ const styleLocal = StyleSheet.create({
     // alignItems: "center",
     // flex: 1,
     padding: 10,
-
-
   }, 
   header: {
     // borderColor: "red",
     // borderWidth: 2,
     width: "100%",
-    paddingBottom: 10,
-  
+    // paddingBottom: 10,
+    flex: 1,
     borderBottomColor: "grey",
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   location: {
     // borderColor: "black",
     // borderWidth: 2,
-    paddingBottom: 6,
-    paddingTop: 6,
+    // paddingBottom: 6,
+    // paddingTop: 6,
+    flex: 1,
     width: "100%",
     borderBottomColor: "grey",
     borderBottomWidth: StyleSheet.hairlineWidth
@@ -391,8 +395,8 @@ const styleLocal = StyleSheet.create({
     fontSize: 16
   },
   listContainer: {
-    width: "100%",
+    width: "50%",
     paddingLeft: 5,
-    height: 200
+    flex: 1
   }
 })

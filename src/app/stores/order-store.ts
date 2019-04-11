@@ -21,6 +21,7 @@ const fragments = {
         amount
         description
         quantity
+        detail
       }
       orderStatus {
         pending
@@ -47,6 +48,7 @@ export const OrderItem = types.model("OrderItem", {
   description: types.string,
   parent: types.maybe(types.string),
   quantity: types.maybe(types.number),
+  detail: types.maybe(types.string)
 })
 
 export const OrderStatus = types.model("OrderStatus", {
