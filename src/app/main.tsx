@@ -31,9 +31,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     // return networkError
   }
 });// link for real device
+// const serverLink = createHttpLink({
+//   uri: "http://10.122.178.167:3000/graphql",
+// })
+
 const serverLink = createHttpLink({
-  uri: "http://10.122.178.167:3000/graphql",
+  uri: "https://hedwig-233703.appspot.com/graphql"
 })
+
 
 // const serverLink = createHttpLink({
 //   uri: "http://localhost:3000/graphql",
