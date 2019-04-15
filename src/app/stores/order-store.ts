@@ -230,6 +230,16 @@ export const OrderModel = types
       })
       return info.data.cancelWithoutRefund;
     },
+    queryUserInfo: flow(function* queryUserInfo(netID) {
+      const info = yield client.query({
+        query: GET_USER_PHONE,
+        variables: {
+          netID: netID
+        }
+      });
+      console.log(info.data.user[0].phone);
+      return info.data.user[0].phone;
+  }),
     getBatch: flow(function* getBatch(batchID) {
       const info = (yield client.query({
         query: GET_BATCH,
@@ -344,6 +354,18 @@ export const OrderModel = types
 
 export type Batch = typeof Batch.Type;
 
+
+
+const GET_USER_PHONE = gql`
+query queryUser($netID:String ) {
+  user(netID: $netID) {
+    _id
+  firstName
+  lastName
+   phone
+    }
+}
+`
 
 // ------------------------- ORDER QUERIES -------------------------------
 
