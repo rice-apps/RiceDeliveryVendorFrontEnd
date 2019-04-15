@@ -1,15 +1,19 @@
-import { types } from "mobx-state-tree"
+import { types, flow } from "mobx-state-tree"
 import { Location } from "./location-store"
 import { client } from "../main"
 import gql from "graphql-tag"
+import { AsyncStorage } from "react-native";
 
 const AUTHENTICATION = gql`
     mutation Authenticate($ticket: String!, $checkVendor: Boolean!, $vendorName: String) {
         authenticator(ticket:$ticket, checkVendor: $checkVendor, vendorName: $vendorName) {
-            netID
-            firstName
-            lastName
-            phone
+            user {
+                netID
+                firstName
+                lastName
+                phone
+            }
+            token
         }
     }    
 `
@@ -36,11 +40,11 @@ export const VendorStoreModel = types
     // batchOrder: types.array(types.string)
 }).actions(
     (self) => ({
-        async authenticate(ticket) {
+        authenticate: flow(function * authenticate(ticket) {
             console.log("HERE");
             var name = "East West Tea";
             console.log(name);
-            let user = await client.mutate({
+            let { data } = yield client.mutate({
                 mutation: AUTHENTICATION,
                 variables: {
                     ticket: ticket,
@@ -48,21 +52,27 @@ export const VendorStoreModel = types
                     vendorName: name // vendor name
                 }
             });
-            console.log(user.data.authenticator);
+            console.log(data);
+            let { user, token } = data.authenticator;
+            console.log(user);
+            console.log(token);
+            // console.log(user.data.authenticator);
 
-            console.log("Almost authenticated");
+            // console.log("Almost authenticated");
             // If empty user returned, then authorization failed
-            if (user.data.authenticator.netID == null) {
+            if (user.netID == null) {
                 console.log("Here")
                 self.setAttempt(true);
             }
             else {
                 self.setAuth(true);
-                if (user.data.authenticator.firstName != null) {
-                    self.setUser(user.data.authenticator);
+                console.log(token);
+                yield AsyncStorage.setItem('token', token);
+                if (user.firstName != null) {
+                    self.setUser(user);
                     self.setAccountState(true);
                 } else {
-                    self.setUser({ netID: user.data.authenticator.netID });
+                    self.setUser({ netID: user.netID });
                     self.setAccountState(false);
                 }
             }
@@ -89,7 +99,7 @@ export const VendorStoreModel = types
             // console.log(user);
             // console.log(res);
             // });
-        },
+        }),
         setUser(user) {
             self.user = user;
         },

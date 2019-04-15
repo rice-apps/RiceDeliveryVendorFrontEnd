@@ -14,7 +14,9 @@ class OrderListItem extends React.Component<any, any> {
     this.singleOrderPress = this.singleOrderPress.bind(this)
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+
+  }
   // Define action when pressing entire list item
   singleOrderPress = () => {
     console.log("hereee");
