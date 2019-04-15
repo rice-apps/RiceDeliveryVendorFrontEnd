@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, Text, StyleSheet, FlatList, Alert, ScrollView } from "react-native"
+import { View, Text, StyleSheet, FlatList, Alert, ScrollView, Linking} from "react-native" 
 import { inject, observer } from "mobx-react"
 import { RootStore } from "../../../../stores/root-store"
 import PrimaryButton from "../../../../components/primary-button"
@@ -43,7 +43,8 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
       status: "",
       fulfillButton: true,
       cancelButton: false,
-      fulfillButtonTitle: "Notify customer order has arrived"
+      fulfillButtonTitle: "Notify customer order has arrived",
+      phone: ""
     }
   }
 
@@ -57,6 +58,7 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     if (order.orderStatus.arrived != null) { 
       this.setState({fulfillButtonTitle: "Fulfill Order"});
     }
+    this.getPhone(order.netID)
     this.cancelButtonLogic(order);
     this.fulfillButtonLogic(order);
     this.getStatus(order);
@@ -65,6 +67,11 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
 
   componentWillUnmount() {
     console.log("Did unmount")
+  }
+
+  getPhone = async(netID) => {
+    let phone = await this.props.rootStore.orders.queryUserInfo(netID);
+    this.setState({phone: phone});
   }
 
 
@@ -285,13 +292,15 @@ export class SingleOrderScreen extends React.Component<SingelOrderScreenProps, a
     let order = (this.props.navigation.getParam("order", "NO_ID"));
     let detail = order.items[0].detail;
     let location = order.location.name
+    let netid = order.netid
     let date = this.getDate(order.created)
     let email = order.email
     let name = order.customerName.split(" ")[0]
     return (
       <ScrollView contentContainerStyle={styleLocal.mainView}>
         <View style={styleLocal.header}>
-          <Text style={[material.display3, {color: "black", fontSize: 20} ]}>{name}'s Order</Text>
+          <Text style={[material.display3, {color: "black", fontSize: 20} ]}>{name}'s {"(" + netid+")"} Order</Text>
+          <Text style={[material.subheading, {color: "black", fontSize: 15}]} onPress={()=>{Linking.openURL('tel:' + this.state.phone);}}> { "Phone: " + this.state.phone } </Text>
           <Text style={[material.subheading, {color: "black", fontSize: 15}]}>{email + " | " + "Ordered on " + date}</Text>
         </View>
         <Divider />
